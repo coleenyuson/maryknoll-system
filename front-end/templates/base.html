@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <title>Cashier Dashboard</title>
+
+      <!-- globals -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      {% load staticfiles %}
+      <!-- css files -->
+      <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'css/normalize.css' %}" rel="stylesheet" type="text/css" />
+      <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css" />
+
+      <!-- icons -->
+      <link rel="stylesheet" href="{% static 'fonts/simple-line-icons-master/css/simple-line-icons.css'%}">
+      <link rel="stylesheet" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+
+
+      <!-- jquery file-->
+      <script src="02-javascript/jquery-3.2.1.min.js"></script>
+  </head>
+  <body>
+    
+  <!--header-->  
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-light bg-faded bg-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="#"></a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item
+            {%if request.path == "/"%}
+             active
+            {%endif%}">
+              <a class="nav-link" href="{% url 'index' %}" 
+                {%if request.path == "/"%}
+                 style="color: #4688F1;"
+                {%endif%}
+              >Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item
+            {%if request.path == "/admin-settings"%}
+             active
+            {%endif%}">
+              <a class="nav-link" href="{%url 'admin-settings'%}"
+              {%if request.path == "/admin-settings"%}
+                 style="color: #4688F1;"
+                {%endif%}
+              >Settings</a>
+            </li>
+            <li class="nav-item
+            {%if request.path == "/reports"%}
+             active
+            {%endif%}">
+              <a class="nav-link" href="#"
+              {%if request.path == "/reports"%}
+                 style="color: #4688F1;"
+                {%endif%}
+              >Reports</a>
+            </li>
+          </ul>
+        </div>
+        <span class="navbar-text">Steve Harrington <i class="icon-arrow-down"></i> </span> <!-- User's fullname -->
+        <a href="{% url 'logout' %}?next={{request.path}}"><button class="btn-logout" href="{% url 'logout' %}?next={{request.path}}"><span>Logout</span></button>
+        </a>
+      </nav>
+    </div>
+  <!--end header-->  
+  
+  {% block body %}
+
+  {% endblock %}
+
+    <script src="02-javascript/bootstrap.bundle.js"></script>
+    <script src="02-javascript/bootstrap.js"></script>
+    <script src="02-javascript/bootstrap.min.js"></script>
+
+  </body>
+</html>

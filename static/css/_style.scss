@@ -1,0 +1,23 @@
+//color scheme
+
+$primary-color-light: #0052CC;
+$primary-color-dark: #121774;
+$primary-color-gray: #7A869A;
+$primary-color-white: #ffffff;
+
+$secondary-color-green: #36B37E;
+$secondary-color-red: #DE350A;
+$secondary-color-yellow: #FFAB00;
+
+//fonts
+$font-stack: Helvetica, sans-serif;
+
+.container{
+	background-color: #FFFFFF;
+	padding-top: 50px;
+	display: flex;
+	flex-flow: row wrap;
+	-webkit-justify-content: center;
+         justify-content: center;
+
+}
