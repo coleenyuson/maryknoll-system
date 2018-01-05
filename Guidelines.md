@@ -17,6 +17,7 @@ Updated Front-end files are located in a different [repository](https://github.c
 
 **will be specified further in the future**
 
+**Please create a new branch** if you want to develop a new feature/edit codes to fix something. Do not touch the master branch unless confirmed by everyone.
 
 ## File Structure
 
