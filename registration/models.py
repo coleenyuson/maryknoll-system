@@ -1,17 +1,11 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from administrative.models import *
+from enrollment.models import Curriculum, Offering, Scholarship
 
 # Create your models here.
 ''' TAIL ENTITIES '''
-
-#this might be temporary, will see for further changes
-class Occupation(models.Model):
-    occupation_name = models.CharField(max_length=200)
-
-#this might be temporary, will see for further changes
-class Schools(models.Model):
-    school_name = models.CharField(max_length=200)
 
 class SHS_Subjects(models.Model):
     s_subjectName  = models.CharField(max_length=200)
@@ -27,20 +21,6 @@ class SHS_Subjects(models.Model):
         default='n'
         )
         
-
-''' NON-TAIL ENTITIES '''
-
-#this might be temporary, will see for further changes
-class Parents(models.Model):
-    p_lastnames = models.CharField(max_length=100)
-    father_firstname = models.CharField(max_length=100)
-    father_middlename = models.CharField(max_length=100)
-    mother_firstname = models.CharField(max_length=100)
-    mother_middlename = models.CharField(max_length=100)
-    mother_occupation = models.ForeignKey(Occupation, on_delete = models.SET_NULL, null = True)
-    father_occupation = models.ForeignKey(Occupation, on_delete = models.SET_NULL, null = True)
-
-
 
 class Student(models.Model):
     first_name = models.CharField(max_length=200)
@@ -60,9 +40,16 @@ class Student(models.Model):
     birthdate = models.DateField(auto_now=False)
     home_addr = models.CharField(max_length=200)
     postal_addr = models.CharField(max_length=200)
-    #Foreign Keys
-    parent_ID = models.ForeignKey(Parents, on_delete=models.SET_NULL, null=True)
-    school_ID = models.ForeignKey(Schools, on_delete=models.CASCADE)
+    m_firstname = models.CharField(max_length=200)
+    m_middlename = models.CharField(max_length=200)
+    m_lastname = models.CharField(max_length=200)
+    m_occcupation = models.CharField(max_length=200)
+    f_firstname = models.CharField(max_length=200)
+    f_middlename = models.CharField(max_length=200)
+    f_lastname = models.CharField(max_length=200)
+    f_occcupation = models.CharField(max_length=200)
+    
+    '''Model Configuration'''
     class Meta:
         ordering = ["student_ID"]
         #allow only people with permissions
@@ -74,33 +61,33 @@ class Student(models.Model):
         """
         return '%s, %s - %s' % (self.student_ID, self.first_name, self.status)
 
-class School_Year(models.Model):
-	year_name = models.CharField(max_length=200)
-	#status = models.CharField(max_length=50)
-	date_start = models.DateField(auto_now = False)
-	date_end = models.DateField(auto_now = False)
+''' NON-TAIL ENTITIES '''
 
-class Scholarship(models.Model):
-	scholarship_name = models.CharField(max_length=200)
-	amount = models.IntegerField()
-	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
-	validity =  models.IntegerField()
-	status = models.CharField(max_length=50)
-	scholar_type = models.IntegerField()
+class Enrollment(models.Model):
+	enrollment_ID = models.AutoField(primary_key=True)
+	curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE, default=0)
+	student_ID = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
+	scholarship_ID = models.ForeignKey(Scholarship, on_delete=models.CASCADE, default=0)
+	student_type = models.IntegerField()
 	
-class SHS_Category(models.Model):
-	category_name = models.CharField(max_length=200)
-	type = models.IntegerField()
-	status = models.CharField(max_length=50)
-	
-class Curriculum(models.Model):
-    pass
+class Enrollment_Details(models.Model):
+	enrollmentDetails_ID = models.AutoField(primary_key=True)
+	enrollment_ID = models.ForeignKey(Enrollment, on_delete=models.CASCADE, default=0)
+	offering_ID = models.ForeignKey(Offering, on_delete=models.CASCADE, default=0)
 
-class Subjects(models.Model):
-	subject_ID = models.AutoField(primary_key=True)
-	subject_name = models.CharField(max_length=200)
-	status = models.CharField(max_length=50)
-	curriculum = models.ForeignKey(Curriculum, on_delete = models.CASCADE)
+class Drop(models.Model):
+	drop_ID = models.AutoField(primary_key=True)
+	student_name = models.CharField(max_length=200)
+	drop_date = models.DateTimeField(null=True, blank=True)
+	curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE, default=0)
+	reason = models.CharField(max_length=500)
+	status = models.CharField(max_length=2)
+	approved_date = models.DateTimeField(null=True, blank=True)
 	
-class Prerequisites(models.Model):
-    curriculum = models.ForeignKey(Curriculum, on_delete = models.CASCADE)
+
+	#HENLO BEBI
+	#<3 
+	#im double checkinggg
+	#ping me lang if you're good :D
+	#oki
+	
