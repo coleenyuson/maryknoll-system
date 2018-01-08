@@ -1,0 +1,15 @@
+ 01-files/01-css/main.css                |  92 -----------------------------------------------------------------------
+ 01-files/01-css/styles.css              |   7 ++++--
+ 01-files/admin-dashboard.html           |  12 ++++++----
+ 01-files/admin-settings.html            |  23 +++++++-----------
+ 01-files/index.html                     |   2 +-
+ 01-files/scholarship-list.html          | 254 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 01-files/student-accounts.html          |  11 ++++-----
+ 01-files/student-profile-shs.html       |   2 +-
+ 01-files/student-profile.html           |  46 +++++++++++++++---------------------
+ 01-files/student-registration-list.html |   8 +++----
+ 01-files/subject-offering.html          |   8 +++----
+ 01-files/user-record.html               |  11 ++++-----
+ 12 files changed, 312 insertions(+), 164 deletions(-)
+ delete mode 100644 01-files/01-css/main.css
+ create mode 100644 01-files/scholarship-list.html

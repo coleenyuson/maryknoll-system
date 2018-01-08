@@ -1,28 +1,15 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from administrative.models import *
-from enrollment.models import Curriculum, Offering, Scholarship
+from datetime import datetime
+#from administrative.models import *
+#from enrollment.models import Curriculum, Offering, Scholarship
 
 # Create your models here.
 ''' TAIL ENTITIES '''
 
-class SHS_Subjects(models.Model):
-    s_subjectName  = models.CharField(max_length=200)
-    s_desc = models.CharField(max_length=100)
-    #SHS track status
-    STATUS_CHOICES = (
-        ('a', 'Active'),
-        ('n', 'Inactive'),
-    )
-    s_status = models.CharField(max_length=1,
-        choices=STATUS_CHOICES,
-        blank=False,
-        default='n'
-        )
-        
-
 class Student(models.Model):
+    student_ID = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     #student status
@@ -48,7 +35,7 @@ class Student(models.Model):
     f_middlename = models.CharField(max_length=200)
     f_lastname = models.CharField(max_length=200)
     f_occcupation = models.CharField(max_length=200)
-    
+    '''add guardian attribute'''
     '''Model Configuration'''
     class Meta:
         ordering = ["student_ID"]
@@ -65,29 +52,41 @@ class Student(models.Model):
 
 class Enrollment(models.Model):
 	enrollment_ID = models.AutoField(primary_key=True)
-	curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE, default=0)
+	curriculum = models.ForeignKey('enrollment.Curriculum', on_delete=models.CASCADE, default=0)
 	student_ID = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
-	scholarship_ID = models.ForeignKey(Scholarship, on_delete=models.CASCADE, default=0)
+	scholarship_ID = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
 	student_type = models.IntegerField()
+	
+	class Meta:
+	    verbose_name = "Enrollment"
+	    
+	def __str__(self):
+	    return "%s enrolled under %s" % (self.student_ID, self.curriculum)
+	'''StudentType(INT?) purpose?'''
 	
 class Enrollment_Details(models.Model):
 	enrollmentDetails_ID = models.AutoField(primary_key=True)
 	enrollment_ID = models.ForeignKey(Enrollment, on_delete=models.CASCADE, default=0)
-	offering_ID = models.ForeignKey(Offering, on_delete=models.CASCADE, default=0)
+	offering_ID = models.ForeignKey('enrollment.Offering', on_delete=models.CASCADE, default=0)
+	
+	class Meta:
+	    verbose_name = "Enrollment Detail"
+	    
+	def __str__(self):
+	    return str(self.enrollment_ID)
+	 
+
+
 
 class Drop(models.Model):
 	drop_ID = models.AutoField(primary_key=True)
 	student_name = models.CharField(max_length=200)
-	drop_date = models.DateField(null=True, blank=True)
-	curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE, default=0)
+	drop_date = models.DateField(auto_now=True)
+	curriculum = models.ForeignKey('enrollment.Curriculum', on_delete=models.CASCADE, default=0)
 	reason = models.CharField(max_length=500)
 	status = models.CharField(max_length=2)
 	approved_date = models.DateTimeField(null=True, blank=True)
 	
-
-	#HENLO BEBI
-	#<3 
-	#im double checkinggg
-	#ping me lang if you're good :D
-	#oki
+	class Meta:
+	    verbose_name = "Drop"
 	
