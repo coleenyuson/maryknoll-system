@@ -23,7 +23,7 @@ button{
 nav{
 	padding-bottom:0 !important;
 }
-nav .active-menu{
+nav .active{
 	padding-bottom: 10px !important;
 }
 /* index.html */
@@ -101,7 +101,7 @@ nav .active-menu{
 
 
 /* dashboard template*/
-.active-menu{
+.active{
 	border-bottom: 3px solid #4688F1;
     color: #4688F1;
     padding-bottom:1px;
@@ -110,20 +110,34 @@ nav .active-menu{
 .btn-logout{
 	margin-left: 20px;
 	background: #4285F4;
-	/* Circle */
-	/*border-radius: 60px;*/
-	width: 100px;
+	border-radius: 60px;
+	width: 120px;
 	height: 40px;
 	color: #FFFFFF;
 	transition: all 0.5s;
 	padding: 10px;
-	/* Rectangle: */
-	background: #4285F4;
-	border-radius: 10px;
-    transition: all 0.3s ease 0s;
 }
-.btn-logout:hover {
-  background: #CF4647;
+.btn-logout span {
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+.btn-logout span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.btn-logout:hover span {
+  padding-right: 25px;
+}
+
+.btn-logout:hover span:after {
+  opacity: 1;
+  right: 0;
 }
 .bg-nav{
 	background-color: #FFFFFF !important;
@@ -253,7 +267,4 @@ nav .active-menu{
 }
 .date-padding-reset{
 	padding-left: 0 !important;
-}
-.pagination{
-	justify-content: center;
 }

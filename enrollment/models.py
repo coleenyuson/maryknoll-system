@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.core.urlresolvers import reverse
 #import registration
 #import administrative
 
@@ -85,9 +84,6 @@ class Sections(models.Model):
         verbose_name = "Section"
     def __str__(self):
         return self.section_name
-    
-    def get_absolute_url(self):
-		return reverse("section-edit", kwargs={"id": self.id})
     '''Add section 'capacity' and 'grade level'... Choose Grade Level -> Choose name -> Choose Status -> Add capacity'''
     
 
@@ -156,7 +152,4 @@ class SHS_Subjects(models.Model):
         String for representing the Model object.
         """
         return self.s_subjectName
-    
-    def get_absolute_url(self):
-		return reverse("shsSubj-edit", kwargs={"id": self.id})
         
