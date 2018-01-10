@@ -1,0 +1,11 @@
+<h1>Fees and Accounts</h1>
+<ul>
+    {% for subj in shs_subs %}
+    <li>{{ subj.SHS_subjectName }}  :
+    <a href="{{ subj.get_absolute_url}}">{{ subj.SHS_desc }}</a>
+    <a href="#">delete</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'shsSubj-create' %}">New</a>

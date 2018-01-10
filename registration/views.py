@@ -7,6 +7,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from models import *
 
+from django.views.generic import ListView, TemplateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.core.urlresolvers import reverse_lazy
+
+from enrollment.models import SHS_Subjects
+
 @login_required
 def index(request):
     pass

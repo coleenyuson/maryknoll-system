@@ -1,0 +1,11 @@
+<h1>Sections</h1>
+<ul>
+    {% for s in section %}
+    <li>{{ s.status }}  :
+    <a href="{{ s.get_absolute_url}}">{{ s.section_name }}</a>
+    <a href="#">delete</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'section-create' %}">New</a>

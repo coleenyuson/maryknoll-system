@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.urlresolvers import reverse
 #from registration.models import Student
 #from enrollment.models import School_Year
 
@@ -18,6 +19,10 @@ class Employee(models.Model):
 		
 	def __str__(self):
 		return self.first_name
+		
+	def get_absolute_url(self):
+		return reverse("emp-edit", kwargs={"id": self.employee_ID})
+        
 '''Add choices to Employee_Type(NOT INT): Cashier, Admin, etc. also, add departments'''
 	
 class Promissory(models.Model):
