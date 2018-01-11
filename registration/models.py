@@ -35,7 +35,7 @@ class Student(models.Model):
     f_middlename = models.CharField(max_length=200)
     f_lastname = models.CharField(max_length=200)
     f_occcupation = models.CharField(max_length=200)
-    '''add guardian attribute'''
+    guardian = models.CharField(max_length=200)
     '''Model Configuration'''
     class Meta:
         ordering = ["student_ID"]

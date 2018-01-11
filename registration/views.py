@@ -28,3 +28,8 @@ class StudentList(LoginRequiredMixin,generic.ListView):
     
     #Template name of this view
     template_name = 'registrar/student-list.html'
+    
+class AddStudent(generic.CreateView):
+    model = Student
+    fields = []
+    
