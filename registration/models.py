@@ -52,30 +52,27 @@ class Student(models.Model):
 
 class Enrollment(models.Model):
 	enrollment_ID = models.AutoField(primary_key=True)
-	curriculum = models.ForeignKey('enrollment.Curriculum', on_delete=models.CASCADE, default=0)
+	section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
 	student_ID = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
 	scholarship_ID = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
-	student_type = models.IntegerField()
+	'''Type enum '''
+	TYPE_CHOICES = (
+        ('Paid'),
+        ('Incomplete'),
+        ('No Payment Yet'),)
+    
+        student_type = models.CharField(max_length=1,
+            choices=TYPE_CHOICES,
+            blank=False,
+            default='n'
+            )
+	
 	
 	class Meta:
 	    verbose_name = "Enrollment"
 	    
 	def __str__(self):
 	    return "%s enrolled under %s" % (self.student_ID, self.curriculum)
-	'''StudentType(INT?) purpose?'''
-	
-class Enrollment_Details(models.Model):
-	enrollmentDetails_ID = models.AutoField(primary_key=True)
-	enrollment_ID = models.ForeignKey(Enrollment, on_delete=models.CASCADE, default=0)
-	offering_ID = models.ForeignKey('enrollment.Offering', on_delete=models.CASCADE, default=0)
-	
-	class Meta:
-	    verbose_name = "Enrollment Detail"
-	    
-	def __str__(self):
-	    return str(self.enrollment_ID)
-	 
-
 
 
 class Drop(models.Model):

@@ -6,9 +6,36 @@ from django.db import models
 
 # Create your models here.
 
+ACTIVE = 'ACTIVE'
+ON_LEAVE = 'ON_LEAVE'
+INACTIVE = 'INACTIVE'
+
+class TeacherDetails(models.Model):
+    teacher_ID = models.AutoField(primary_key=True)
+    employee_name = models.ForeignKey('administrative.Employee')
+    units = models.IntegerField()
+    #teacher status
+    STATUS_CHOICES = (
+        (ACTIVE, 'Active'),
+        (ON_LEAVE, 'On Leave'),
+        (INACTIVE, 'Inactive'),
+    )
+    teacher_status = models.CharField(max_length=1,
+        choices=STATUS_CHOICES,
+        blank=False,
+        default=INACTIVE
+        )
+        
+    class Meta:
+        verbose_name = "Details of Teacher"
+        
+    def __str__(self):
+        return str(self.employee_name)
+
+
+
 class School_Year(models.Model):
 	year_name = models.CharField(max_length=200)
-	#status = models.CharField(max_length=50)
 	date_start = models.DateField(auto_now = True)
 	date_end = models.DateField(null=True, blank=True)
 	
@@ -17,6 +44,9 @@ class School_Year(models.Model):
 	    
 	def __str__(self):
 	    return self.year_name
+
+class YearLevel(models.Model):
+    grade_level = models.CharField(max_length=200)
 
 class Scholarship(models.Model):
 	scholarship_name = models.CharField(max_length=200)
@@ -65,64 +95,55 @@ class Subjects(models.Model):
 	    
 	def __str__(self):
 	    return self.subject_name
-	    
-class Sections(models.Model):
-    section_ID = models.AutoField(primary_key=True)
-    section_name = models.CharField(max_length=50)
-    #Section status
-    STATUS_CHOICES = (
-        ('a', 'Active'),
-        ('n', 'Inactive'),
-    )
-    section_status = models.CharField(max_length=1,
-        choices=STATUS_CHOICES,
-        blank=False,
-        default='n'
-        )
-        
-    class Meta:
-        verbose_name = "Section"
-    def __str__(self):
-        return self.section_name
-    '''Add section 'capacity' and 'grade level'... Choose Grade Level -> Choose name -> Choose Status -> Add capacity'''
-    
-
-class TeacherDetails(models.Model):
-    teacher_ID = models.AutoField(primary_key=True)
-    employee_name = models.ForeignKey('administrative.Employee')
-    units = models.IntegerField()
-    #teacher status
-    STATUS_CHOICES = (
-        ('a', 'Active'),
-        ('n', 'Inactive'),
-    )
-    section_status = models.CharField(max_length=1,
-        choices=STATUS_CHOICES,
-        blank=False,
-        default='n'
-        )
-        
-    advised_section = models.ForeignKey(Sections, on_delete = models.SET_NULL, null = True)
-        
-    class Meta:
-        verbose_name = "Details of Teacher"
-        
-    def __str__(self):
-        return str(self.employee_name)
 
 class Offering(models.Model):
 	offering_ID = models.AutoField(primary_key=True)
-	subject_ID = models.ForeignKey(Subjects, on_delete=models.CASCADE, default=0)
+	subject = models.ForeignKey(Subjects, on_delete=models.CASCADE, default=0)
 	teacher = models.ForeignKey(TeacherDetails, on_delete=models.CASCADE, default=0)
-	schoolYr_ID = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
+	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
 	
 	class Meta:
 	    verbose_name = "Offered Subject"
 	def __str__(self):
 	    return "%s - - - %s" % (self.subject_ID, self.offering_ID)
 	    
-''' Add Scheduling, Time Period attributes, SCHEDULING MODULE IMPLEMENTATION'''
+''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
 	
+ 
+class Sections(models.Model):
+    section_ID = models.AutoField(primary_key=True)
+    year_level = models.ForeignKey(YearLevel, on_delete = models.CASCADE)
+    section_name = models.CharField(max_length=50)
+    section_capacity = models.IntegerField()
+    adviser = models.ForeignKey(TeacherDetails, on_delete = models.CASCADE)
+    
+    #Section status
+    STATUS_CHOICES = (
+        (ACTIVE, 'Active'),
+        (INACTIVE, 'Inactive'),
+    )
+    section_status = models.CharField(max_length=1,
+        choices=STATUS_CHOICES,
+        blank=False,
+        default=INACTIVE
+        )
+        
+    class Meta:
+        verbose_name = "Section"
+    def __str__(self):
+        return self.section_name
+
+class Section_Details(models.Model):
+	sectionDetails_ID = models.AutoField(primary_key=True)
+	section_ID = models.ForeignKey(Sections, on_delete=models.CASCADE, default=0)
+	offering_ID = models.ForeignKey(Offering, on_delete=models.CASCADE, default=0)
+	
+	class Meta:
+	    verbose_name = "Enrollment Detail"
+	    
+	def __str__(self):
+	    return str(self.enrollment_ID)
+	    
 class Prerequisites(models.Model):
     curriculum = models.ForeignKey(Curriculum, on_delete = models.CASCADE)
     
@@ -148,8 +169,16 @@ class SHS_Subjects(models.Model):
         verbose_name = "Senior High Subject"
         
     def __str__(self):
-        """
-        String for representing the Model object.
-        """
         return self.s_subjectName
         
+        
+class SHS_Offering(models.Model):
+    offering_ID = models.AutoField(primary_key=True)
+    subject = models.ForeignKey(SHS_Subjects, on_delete=models.CASCADE, default=0)
+    teacher = models.ForeignKey(TeacherDetails, on_delete=models.CASCADE, default=0)
+    school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
+	
+    class Meta:
+        verbose_name = "Offered Subjects for SHS"
+    def __str__(self):
+        return "%s - - - %s" % (self.subject, self.offering_ID)
