@@ -12,7 +12,7 @@ INACTIVE = 'INACTIVE'
 
 class TeacherDetails(models.Model):
     teacher_ID = models.AutoField(primary_key=True)
-    employee_name = models.ForeignKey('administrative.Employee')
+    employee_name = models.ForeignKey('administrative.Employee', on_delete= models.SET_NULL, null = True)
     units = models.IntegerField()
     #teacher status
     STATUS_CHOICES = (

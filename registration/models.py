@@ -50,29 +50,29 @@ class Student(models.Model):
 
 ''' NON-TAIL ENTITIES '''
 
+PAID = 'PAID'
+INCOMPLETE = 'INCOMPLETE'
+NO_PAY = 'NOT PAID'
+
 class Enrollment(models.Model):
-	enrollment_ID = models.AutoField(primary_key=True)
-	section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
-	student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
-	scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
-	'''Type enum '''
-	TYPE_CHOICES = (
-        ('Paid'),
-        ('Incomplete'),
-        ('No Payment Yet'),)
+    enrollment_ID = models.AutoField(primary_key=True)
+    section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
+    scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
+    '''Type enum '''
+    TYPE_CHOICES = (
+        (PAID,'Paid'),
+        (INCOMPLETE,'Incomplete'),
+        (NO_PAY,'No Payment Yet'),)
     
-        student_type = models.CharField(max_length=1,
-            choices=TYPE_CHOICES,
-            blank=False,
-            default='n'
-            )
-	
-	
-	class Meta:
-	    verbose_name = "Enrollment"
-	    
-	def __str__(self):
-	    return "%s enrolled under %s" % (self.student_ID, self.curriculum)
+    student_type = models.CharField(max_length=1,choices=TYPE_CHOICES,blank=False,default='n')
+    
+    
+    class Meta:
+        verbose_name = "Enrollment"
+        
+    def __str__(self):
+        return "%s enrolled under %s" % (self.student_ID, self.curriculum)
 
 
 class Drop(models.Model):
