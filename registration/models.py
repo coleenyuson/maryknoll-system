@@ -53,8 +53,8 @@ class Student(models.Model):
 class Enrollment(models.Model):
 	enrollment_ID = models.AutoField(primary_key=True)
 	section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
-	student_ID = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
-	scholarship_ID = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
+	student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
+	scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
 	'''Type enum '''
 	TYPE_CHOICES = (
         ('Paid'),

@@ -50,51 +50,49 @@ class YearLevel(models.Model):
 
 class Scholarship(models.Model):
 	scholarship_name = models.CharField(max_length=200)
-	amount = models.IntegerField()
 	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
-	validity =  models.BooleanField(default = False)
-	scholar_type = models.IntegerField()
 	
 	class Meta:
 	    verbose_name = "Scholarship"
 	    
 	def __str__(self):
 	    return self.scholarship_name
-	
-	'''Scholar Type(INT?) and Scholar Name? What's the difference '''
-	
-class SHS_Category(models.Model):
-	category_name = models.CharField(max_length=200)
-	type = models.IntegerField()
-	status = models.CharField(max_length=50)
-	
-	class Meta:
-	    verbose_name = "Senior High Category"
-	
+	''' SCHOLARSHIP must only contain scholarship details, not the price/amount it discounts. The money part will be handled in the cashier module'''
+
 class Curriculum(models.Model):
     curriculum_ID = models.AutoField(primary_key=True)
-    curriculum_year = models.IntegerField()
-    school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
+    year_level = models.ForeignKey(YearLevel, on_delete=models.CASCADE)
+    school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE)
     
     class Meta:
         verbose_name = "Curriculum"
         
     def __str__(self):
-        return str(self.school_year)
-    '''Fix this:
-        suggestions - Add Curriculum name, change curriculum year to DateField.'''
+        return "%s - %s" % (self.year_level, self.school_year)
 
 class Subjects(models.Model):
-	subject_ID = models.AutoField(primary_key=True)
-	subject_name = models.CharField(max_length=200)
-	status = models.CharField(max_length=50)
-	curriculum = models.ForeignKey(Curriculum, on_delete = models.CASCADE)
-	
-	class Meta:
-	    verbose_name = "Subject"
-	    
-	def __str__(self):
-	    return self.subject_name
+    subject_ID = models.AutoField(primary_key=True)
+    subject_name = models.CharField(max_length=200)
+    subject_description = models.CharField(max_length=200)
+    #Subject status
+    STATUS_CHOICES = (
+        (ACTIVE, 'Active'),
+        (ON_LEAVE, 'On Leave'),
+        (INACTIVE, 'Inactive'),
+    )
+    subject_status = models.CharField(max_length=1,
+        choices=STATUS_CHOICES,
+        blank=False,
+        default=INACTIVE
+        )
+        
+    curriculum = models.ForeignKey(Curriculum, on_delete = models.SET_NULL, null = True)
+    
+    class Meta:
+        verbose_name = "Subject"
+        
+    def __str__(self):
+        return self.subject_name
 
 class Offering(models.Model):
 	offering_ID = models.AutoField(primary_key=True)
@@ -103,14 +101,14 @@ class Offering(models.Model):
 	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
 	
 	class Meta:
-	    verbose_name = "Offered Subject"
+	    verbose_name = "Offered Subjects"
 	def __str__(self):
 	    return "%s - - - %s" % (self.subject_ID, self.offering_ID)
 	    
 ''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
 	
  
-class Sections(models.Model):
+class Section(models.Model):
     section_ID = models.AutoField(primary_key=True)
     year_level = models.ForeignKey(YearLevel, on_delete = models.CASCADE)
     section_name = models.CharField(max_length=50)
@@ -135,7 +133,7 @@ class Sections(models.Model):
 
 class Section_Details(models.Model):
 	sectionDetails_ID = models.AutoField(primary_key=True)
-	section_ID = models.ForeignKey(Sections, on_delete=models.CASCADE, default=0)
+	section_ID = models.ForeignKey(Section, on_delete=models.CASCADE, default=0)
 	offering_ID = models.ForeignKey(Offering, on_delete=models.CASCADE, default=0)
 	
 	class Meta:
@@ -150,19 +148,27 @@ class Prerequisites(models.Model):
     class Meta:
         verbose_name = "Prerequisite"
     
-  
+'''NOTE TO SELF:
+        Finalizing the enrollment module, very unclear with the other models.
+        Check the attributes of each models, first few models are done.
+        Dependent models are being a bitch, learn how to access dependent models through the root model. This can be done in the views.
+        Re-do your commit, the previous commit is not final. Some existing models are useless, and some attributes (specially TYPES, STATUSES, and INT type attributes) ARE a PaIN in ThE ASSSSSSSS    
+        also, dont forget about your thesis. dont die. toodles
+'''
 class SHS_Subjects(models.Model):
     s_subjectName  = models.CharField(max_length=200)
+    s_subjectDesc = models.CharField(max_length=200)
     s_desc = models.CharField(max_length=100)
+    s_curriculum = models.ForeignKey(Curriculum, on_delete = models.CASCADE)
     #SHS track status
     STATUS_CHOICES = (
-        ('a', 'Active'),
-        ('n', 'Inactive'),
+        (ACTIVE, 'Active'),
+        (INACTIVE, 'Inactive'),
     )
     s_status = models.CharField(max_length=1,
         choices=STATUS_CHOICES,
         blank=False,
-        default='n'
+        default=INACTIVE
         )
         
     class Meta:
