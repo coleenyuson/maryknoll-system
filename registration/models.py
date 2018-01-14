@@ -51,10 +51,10 @@ class Student(models.Model):
 ''' NON-TAIL ENTITIES '''
 #Equivalent to student registration form (part2)
 
-PAID = 'PAID'
-INCOMPLETE = 'INCOMPLETE'
-NO_PAY = 'NOT PAID'
-DROPPED = 'DROPPED'
+PAID = 'p'
+INCOMPLETE = 'i'
+NO_PAY = 'n'
+DROPPED = 'd'
 
 class Enrollment(models.Model):
     enrollment_ID = models.AutoField(primary_key=True)
@@ -69,14 +69,14 @@ class Enrollment(models.Model):
         (DROPPED, 'Dropped out'),
         )
     
-    student_type = models.CharField(max_length=1,choices=TYPE_CHOICES,blank=False,default='n')
+    student_type = models.CharField(max_length=1,choices=TYPE_CHOICES,blank=False,default=NO_PAY)
     
     
     class Meta:
         verbose_name = "Enrollment"
         
     def __str__(self):
-        return "%s enrolled under %s" % (self.student_ID, self.curriculum)
+        return "%s enrolled under %s" % (self.student, self.section)
 
 
 class Drop(models.Model):

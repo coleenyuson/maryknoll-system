@@ -6,12 +6,43 @@ from django.db import models
 
 # Create your models here.
 
+CASHIER = 'c'
+REGISTRAR = 'r'
+ACADEMIC_HEAD = 'h'
+OTHERS = 't'
+
+ACTIVE = 'a'
+INACTIVE = 'i'
+ON_LEAVE = 'o'
+
 class Employee(models.Model):
 	employee_ID = models.AutoField(primary_key=True)
 	first_name = models.CharField(max_length=200)
 	last_name = models.CharField(max_length=200)
-	emp_type = models.IntegerField()
-	status = models.CharField(max_length=50)
+	
+	TYPE_CHOICES = (
+	    (CASHIER, 'Cashier'),
+	    (REGISTRAR, 'Registrar'),
+	    (ACADEMIC_HEAD, 'Academic Head'),
+	    (OTHERS, 'Others'),
+	)
+	emp_type = models.CharField(max_length=1,
+	    choices=TYPE_CHOICES,
+	    blank=False,
+	    default=OTHERS
+	    )
+
+	STATUS_CHOICES = (
+	    (ACTIVE, 'Active'),
+	    (ON_LEAVE, 'On Leave'),
+	    (INACTIVE, 'Inactive'),
+	)
+	emp_status = models.CharField(max_length=1,
+	    choices=STATUS_CHOICES,
+	    blank=False,
+	    default=INACTIVE
+	    )
+        
 	
 	class Meta:
 		verbose_name = "Employee"
@@ -19,7 +50,6 @@ class Employee(models.Model):
 	def __str__(self):
 		return self.first_name
 	
-'''Add choices to Employee_Type(NOT INT): Cashier, Admin, etc. also, add departments, add choices to status'''
 	
 class Promissory(models.Model):
 	promissory_ID = models.AutoField(primary_key=True)

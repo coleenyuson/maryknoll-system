@@ -14,18 +14,6 @@ class TeacherDetails(models.Model):
     teacher_ID = models.AutoField(primary_key=True)
     employee_name = models.ForeignKey('administrative.Employee', on_delete= models.SET_NULL, null = True)
     units = models.IntegerField()
-    #teacher status
-    STATUS_CHOICES = (
-        (ACTIVE, 'Active'),
-        (ON_LEAVE, 'On Leave'),
-        (INACTIVE, 'Inactive'),
-    )
-    teacher_status = models.CharField(max_length=1,
-        choices=STATUS_CHOICES,
-        blank=False,
-        default=INACTIVE
-        )
-        
     class Meta:
         verbose_name = "Details of Teacher"
         
@@ -104,9 +92,9 @@ class Offering(models.Model):
 	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
 	
 	class Meta:
-	    verbose_name = "Offered Subjects"
+	    verbose_name = "Offered Subject"
 	def __str__(self):
-	    return "%s - - - %s" % (self.subject_ID, self.offering_ID)
+	    return "%s - - - %s" % (self.subject, self.subject.subject_description)
 	    
 ''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
 	
@@ -140,10 +128,10 @@ class Section_Details(models.Model):
 	offering_ID = models.ForeignKey(Offering, on_delete=models.CASCADE, default=0)
 	
 	class Meta:
-	    verbose_name = "Enrollment Detail"
+	    verbose_name = "Section Detail"
 	    
 	def __str__(self):
-	    return str(self.enrollment_ID)
+	    return "%s - %s" % (self.section_ID, self.offering_ID)
     
 '''NOTE TO SELF:
         Finalizing the enrollment module, very unclear with the other models.
