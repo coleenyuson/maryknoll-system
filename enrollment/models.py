@@ -56,7 +56,7 @@ class Scholarship(models.Model):
 	    verbose_name = "Scholarship"
 	    
 	def __str__(self):
-	    return self.scholarship_name
+	    return "%s for %s" % (self.scholarship_name, self.school_year)
 	''' SCHOLARSHIP must only contain scholarship details, not the price/amount it discounts. The money part will be handled in the cashier module'''
 
 class Curriculum(models.Model):
@@ -141,12 +141,6 @@ class Section_Details(models.Model):
 	    
 	def __str__(self):
 	    return str(self.enrollment_ID)
-	    
-class Prerequisites(models.Model):
-    curriculum = models.ForeignKey(Curriculum, on_delete = models.CASCADE)
-    
-    class Meta:
-        verbose_name = "Prerequisite"
     
 '''NOTE TO SELF:
         Finalizing the enrollment module, very unclear with the other models.

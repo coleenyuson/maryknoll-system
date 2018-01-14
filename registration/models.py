@@ -54,6 +54,7 @@ class Student(models.Model):
 PAID = 'PAID'
 INCOMPLETE = 'INCOMPLETE'
 NO_PAY = 'NOT PAID'
+DROPPED = 'DROPPED'
 
 class Enrollment(models.Model):
     enrollment_ID = models.AutoField(primary_key=True)
@@ -64,7 +65,9 @@ class Enrollment(models.Model):
     TYPE_CHOICES = (
         (PAID,'Paid'),
         (INCOMPLETE,'Incomplete'),
-        (NO_PAY,'No Payment Yet'),)
+        (NO_PAY,'No Payment Yet'),
+        (DROPPED, 'Dropped out'),
+        )
     
     student_type = models.CharField(max_length=1,choices=TYPE_CHOICES,blank=False,default='n')
     
@@ -78,7 +81,7 @@ class Enrollment(models.Model):
 
 class Drop(models.Model):
 	drop_ID = models.AutoField(primary_key=True)
-	student_name = models.CharField(max_length=200)
+	student = models.ForeignKey(Student, on_delete = models.CASCADE)
 	drop_date = models.DateField(auto_now=True)
 	curriculum = models.ForeignKey('enrollment.Curriculum', on_delete=models.CASCADE, default=0)
 	reason = models.CharField(max_length=500)
