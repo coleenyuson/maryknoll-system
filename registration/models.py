@@ -7,7 +7,7 @@ from datetime import datetime
 
 # Create your models here.
 ''' TAIL ENTITIES '''
-
+#Equivalent to student registration form (Part 1)
 class Student(models.Model):
     student_ID = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=200)
@@ -49,30 +49,30 @@ class Student(models.Model):
         return '%s, %s - %s' % (self.student_ID, self.first_name, self.status)
 
 ''' NON-TAIL ENTITIES '''
-
+#Equivalent to student registration form (part2)
 class Enrollment(models.Model):
-	enrollment_ID = models.AutoField(primary_key=True)
-	section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
-	student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
-	scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
-	'''Type enum '''
-	TYPE_CHOICES = (
+    enrollment_ID = models.AutoField(primary_key=True)
+    section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
+    scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
+    '''Type enum '''
+    TYPE_CHOICES = (
         ('Paid'),
         ('Incomplete'),
         ('No Payment Yet'),)
     
-        student_type = models.CharField(max_length=1,
-            choices=TYPE_CHOICES,
-            blank=False,
-            default='n'
-            )
-	
-	
-	class Meta:
-	    verbose_name = "Enrollment"
-	    
-	def __str__(self):
-	    return "%s enrolled under %s" % (self.student_ID, self.curriculum)
+    student_type = models.CharField(max_length=1,
+    choices=TYPE_CHOICES,
+    blank=False,
+    default='n'
+    )
+    
+    
+    class Meta:
+        verbose_name = "Enrollment"
+        
+    def __str__(self):
+        return "%s enrolled under %s" % (self.student_ID, self.curriculum)
 
 
 class Drop(models.Model):
