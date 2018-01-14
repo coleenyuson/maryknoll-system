@@ -18,7 +18,8 @@ class Employee(models.Model):
 		
 	def __str__(self):
 		return self.first_name
-'''Add choices to Employee_Type(NOT INT): Cashier, Admin, etc. also, add departments'''
+	
+'''Add choices to Employee_Type(NOT INT): Cashier, Admin, etc. also, add departments, add choices to status'''
 	
 class Promissory(models.Model):
 	promissory_ID = models.AutoField(primary_key=True)

@@ -6,9 +6,9 @@ from django.db import models
 
 # Create your models here.
 
-ACTIVE = 'ACTIVE'
-ON_LEAVE = 'ON_LEAVE'
-INACTIVE = 'INACTIVE'
+ACTIVE = 'a'
+ON_LEAVE = 'o'
+INACTIVE = 'i'
 
 class TeacherDetails(models.Model):
     teacher_ID = models.AutoField(primary_key=True)
@@ -47,6 +47,9 @@ class School_Year(models.Model):
 
 class YearLevel(models.Model):
     grade_level = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.grade_level
 
 class Scholarship(models.Model):
 	scholarship_name = models.CharField(max_length=200)
