@@ -50,6 +50,11 @@ class Student(models.Model):
 
 ''' NON-TAIL ENTITIES '''
 #Equivalent to student registration form (part2)
+
+PAID = 'PAID'
+INCOMPLETE = 'INCOMPLETE'
+NO_PAY = 'NOT PAID'
+
 class Enrollment(models.Model):
     enrollment_ID = models.AutoField(primary_key=True)
     section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
@@ -57,15 +62,11 @@ class Enrollment(models.Model):
     scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
     '''Type enum '''
     TYPE_CHOICES = (
-        ('Paid'),
-        ('Incomplete'),
-        ('No Payment Yet'),)
+        (PAID,'Paid'),
+        (INCOMPLETE,'Incomplete'),
+        (NO_PAY,'No Payment Yet'),)
     
-    student_type = models.CharField(max_length=1,
-    choices=TYPE_CHOICES,
-    blank=False,
-    default='n'
-    )
+    student_type = models.CharField(max_length=1,choices=TYPE_CHOICES,blank=False,default='n')
     
     
     class Meta:
