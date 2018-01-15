@@ -2,8 +2,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 from datetime import datetime
-#from administrative.models import *
-#from enrollment.models import Curriculum, Offering, Scholarship
 
 # Create your models here.
 ''' TAIL ENTITIES '''

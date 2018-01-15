@@ -133,13 +133,6 @@ class Section_Details(models.Model):
 	def __str__(self):
 	    return "%s - %s" % (self.section_ID, self.offering_ID)
     
-'''NOTE TO SELF:
-        Finalizing the enrollment module, very unclear with the other models.
-        Check the attributes of each models, first few models are done.
-        Dependent models are being a bitch, learn how to access dependent models through the root model. This can be done in the views.
-        Re-do your commit, the previous commit is not final. Some existing models are useless, and some attributes (specially TYPES, STATUSES, and INT type attributes) ARE a PaIN in ThE ASSSSSSSS    
-        also, dont forget about your thesis. dont die. toodles
-'''
 class SHS_Subjects(models.Model):
     s_subjectName  = models.CharField(max_length=200)
     s_subjectDesc = models.CharField(max_length=200)
