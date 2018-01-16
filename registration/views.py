@@ -12,9 +12,9 @@ def index(request):
     pass
     #return render(request,'/registration/index.html',)
     
-class StudentList(LoginRequiredMixin,generic.ListView, generic.CreateView):
+class StudentList(LoginRequiredMixin,generic.ListView):
     #Create View and forms
-    fields = ['first_name', 'last_name', 'status', 'birthplace','birthdate','home_addr'
+    fields = ['first_name', 'last_name', 'status', 'birthplace','birthdate','home_addr',
             'postal_addr', 'm_firstname','m_middlename','m_lastname','m_occcupation',
             'f_firstname','f_middlename','f_lastname','f_occcupation','guardian']
     #Authentication

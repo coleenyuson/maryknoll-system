@@ -41,21 +41,22 @@
                           </button>
                 </div>
                 <div class="modal-body">
-                  <form>
+                  <form method = "post">
+                    {%csrf_token%}
                     <div class="row">
                       <div class="col">
                         <h3 class="link" style="margin-top: 10px;">Student Information</h3>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-4">
+                      <!--<div class="col-md-4">
                         <label>Student ID:</label>
                         <p class="form-control-static">0009</p>
-                        <!--incremental-->
+                        <!--incremental
                       </div>
                       <div class="col-md-4">
                         <label>Student level:</label><br/>
-                        <!-- unsure with the term pa-->
+                        <!-- unsure with the term pa
                         <select class="custom-select btn-block" required>
                                   <option selected>Choose student type...</option>
                                   <option value="1">Grade School</option>
@@ -63,22 +64,22 @@
                                   <option value="3">Senior High School</option>
                                   <option value="3">Other</option>
                                 </select>
-                      </div>
+                      </div>-->
                     </div>
-                    <div class="row">
+                    <!--<div class="row">
                       <div class="col-md-10">
                         <label>Student Profile Picture:</label><br>
                         <label class="custom-file profile-picture">
                                 <input type="file" id="file" class="custom-file-input">
                                 <span class="custom-file-control"></span>
                                 </label>
-                      </div>
+                      </div>-->
 
                     </div>
                     <div class="row">
                       <div class="col-md-4">
                         <label>First name:</label>
-                        <input type="text" class="form-control" required>
+                        {{ form.first_name }}
                       </div>
                       <div class="col-md-4">
                         <label>Middle name:</label>
