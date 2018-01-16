@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.core.urlresolvers import reverse
 from django.db import models
 #import registration
 
@@ -15,6 +15,9 @@ class FeesAccounts(models.Model):
         
     def __str__(self):
         return self.fa_name
+        
+    def get_absolute_url(self):
+        return reverse("fa-edit", kwargs={"id": self.id})
     
 '''NON-TAIL ENTITIES'''
 

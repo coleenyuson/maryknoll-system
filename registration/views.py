@@ -12,7 +12,9 @@ def index(request):
     pass
     #return render(request,'/registration/index.html',)
     
-class StudentList(LoginRequiredMixin,generic.ListView):
+    
+
+class StudentList(LoginRequiredMixin,generic.CreateView):
     #Create View and forms
     fields = ['first_name', 'last_name', 'status', 'birthplace','birthdate','home_addr',
             'postal_addr', 'm_firstname','m_middlename','m_lastname','m_occcupation',
@@ -23,17 +25,23 @@ class StudentList(LoginRequiredMixin,generic.ListView):
     
     #Model used by this list view
     model = Student
-    
     #PAGINATION, JUST ADD THIS VARIABLE AND ITS VALUE (check out the updated base_generic.html too!)
     #paginate_by = 5
     
     #Context name, used in the template handlebars
-    context_object_name = 'student_list'
+    #context_object_name = 'student_list'
     
     #Template name of this view
     template_name = 'registrar/student-list.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(StudentList, self).get_context_data(**kwargs)
+        context["student_list"] = self.model.objects.all()
+        return context
     
 class AddStudent(generic.CreateView):
     model = Student
     fields = []
     
+def deets(request):
+    return render(request, 'registrar/student-profile.html')

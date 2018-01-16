@@ -105,7 +105,7 @@ class Section(models.Model):
     section_name = models.CharField(max_length=50)
     section_capacity = models.IntegerField()
     adviser = models.ForeignKey(TeacherDetails, on_delete = models.CASCADE)
-    
+    curriculum = models.ForeignKey(Curriculum, on_delete = models.SET_NULL, null = True)
     #Section status
     STATUS_CHOICES = (
         (ACTIVE, 'Active'),

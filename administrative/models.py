@@ -50,17 +50,32 @@ class Employee(models.Model):
 	def __str__(self):
 		return self.first_name
 	
-	
+ON_HOLD = "h"
+APPROVED = "p"
+DECLINED = "d"
+
 class Promissory(models.Model):
 	promissory_ID = models.AutoField(primary_key=True)
-	promisorry_name = models.CharField(max_length=200)
+	promisorry_title = models.CharField(max_length=200)
 	reason = models.CharField(max_length=500)
-	date_filed =models.DateTimeField(null=True, blank=True)
-	date_approved = models.DateTimeField(null=True, blank=True)
-	deadline = models.DateTimeField(null=True, blank=True)
+	date_filed = models.DateTimeField(null=True, blank=True, auto_now = True)
+	date_approved = models.DateTimeField(null=True, blank=True, auto_now = True)
+	due_of_payment = models.DateTimeField(null=True, blank=True)
 	student_ID = models.ForeignKey('registration.Student', on_delete=models.CASCADE, default=0)
 	schoolYr_ID = models.ForeignKey('enrollment.School_Year', on_delete=models.CASCADE, default=0)
-	status = models.CharField(max_length=50)
+	STATUS_CHOICES = (
+	    (ON_HOLD, 'On Hold'),
+	    (APPROVED, 'Approved'),
+	    (DECLINED, 'Declined'),
+	)
+	emp_status = models.CharField(max_length=1,
+	    choices=STATUS_CHOICES,
+	    blank=False,
+	    default=ON_HOLD
+	    )
 	
 	class Meta:
 		verbose_name = "Promissory Note"
+		
+	def __str__(self):
+		return self.promisorry_title

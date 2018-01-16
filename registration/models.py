@@ -6,19 +6,34 @@ from datetime import datetime
 # Create your models here.
 ''' TAIL ENTITIES '''
 #Equivalent to student registration form (Part 1)
+ACTIVE = 'a'
+INACTIVE = 'i'
+MALE = 'm'
+FEMALE = 'f'
+OTHERS = 'o'
 class Student(models.Model):
     student_ID = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
+    #student gender
+    GENDER_CHOICES = (
+        (MALE, 'Active'),
+        (FEMALE, 'Inactive'),
+    )
+    gender = models.CharField(max_length=1,
+        choices=GENDER_CHOICES,
+        blank=False,
+        default=OTHERS
+        )
     #student status
     STATUS_CHOICES = (
-        ('a', 'Active'),
-        ('n', 'Inactive'),
+        (ACTIVE, 'Active'),
+        (INACTIVE, 'Inactive'),
     )
     status = models.CharField(max_length=1,
         choices=STATUS_CHOICES,
         blank=False,
-        default='n'
+        default=INACTIVE
         )
     #other attributes
     birthplace = models.CharField(max_length=200)
@@ -34,6 +49,8 @@ class Student(models.Model):
     f_lastname = models.CharField(max_length=200)
     f_occcupation = models.CharField(max_length=200)
     guardian = models.CharField(max_length=200)
+    guardian_addr = models.CharField(max_length=200)
+    last_school = models.CharField(max_length=200)
     '''Model Configuration'''
     class Meta:
         ordering = ["student_ID"]
@@ -59,6 +76,7 @@ class Enrollment(models.Model):
     section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
     scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
+    date_enrolled = models.DateField(auto_now_add=True)
     '''Type enum '''
     TYPE_CHOICES = (
         (PAID,'Paid'),
@@ -80,7 +98,7 @@ class Enrollment(models.Model):
 class Drop(models.Model):
 	drop_ID = models.AutoField(primary_key=True)
 	student = models.ForeignKey(Student, on_delete = models.CASCADE)
-	drop_date = models.DateField(auto_now=True)
+	drop_date = models.DateField(auto_now_add=True)
 	curriculum = models.ForeignKey('enrollment.Curriculum', on_delete=models.CASCADE, default=0)
 	reason = models.CharField(max_length=500)
 	status = models.CharField(max_length=2)
