@@ -1,21 +1,16 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
-{%block body%} 
-
-    <!-- CONTENT -->
-    <div class="container-fluid bg-content">
+{%block body%}
+<div class="container-fluid bg-content">
       <div class="content"> 
         <a href="student-registration-list.html"><h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4></a>
         <div class="card">
           <div class="card-block">
             <div class="row">
-              <div class="col">
-                <img src="https://78.media.tumblr.com/038836d16f3555c38955946556113870/tumblr_oyoxeqBH431wuzkhho1_400.png" width="150">
-              </div>
-              <div class="col-md-10">
+              <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-8">
-                    <h1 class="card-title">Millie-Bobbie Brown</h1>
+                    <h1 class="card-title">{{student.first_name}}</h1>
                   </div>
                   <div class="col-md-4 float-right">
                     <br/><!-- bwahaha tricks-->
@@ -24,20 +19,20 @@
                 </div>
                 <div class="row">
                   <div class="col-md-4">
-                    <h6 class="card-subtitle mb-2 link">Student ID: <span class="text-muted">0001</span></h6>
-                    <h6 class="card-subtitle link mb-2 ">Student Level:<span class="text-muted">Grade School</span></h6>
-                    <h6 class="card-subtitle mb-2 link">Place of Birth: <span class=" text-muted">Davao City, Philippines</span></h6>
-                    <h6 class="card-subtitle link mb-2 ">Date of Birth: <span class="text-muted">February 19, 2002</span></h6>
+                    <h6 class="card-subtitle mb-2 link">Student ID: <span class="text-muted">000{{student.student_ID}}</span></h6>
+                    <h6 class="card-subtitle link mb-2 ">Student Level:<span class="text-muted">{{enrollment.section}}</span></h6>
+                    <h6 class="card-subtitle mb-2 link">Place of Birth: <span class=" text-muted">{{student.birthplace}}</span></h6>
+                    <h6 class="card-subtitle link mb-2 ">Date of Birth: <span class="text-muted">{{student.birthdate}}</span></h6>
                   </div>
                   <div class="col-md-4">
-                    <h6 class="card-subtitle link mb-2 ">Sex: <span class="text-muted"> Female</span></h6>
-                    <h6 class="card-subtitle link mb-2 ">Home Address: <span class="text-muted"> 2595 Pearlman Avenue Sudbury, MA</span></h6>
-                    <h6 class="card-subtitle link mb-2 ">Postal Address: <span class="text-muted"> 2595 Pearlman Avenue Sudbury, MA</span></h6>
+                    <h6 class="card-subtitle link mb-2 ">Sex: <span class="text-muted"> {{student.get_gender_display}}</span></h6>
+                    <h6 class="card-subtitle link mb-2 ">Home Address: <span class="text-muted"> {{student.home_addr}}</span></h6>
+                    <h6 class="card-subtitle link mb-2 ">Postal Address: <span class="text-muted"> {{student.postal_addr}}</span></h6>
                   </div>
                   <div class="col-md-4">
-                    <h6 class="card-subtitle link mb-2 ">Father's Name: <span class="text-muted"> Han Solo</span></h6>
-                    <h6 class="card-subtitle link mb-2 ">Mother's Name: <span class="text-muted"> Leia Organa</span></h6>
-                    <h6 class="card-subtitle link mb-2 ">Guardian's Name: <span class="text-muted"> Luke Skywalker</span></h6>
+                    <h6 class="card-subtitle link mb-2 ">Father's Name: <span class="text-muted"> {{student.f_firstname}} {{student.f_middlename}} {{student.f_lastname}} </span></h6>
+                    <h6 class="card-subtitle link mb-2 ">Mother's Name: <span class="text-muted"> {{student.m_firstname}} {{student.m_middlename}} {{student.m_lastname}}</span></h6>
+                    <h6 class="card-subtitle link mb-2 ">Guardian's Name: <span class="text-muted"> {{student.guardian}}</span></h6>
                   </div>
                 </div>
               </div>
@@ -113,18 +108,18 @@
                                 </select>
                               </div>
                             </div>
-                            <h5 class="sm-headings">Scholarships</h5>
+                            <h5 class="sm-headings">Scholarships </h5>
                             <div class="row">
-                              <div class="col-md-6">
-                                <label>Scholarship Name:</label>
-                                <input type="text" class="form-control">
+                              <div class="col-md-4">
+                                <label>Scholarship Type:</label>
+                                <select class="custom-select btn-block" required>
+                                  <option selected>Choose a school year..</option>
+                                  <option value="1">ESC</option>
+                                  <option value="2">Voucher</option>
+                                  <option value="3">Others</option>
+                                  <!-- Values should be from the database ScholarshipsID(?) -->
+                                </select>
                               </div>
-                              <div class="col-md-6">
-                                <label>Scholarship Amount:</label>
-                                <input type="number" class="form-control">
-                              </div>
-                            </div>
-                            <div class="row">
                               <div class="col-md-4">
                                 <label>School Year:</label>
                                 <select class="custom-select btn-block" required>
@@ -133,15 +128,6 @@
                                   <option value="2">2016-2017</option>
                                   <option value="3">2017-2018</option>
                                   <!-- Values should be from the database SchoolYearID -->
-                                </select>
-                              </div>
-                              <div class="col-md-4">
-                                <label>Scholarship Type:</label>
-                                <select class="custom-select btn-block" required>
-                                  <option selected>Choose a scholarship..</option>
-                                  <option value="1">Academic</option>
-                                  <option value="2">Government</option>
-                                  <option value="3">Athletic</option>
                                 </select>
                               </div>
                               <div class="col-md-4">
@@ -159,6 +145,10 @@
                                   </label>
                                 </div>
                               </div>
+                            </div>
+                            <div class="row">
+                              
+                              
                             </div>
                           </form>
                         </div>
@@ -235,5 +225,5 @@
       </div>
       
     </div>
-    <!-- CONTENT -->
+    
 {%endblock%}

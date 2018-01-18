@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.core.urlresolvers import reverse
 from django.db import models
 from datetime import datetime
 
@@ -17,8 +18,8 @@ class Student(models.Model):
     last_name = models.CharField(max_length=200)
     #student gender
     GENDER_CHOICES = (
-        (MALE, 'Active'),
-        (FEMALE, 'Inactive'),
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
     )
     gender = models.CharField(max_length=1,
         choices=GENDER_CHOICES,
@@ -47,7 +48,7 @@ class Student(models.Model):
     f_firstname = models.CharField(max_length=200)
     f_middlename = models.CharField(max_length=200)
     f_lastname = models.CharField(max_length=200)
-    f_occcupation = models.CharField(max_length=200)
+    f_occupation = models.CharField(max_length=200)
     guardian = models.CharField(max_length=200)
     guardian_addr = models.CharField(max_length=200)
     last_school = models.CharField(max_length=200)
@@ -56,13 +57,17 @@ class Student(models.Model):
         ordering = ["student_ID"]
         #allow only people with permissions
         #permissions = ((),)
-        
+    def get_absolute_url(self):
+        """**important in detail-view
+        Returns the url to access a particular book instance.
+        """
+        return reverse('student-details', args=[str(self.student_ID)])
     def __str__(self):
         """
         String for representing the Model object
         """
         return '%s, %s - %s' % (self.student_ID, self.first_name, self.status)
-
+'''add middlename for student, complete name for guardian, add student_level'''
 ''' NON-TAIL ENTITIES '''
 #Equivalent to student registration form (part2)
 
