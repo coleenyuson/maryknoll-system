@@ -8,10 +8,10 @@ class StudentForms(forms.ModelForm):
                                  input_formats=('%d/%m/%Y',))
     class Meta:
         model = Student
-        fields = ('first_name', 'last_name','gender',
+        fields = ('first_name', 'last_name','middle_name','gender',
         'birthplace','birthdate','home_addr','postal_addr','m_firstname',
         'm_middlename','m_lastname','m_occcupation','f_firstname','f_middlename',
-        'f_lastname','f_occupation','guardian','guardian_addr','last_school')
+        'f_lastname','f_occupation','guardian','guardian_addr','last_school', 'student_level')
         
 class RegistrationForms(forms.ModelForm):
     class Meta:

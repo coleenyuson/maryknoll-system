@@ -52,17 +52,11 @@
                             <div class="row">
                               <div class="col-md-4">
                               <label>Student ID:</label>
-                                <p class="form-control-static">0009</p><!--incremental-->
+                                <p class="form-control-static">000{{student.student_ID|add:"1"}}</p><!--incremental-->
                               </div>
                               <div class="col-md-4">
                                 <label>Student level:</label><br/><!-- unsure with the term pa-->
-                                <select class="custom-select btn-block" required>
-                                  <option selected>Choose student type...</option>
-                                  <option value="1">Grade School</option>
-                                  <option value="2">Junior High School</option>
-                                  <option value="3">Senior High School</option>
-                                  <option value="3">Other</option>
-                                </select>
+                                {{form.student_level|add_class:"form-control"}}
                               </div>
                             </div>
                             <div class="row">
@@ -82,7 +76,7 @@
                               </div>
                               <div class="col-md-4">
                                 <label>Middle name:</label>
-                                  <input type="text" class="form-control" required>
+                                  {{form.middle_name|add_class:"form-control"}}
                               </div>
                               <div class="col-md-4">
                                 <label>Last name:</label>
@@ -218,8 +212,8 @@
             <tbody>
               {%for student in student_list%}
                     <tr>
-                        <td>000{{student.student_ID}}</td>
-                        <td>{{student.last_name}}, {{student.first_name}}</td>
+                        <td>{{student.student_ID}}</td>
+                        <td>{{student.last_name}}, {{student.first_name}}, {{student.middle_name}}</td>
                         <td>Grade 10</td>
                         <td><i class="fa fa-circle 
                         {%if student.status == "a"%}
@@ -235,19 +229,30 @@
             </tbody>
           </table>
         </div>
+{% if student_list.has_other_pages %}
         <nav aria-label="Page navigation">
           <ul class="pagination pagination-md justify-content-center">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            {% if student_list.has_previous %}
+            <li>
+              <a class="page-link" href="?page={{ student_list.previous_page_number }}" tabindex="-1">Previous</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            {%endif%}
+            {% for i in student_list.paginator.page_range %}
+              {% if student_list.number == i %}
+                <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else  %}
+                <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if student.has_next %}
             <li class="page-item">
-              <a class="page-link" href="#">Next</a>
+              <a class="page-link" href="?page={{ student_list.next_page_number }}">Next</a>
             </li>
+            {% endif %}
+{% endif %}
           </ul>
         </nav>
       </div>
     </div>
+
 {%endblock%}

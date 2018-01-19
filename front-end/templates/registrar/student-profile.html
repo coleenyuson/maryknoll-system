@@ -61,11 +61,11 @@
                             <div class="row">
                               <div class="col-md-4">
                                 <label>Student ID:</label>
-                                <p class="form-control-static">0001</p><!--incremental-->
+                                <p class="form-control-static">000{{student.student_ID}}</p><!--incremental-->
                               </div>
                               <div class="col-md-4">
                                 <label>Student Name:</label>
-                                <p class="form-control-static">Brown, Millie-Bobbie</p><!--incremental-->
+                                <p class="form-control-static">{{student.last_name}}, {{student.first_name</p><!--incremental-->
                               </div>
                             </div>
                             <div class="row">
@@ -75,7 +75,7 @@
                               </div>
                               <div class="col-md-4">
                                 <label>Student Type:</label>
-                                <p class="form-control-static">Grade School</p><!--incremental-->
+                                <p class="form-control-static">{{student.get_student_level_display}}</p><!--incremental-->
                               </div>
                             </div>
                             <div class="row">
