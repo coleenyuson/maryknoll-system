@@ -12,247 +12,86 @@
                   Category
                 </button>
                 <!-- Supply dropdown menu categories, refer to database -->
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">All categories</a>
-                  <a class="dropdown-item" href="#">Student ID</a>
-                  <a class="dropdown-item" href="#">Name</a>
-                  <a class="dropdown-item" href="#">Year/Level</a>
-                  <a class="dropdown-item" href="#">Status</a>
+                <div class="dropdown-menu" id="categories_list">
+                  <a class="dropdown-item" href="#" >All categories</a>
+                  <a class="dropdown-item" href="#" >{{student.student_ID}}</a>
+                  <a class="dropdown-item" href="#" >Name</a>
+                  <a class="dropdown-item" href="#" >Year/Level</a>
+                  <a class="dropdown-item" href="#" >Status</a>
                 </div>
               </div>
-              <input type="text" class="changeIfStatus form-control" placeholder="Search records..." aria-label="Search records...">
+              <input type="text" id="search_bar" class="changeIfStatus form-control" placeholder="Search records..." aria-label="Search records...">
               <span class="input-group-btn">
                 <button type="button" class="btn btn-primary">Search</button>
               </span>
             </div>
           </div>
           <div class="col-lg-6">
-            <button type="button" class="add-button btn btn-primary float-right" data-toggle="modal" data-target="#createStudentProfileModal">Create Student Profile</button>
+            <button type="button" class="add-button btn btn-primary float-right js-create-student" data-toggle="modal" data-target="#createStudentProfileModal">Create Student Profile</button>
               <div class="modal fade" id="createStudentProfileModal" tabindex="-1" role="dialog" aria-labelledby="#createStudentProfileModal" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                       <div class="modal-content">
-                        <div class="modal-header">
-                          <h3 class="modal-title" id="labelModal">Create Student Profile</h3>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          {% if form.errors %}
-                          <p>{{form.errors}}</p>
-                          {% endif %}
-                            {% load widget_tweaks %}
-                          <form method="POST">
-                              {% csrf_token %}
-                            <div class="row">
-                              <div class="col">
-                                <h3 class="link" style="margin-top: 10px;">Student Information</h3>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-4">
-                              <label>Student ID:</label>
-                                <p class="form-control-static">000{{student.student_ID|add:"1"}}</p><!--incremental-->
-                              </div>
-                              <div class="col-md-4">
-                                <label>Student level:</label><br/><!-- unsure with the term pa-->
-                                {{form.student_level|add_class:"form-control"}}
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-10">
-                                <label>Student Profile Picture:</label><br>
-                                <label class="custom-file profile-picture">
-                                <input type="file" id="file" class="custom-file-input">
-                                <span class="custom-file-control"></span>
-                                </label>
-                              </div>
-                              
-                            </div>
-                            <div class="row">
-                              <div class="col-md-4">
-                                <label>First name:</label>
-                                  {{form.first_name|add_class:"form-control"}}
-                              </div>
-                              <div class="col-md-4">
-                                <label>Middle name:</label>
-                                  {{form.middle_name|add_class:"form-control"}}
-                              </div>
-                              <div class="col-md-4">
-                                <label>Last name:</label>
-                                  {{form.last_name|add_class:"form-control"}}
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-6">
-                                <label>Place of Birth:</label>
-                                {{form.birthplace|add_class:"form-control"}}
-                                <!-- Kung pwede API dito ng mga places in the Philippines and outside -->
-                              </div>
-                              <div class="col-md-4">
-                                <label>Date of Birth:</label><br/>
-                                <div class="col-10">
-                                {{form.birthdate|add_class:"form-control"}}
-                              </div>
-                              </div>
-                              <div class="col-md-2">
-                                <label>Gender:</label><br/>
-                                {{form.gender|add_class:"form-control"}}
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col">
-                                <label>Home Address:</label>
-                                {{form.home_addr|add_class:"form-control"}}                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col">
-                                <label>Postal Address:</label>
-                                {{form.postal_addr|add_class:"form-control"}}
-                              </div>
-                            </div>
-                            <h5 class="sm-headings">Parental Information </h5>
-                            <div class="row">
-                              <div class="col-md-4">
-                                <label>Father's First Name:</label>
-                                {{form.f_firstname|add_class:"form-control"}}
-                              </div>
-                              <div class="col-md-4">
-                                <label>Father's Middle Name:</label>
-                                {{form.f_middlename|add_class:"form-control"}}
-                              </div>
-                              <div class="col-md-4">
-                                <label>Father's Last Name:</label>
-                                {{form.f_lastname|add_class:"form-control"}}
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-4">
-                                <label>Father's Occupation:</label>
-                                {{form.f_occupation|add_class:"form-control"}}
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-4">
-                                <label>Mother's First Name:</label>
-                                {{form.m_firstname|add_class:"form-control"}}
-                              </div>
-                              <div class="col-md-4">
-                                <label>Mother's Middle Name:</label>
-                                {{form.m_middlename|add_class:"form-control"}}
-                              </div>
-                              <div class="col-md-4">
-                                <label>Mother's Last Name:</label>
-                                {{form.m_lastname|add_class:"form-control"}}
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-4">
-                                <label>Mother's Occupation:</label>
-                                {{form.m_occcupation|add_class:"form-control"}}
-                              </div>
-                            </div>
-                            <h5 class="sm-headings">Sisters/Brothers enrolled in Maryknoll (Maximum: 5)</h5>
-                            <div class="row" id="addSibs">
-                              <div class="col-md-6">
-                                <label>Sibling's Name</label>
-                                <input type="text" class="form-control" placeholder="Last name, First name">
-                                <!-- Dito sana ba kay autocomplete from database records -->
-                              </div>
-                              <div class="col-md-6">
-                                <label>Year Graduated</label>
-                                  <input type="text" class="form-control" required>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <button type="button" onclick="add()" class="btn btn-link"><i class="fa fa-plus" aria-hidden="true"></i> Add another sibling</button>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-6">
-                                <label>Guardian's Name</label>
-                                {{form.guardian|add_class:"form-control"}}
-                              </div>
-                              <div class="col-md-6">
-                                <label>Address</label>
-                                {{form.guardian_addr|add_class:"form-control"}}
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col">
-                                <label>School Last Attended:</label>
-                                {{form.last_school|add_class:"form-control"}}
-                              </div>
-                            </div>
-                          
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
-                          <button type="submmit" class="btn btn-primary"  onclick="return confirm('Are you sure?')">Save student profile</button>  
-                          <input type="hidden" name="next" value="{{ next }}" />
-                          </form>
-                        </div>
-                          </div>
+                        
+                      </div>
                     </div>
                   </div>
             <a href="#" class="card-link margin float-right print"><i class="fa fa-print" aria-hidden="true"></i> Print Records</a>
           </div>
         </div>
-        <div class="row table-records table-responsive">
-          <table class="table table-bordered bg-nav table-hover">
-            <thead class="thead-light">
-              <tr>
-                <!-- Refer to database for headings -->
-                <th scope="col">Student ID</th>
-                <th scope="col">Full Name</th>
-                <th scope="col">Year Level</th>
-                <th scope="col">Student Status</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {%for student in student_list%}
-                    <tr>
-                        <td>{{student.student_ID}}</td>
-                        <td>{{student.last_name}}, {{student.first_name}}, {{student.middle_name}}</td>
-                        <td>Grade 10</td>
-                        <td><i class="fa fa-circle 
-                        {%if student.status == "a"%}
-                            active-status">
-                            </i> Active</td>
-                        {%else%} 
-                            inactive-status">
-                            </i> Inactive</td>
-                        {%endif%}
-                        <td class="text-center"><a href="{{ student.get_absolute_url  }}" class="btn btn-secondary btn-sm view-button">View</a></td>
-                    </tr>
-                    {%endfor%}
-            </tbody>
-          </table>
+        <div class="row table-records table-responsive" id="student_listings">
+          
         </div>
-{% if student_list.has_other_pages %}
-        <nav aria-label="Page navigation">
-          <ul class="pagination pagination-md justify-content-center">
-            {% if student_list.has_previous %}
-            <li>
-              <a class="page-link" href="?page={{ student_list.previous_page_number }}" tabindex="-1">Previous</a>
-            </li>
-            {%endif%}
-            {% for i in student_list.paginator.page_range %}
-              {% if student_list.number == i %}
-                <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-              {% else  %}
-                <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
-              {% endif %}
-            {% endfor %}
-            {% if student.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ student_list.next_page_number }}">Next</a>
-            </li>
-            {% endif %}
-{% endif %}
-          </ul>
-        </nav>
       </div>
     </div>
-
+    
+<script>
+  $(function () {
+    //Displaying the Student Table
+    $.ajax({
+            url: '{% url "student-table" %}',
+            type: 'get',
+            dataType: 'json',
+            success: function(data) {
+                $("#student_listings").html(data.html_form);
+            }
+    });
+        
+      $(".js-create-student").click(function() {
+        $.ajax({
+            url: '{% url "student-create" %}',
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function() {
+                $("#createStudentProfileModal").modal("show");
+            },
+            success: function(data) {
+                $("#createStudentProfileModal .modal-content").html(data.html_form);
+            }
+        });
+      });
+      
+      $("#createStudentProfileModal").on("submit", ".js-student-create-form", function () {
+      var form = $(this);
+      $.ajax({
+        url: '{% url "student-create" %}',
+        data: form.serialize(),
+        type: form.attr("method"),
+        dataType: 'json',
+        success: function (data) {
+          if (data.form_is_valid) {
+            location.reload()
+          }
+          else {
+            console.log(data.form_is_valid);
+            $("#createStudentProfileModal .modal-content").html(data.html_form);
+          }
+        }
+      });
+      return false;
+      });
+      
+  });
+</script>
 {%endblock%}
+
+

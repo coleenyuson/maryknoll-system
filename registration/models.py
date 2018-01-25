@@ -21,14 +21,14 @@ class Student(models.Model):
     last_name = models.CharField(max_length=200)
     middle_name = models.CharField(max_length=200)
     #student level
-    GENDER_CHOICES = (
+    LEVEL_CHOICES = (
         (GRADE, 'Grade School'),
         (JUNIOR, 'Junior High'),
         (SENIOR, 'Senior High'),
         (OTHERS, 'Others')
     )
     student_level = models.CharField(max_length=1,
-        choices=GENDER_CHOICES,
+        choices=LEVEL_CHOICES,
         blank=False,
         default=OTHERS
         )
@@ -93,7 +93,6 @@ DROPPED = 'd'
 
 class Enrollment(models.Model):
     enrollment_ID = models.AutoField(primary_key=True)
-    curriculum = models.ForeignKey('enrollment.Curriculum', on_delete=models.SET_NULL, null=True)
     section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
     scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
@@ -102,10 +101,11 @@ class Enrollment(models.Model):
     TYPE_CHOICES = (
         (PAID,'Paid'),
         (INCOMPLETE,'Incomplete'),
-        (NO_PAY,'No Payment Yet'),
+        (NO_PAY,'Payment Not Made'),
         (DROPPED, 'Dropped out'),
         )
     
+    school_year = models.ForeignKey('enrollment.School_Year', on_delete=models.SET_NULL, null=True)
     student_type = models.CharField(max_length=1,choices=TYPE_CHOICES,blank=False,default=NO_PAY)
     
     
@@ -114,8 +114,9 @@ class Enrollment(models.Model):
         
     def __str__(self):
         return "%s enrolled under %s" % (self.student, self.section)
+    #For detailed view
     def get_absolute_url(self):
-        return reverse('!!!!!', args=[str(self.enrollment_ID)])
+        return reverse('enrollment-table', args=[str(self.enrollment_ID)])
 
 
 class Drop(models.Model):

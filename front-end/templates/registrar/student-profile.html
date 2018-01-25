@@ -3,7 +3,7 @@
 {%block body%}
 <div class="container-fluid bg-content">
       <div class="content"> 
-        <a href="student-registration-list.html"><h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4></a>
+        <a href="{% url 'student-list' %}"><h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4></a>
         <div class="card">
           <div class="card-block">
             <div class="row">
@@ -20,7 +20,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <h6 class="card-subtitle mb-2 link">Student ID: <span class="text-muted">000{{student.student_ID}}</span></h6>
-                    <h6 class="card-subtitle link mb-2 ">Student Level:<span class="text-muted">{{enrollment.section}}</span></h6>
+                    <h6 class="card-subtitle link mb-2 ">Student Level:<span class="text-muted">{{student.get_student_level_display}}</span></h6>
                     <h6 class="card-subtitle mb-2 link">Place of Birth: <span class=" text-muted">{{student.birthplace}}</span></h6>
                     <h6 class="card-subtitle link mb-2 ">Date of Birth: <span class="text-muted">{{student.birthdate}}</span></h6>
                   </div>
@@ -43,187 +43,70 @@
               </div>
               <div class="col-md-4">
                 <div class="float-right">
-                  <button type="button" class="add-button btn btn-primary" data-toggle="modal" data-target="#addModal">Create Student Registration</button>
-                  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+                  <button type="button" class="add-button btn btn-primary js-create-registration" data-toggle="modal" data-target="#addModal" {%if not record%} {%elif record.student_type != 'p' %} disabled {%endif%}>Create Student Registration</button>
+                  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true" id="enrollment-modal">
                     <div class="modal-dialog modal-lg" role="document">
                       <div class="modal-content">
-                        <div class="modal-header">
-                          <h3 class="modal-title" id="labelModal">Create Student Registration</h3>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <form>
-                            <!--<div class="alert alert-success success-message" role="alert">
-                              Record successfully added!
-                            </div>-->
-                            <div class="row">
-                              <div class="col-md-4">
-                                <label>Student ID:</label>
-                                <p class="form-control-static">000{{student.student_ID}}</p><!--incremental-->
-                              </div>
-                              <div class="col-md-4">
-                                <label>Student Name:</label>
-                                <p class="form-control-static">{{student.last_name}}, {{student.first_name</p><!--incremental-->
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-4">
-                                <label>Enrollment ID:</label>
-                                <p class="form-control-static">0003</p><!--incremental-->
-                              </div>
-                              <div class="col-md-4">
-                                <label>Student Type:</label>
-                                <p class="form-control-static">{{student.get_student_level_display}}</p><!--incremental-->
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-6">
-                                <label>Curriculum Year:</label><br/>
-                                <select class="custom-select btn-block" required>
-                                  <option selected>Choose a curriculum..</option>
-                                  <option value="1">2015</option>
-                                  <option value="2">2016</option>
-                                  <option value="3">2017</option>
-                                  <!-- Values should be from the curriculum years stored in database (ps. idk if this is curriculum ng subjects nila OR curriculum year as in school year-->
-                                </select>
-                              </div>
-                              <div class="col-md-6">
-                                <label for="enrollment-date">Date Enrolled:</label>
-                                <div class="col-10 date-padding-reset">
-                                  <input class="form-control" type="date" value="2018-01-01" id="enrollment-date">
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-6">
-                                <label>Section:</label>
-                                <select class="custom-select btn-block" required>
-                                  <option selected>Choose a section...</option>
-                                  <option value="1">St. Nicholas</option>
-                                  <option value="2">St. O hai Mark</option>
-                                  <option value="3">St. Tommy Wiseau</option>
-                                  <!-- Values should be from the database SectionName -->
-                                </select>
-                              </div>
-                            </div>
-                            <h5 class="sm-headings">Scholarships </h5>
-                            <div class="row">
-                              <div class="col-md-4">
-                                <label>Scholarship Type:</label>
-                                <select class="custom-select btn-block" required>
-                                  <option selected>Choose a school year..</option>
-                                  <option value="1">ESC</option>
-                                  <option value="2">Voucher</option>
-                                  <option value="3">Others</option>
-                                  <!-- Values should be from the database ScholarshipsID(?) -->
-                                </select>
-                              </div>
-                              <div class="col-md-4">
-                                <label>School Year:</label>
-                                <select class="custom-select btn-block" required>
-                                  <option selected>Choose a school year..</option>
-                                  <option value="1">2015-2016</option>
-                                  <option value="2">2016-2017</option>
-                                  <option value="3">2017-2018</option>
-                                  <!-- Values should be from the database SchoolYearID -->
-                                </select>
-                              </div>
-                              <div class="col-md-4">
-                                <label>Scholarship Status:</label>
-                                <div class="custom-controls-stacked">
-                                  <label class="custom-control custom-radio">
-                                    <input id="radioActiveScholarship" name="radio-stacked" type="radio" class="custom-control-input">
-                                    <span class="custom-control-indicator"></span>
-                                    <span class="custom-control-description">Active</span>
-                                  </label>
-                                  <label class="custom-control custom-radio">
-                                    <input id="radioInactiveScholarship" name="radio-stacked" type="radio" class="custom-control-input">
-                                    <span class="custom-control-indicator"></span>
-                                    <span class="custom-control-description">Inactive</span>
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              
-                              
-                            </div>
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
-                          <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#confirmModal">Save Student Registration</button>
-                          <div class="modal" id="confirmModal" tabindex="-1" role="dialog">
-                              <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title">Save changes</h5>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                    </div>
-                                    <div class="modal-body">
-                                      <p>Are you sure you want to save this record?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" id="saveChanges" class="btn btn-primary" data-dismiss="alert">Save changes</button>
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                            </div>
-                          </div>
+                        
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row table-records table-responsive">
-              <table class="table table-bordered bg-nav table-hover">
-                <thead class="thead-light">
-                  <tr>
-                    <!-- Refer to database for headings -->
-                    <th scope="col">Enrollment ID</th>
-                    <th scope="col">Curriculum Year</th>
-                    <th scope="col">School Year</th>
-                    <th scope="col">Year Level</th>
-                    <th scope="col">Date Enrolled</th>
-                    <th scope="col">Enrollment Status</th>
-                    <th scope="col">Scholarship Status</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>0001</td>
-                    <td>2015</td>
-                    <td>2018-2019</td>
-                    <td>Grade 6</td>
-                    <td>01-07-18</td>
-                    <td>Enrolled</td><!-- If paid, tag as enrolled. Else, pending-->
-                    <td><i class="fa fa-circle active-status"></i> Active</td>
-                    <td class="text-center"><a href="#" class="btn btn-secondary btn-sm view-button">View</a><a href="#" class="btn btn-success btn-sm view-button">Edit</a></td>
-                  </tr>
-                  <tr>
-                    <td>0002</td>
-                    <td>2015</td>
-                    <td>2017-2018</td>
-                    <td>Grade 5</td>
-                    <td>01-07-17</td>
-                    <td>Enrolled</td>
-                    <td><i class="fa fa-circle inactive-status"></i> Inactive</td>
-                    <td class="text-center"><a href="#" class="btn btn-secondary btn-sm view-button">View</a><a href="#" class="btn btn-success btn-sm view-button">Edit</a></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="row table-records table-responsive enrollment-table">
+              
             </div>
           </div>
         </div>
       </div>
       
     </div>
-    
+<script>
+  $(function(){
+    //Displaying the Enrollment Table
+    $.ajax({
+        url: '{% url "enrollment-table" student.student_ID %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $(".enrollment-table").html(data.html_form);console.log('henlo');
+        }
+    });
+  
+    $(".js-create-registration").click(function() {
+        $.ajax({
+            url: '{% url "enrollment-create" student.student_ID%}',
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function() {
+                $("#addModal").modal("show");
+            },
+            success: function(data) {
+                $("#addModal .modal-content").html(data.html_form);
+            }
+        });
+      });
+    $("#addModal").on("submit", ".enrollment-form", function () {
+      var form = $(this);
+      console.log("habu")
+      $.ajax({
+        url: "{% url 'enrollment-create'  student.student_ID %}",
+        data: form.serialize(),
+        type: form.attr("method"),
+        dataType: 'json',
+        success: function (data) {
+          if (data.form_is_valid) {
+            location.reload()
+          }
+          else {
+            console.log(data.form_is_valid);
+            $("#addModal .modal-content").html(data.html_form);
+          }
+        }
+      });
+      return false;
+      });
+  });
+</script>
 {%endblock%}
