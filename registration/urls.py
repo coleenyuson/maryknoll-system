@@ -13,5 +13,4 @@ urlpatterns = [
         url(r'^student-list/enrollment-table/(?P<pk>\d+)$', views.tableEnrollmentList, name = 'enrollment-table'),
         url(r'^student-list/enrollment-create/(?P<pk>\d+)$', views.createEnrollment, name = 'enrollment-create'),
         #url(r'^student-list/enrollment-create/sort(?P<pk>\d+)$', views.sortSections, name = 'sort-sections'),
-        
     ]

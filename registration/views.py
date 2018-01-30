@@ -61,7 +61,7 @@ def tableStudentList(request):
         students = paginator.page(paginator.num_pages)
         
     context = {'student_list': students}
-    html_form = render_to_string('registrar/partial-student-list.html',
+    html_form = render_to_string('registrar/table-student-list.html',
         context,
         request = request,
     )
@@ -84,7 +84,7 @@ def createStudentProfile(request):
         form = StudentForms()
     print(last_student)
     context = {'form': form, 'student':last_student}
-    data['html_form'] = render_to_string('registrar/partial-student-create.html',
+    data['html_form'] = render_to_string('registrar/forms-student-create.html',
         context,
         request=request,
     )
@@ -106,7 +106,7 @@ def tableEnrollmentList(request, pk='pk'):
         enrollments = paginator.page(paginator.num_pages)
         
     context = {'enrollment_list': enrollments}
-    html_form = render_to_string('registrar/partial-student-profile.html',
+    html_form = render_to_string('registrar/table-student-profile.html',
         context,
         request = request,
     )
@@ -125,11 +125,9 @@ def createEnrollment(request, pk='pk'):
         curriculum_list = None
     if request.method == 'POST':
         form = RegistrationForms(request.POST)
-        print("henlo")
         if form.is_valid():
-            
+            print("henlo")
             post = form.save(commit=False)
-            post.student_ID=pk
             post.student_type='p'
             current_student.student_level="Active"
             form.save()
@@ -140,9 +138,9 @@ def createEnrollment(request, pk='pk'):
     else:
         print("eyo")
         form = RegistrationForms()
-    print(form.is_valid)
+    print(data["form_is_valid"])
     context = {'form': form, 'student':current_student, 'last_record':enrollment, 'curriculum_list':curriculum_list}
-    data['html_form'] = render_to_string('registrar/partial-registration-create.html',
+    data['html_form'] = render_to_string('registrar/forms-registration-create.html',
         context,
         request=request,
     )

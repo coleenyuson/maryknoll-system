@@ -89,9 +89,8 @@
       });
     $("#addModal").on("submit", ".enrollment-form", function () {
       var form = $(this);
-      console.log("habu")
       $.ajax({
-        url: "{% url 'enrollment-create'  student.student_ID %}",
+        url: form.attr("action"),
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
@@ -100,8 +99,7 @@
             location.reload()
           }
           else {
-            console.log(data.form_is_valid);
-            $("#addModal .modal-content").html(data.html_form);
+            $("#enrollment-modal .modal-content").html(data.html_form);
           }
         }
       });

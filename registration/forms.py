@@ -15,4 +15,4 @@ class RegistrationForms(forms.ModelForm):
     date_enrolled = forms.DateField(initial=datetime.date.today)
     class Meta:
         model = Enrollment
-        exclude = ('enrollment_ID','student','student_type')
+        exclude = ('enrollment_ID','student_type')
