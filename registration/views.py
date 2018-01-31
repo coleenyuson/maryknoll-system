@@ -80,7 +80,6 @@ def createStudentProfile(request):
             data['form_is_valid'] = False
     else:
         form = StudentForms()
-    print(last_student)
     context = {'form': form, 'student':last_student}
     data['html_form'] = render_to_string('registrar/forms-student-create.html',
         context,
@@ -124,19 +123,15 @@ def createEnrollment(request, pk='pk'):
     if request.method == 'POST':
         form = RegistrationForms(request.POST)
         if form.is_valid():
-            print("henlo")
             post = form.save(commit=False)
             post.student_type='n'
             current_student.student_level="Active"
             form.save()
             data['form_is_valid'] = True
         else:
-            print("eyyyo")
             data['form_is_valid'] = False
     else:
-        print("eyo")
         form = RegistrationForms()
-    print(data["form_is_valid"])
     context = {'form': form, 'student':current_student, 'last_record':enrollment, 'curriculum_list':curriculum_list}
     data['html_form'] = render_to_string('registrar/forms-registration-create.html',
         context,
@@ -145,4 +140,21 @@ def createEnrollment(request, pk='pk'):
     return JsonResponse(data)
     
 def verifyActive():
-    pass
+    student_list = Student.objects.all()
+    for curr_student in student_list:
+        print(curr_student)
+        try:
+            last_record = Enrollment.objects.get(student=curr_student.student_ID)
+        except:
+            last_record = None
+        try:
+            curr_schoolyear = School_Year.objects.latest('year_name')
+        except:
+            curr_schoolyear = None
+        if ((curr_schoolyear == None) or (last_record == None)):
+            break
+        elif (curr_schoolyear == last_record.school_year):
+            curr_student.status = "a"
+            curr_student.save()
+            
+        
