@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 @login_required
 def index(request):
-    return render(request,'index.html',)
+    return render(request,'admin-dashboard.html',)
     
 @login_required
 def settings(request):
