@@ -21,6 +21,9 @@ def index(request):
 def registrationList(request):
     return render(request, 'registrar/student-registration-list.html')
 
+def addStudentProfile(request):
+    return render(request, 'registrar/student-registration-list-add.html')
+
 @login_required
 def studentDetails(request, pk='pk'):
     student = get_object_or_404(Student, pk=pk)
@@ -42,6 +45,7 @@ def searchStudent(request):
     return JsonResponse(data)
 
 def tableStudentList(request):
+    verifyActive()
     student_list = Student.objects.all()
     #Pagination
     page = request.GET.get('page', 1)
@@ -122,7 +126,7 @@ def createEnrollment(request, pk='pk'):
         if form.is_valid():
             print("henlo")
             post = form.save(commit=False)
-            post.student_type='p'
+            post.student_type='n'
             current_student.student_level="Active"
             form.save()
             data['form_is_valid'] = True
@@ -139,3 +143,6 @@ def createEnrollment(request, pk='pk'):
         request=request,
     )
     return JsonResponse(data)
+    
+def verifyActive():
+    pass

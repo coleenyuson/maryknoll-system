@@ -9,7 +9,8 @@ from django.db import models
 CASHIER = 'c'
 REGISTRAR = 'r'
 ACADEMIC_HEAD = 'h'
-OTHERS = 't'
+TEACHER = 't'
+OTHERS = 'n'
 
 ACTIVE = 'a'
 INACTIVE = 'i'
@@ -24,6 +25,7 @@ class Employee(models.Model):
 	    (CASHIER, 'Cashier'),
 	    (REGISTRAR, 'Registrar'),
 	    (ACADEMIC_HEAD, 'Academic Head'),
+	    (TEACHER, 'Teacher'),
 	    (OTHERS, 'Others'),
 	)
 	emp_type = models.CharField(max_length=1,
