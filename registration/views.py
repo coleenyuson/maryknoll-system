@@ -28,12 +28,6 @@ def studentDetails(request, pk='pk'):
         last_record = Enrollment.objects.filter(student=student).latest('enrollment_ID')
     except:
         last_record = Enrollment.objects.filter(student=student)
-    '''form = RegistrationForms(request.POST or None)
-    if request.method == "POST":
-        post = form.save(commit=False)
-        post.date_enrolled = timezone.now()
-        student.update(student_level="Active")
-        form.save()'''
     return render(request, 'registrar/student-profile.html', {'student': student, 'record':last_record})
 
 #AJAX VIEWS --------------------------------------------------------------------
