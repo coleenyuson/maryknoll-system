@@ -10,22 +10,20 @@
 		
 	      {% load static %}
 	      <!-- css files -->
-	      <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
-	      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
-	      <link href="{% static 'css/normalize.css' %}" rel="stylesheet" type="text/css" />
-	      <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css" />
+	      <link href="{% static '01-css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+	      <link href="{% static '01-css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+	      <link href="{% static '01-css/normalize.css' %}" rel="stylesheet" type="text/css" />
+	      <link href="{% static '01-css/styles.css' %}" rel="stylesheet" type="text/css" />
 	
 	      <!-- icons -->
-	      <link rel="stylesheet" href="{% static 'fonts/simple-line-icons-master/css/simple-line-icons.css'%}">
-	      <link rel="stylesheet" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+	      <link rel="stylesheet" href="{% static '04-fonts/simple-line-icons-master/css/simple-line-icons.css'%}">
+	      <link rel="stylesheet" href="{% static '04-fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
 
 	</head>
 	<body>
-	    {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-        {% endif %}
-        
-        {% if next %}
+		{% if form.errors %}
+			<p class = "alert alert-danger" >Your username and password didn't match. Please try again.</p>
+		{% elif next %}
             {% if user.is_authenticated %}
             <p>Your account doesn't have access to this page. To proceed,
             please login with an account that has access.</p>
@@ -48,14 +46,15 @@
 						<h4 class = "placeholder"> Password: </h4>
 						{{form.password|add_class:"form-control input-login"}}
 					</div>
-					{% csrf_token %}
+					
 					<button type="submit" class="btn-login" value="login"><h3>log in</h3></button>
-					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ next }}" />
+					
 				</form>
 				
 			</div>
 		</div>
 		<h5 id="forgot-user"><a href="#"> Forgot username?</a></h5>
 	</body>
+	
 </html>
