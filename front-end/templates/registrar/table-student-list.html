@@ -13,7 +13,7 @@
               {%for student in student_list%}
                     <tr>
                         <td>{{student.student_ID}}</td>
-                        <td>{{student.last_name}}, {{student.first_name}}, {{student.middle_name}}</td>
+                        <td>{{student.last_name}}, {{student.first_name}} {{student.middle_name}}</td>
                         <td>{{student.get_student_level_display}}</td>
                         <td><i class="fa fa-circle 
                         {%if student.status == "a"%}
