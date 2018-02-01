@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
+{% block settings %}
+<li class="nav-item">
+  <a class="nav-link active-menu" href="{% url 'admin-settings' %} style="color: #4688F1;"">Settings</a>
+</li>
+{% endblock %}
 
-{%block body%}
-<div class="container-fluid bg-content">
+{% block content %}
+    <!-- CONTENT -->
+    <div class="container-fluid bg-content">
       <div class="content">
         <h2> Sections </h2>
         <div class="row search-bar">
@@ -26,7 +32,7 @@
             </div>
           </div>
           <div class="col-lg-6">
-            <button type="button" class="add-button btn btn-primary float-right" data-toggle="modal" data-target="#createSection">Create Section</button>
+            <button type="button" class="add-button btn btn-primary float-right" data-toggle="modal" data-target="#createSection"><i class="fa fa-plus" aria-hidden="true"></i>Create Section</button>
               <div class="modal fade" id="createSection" tabindex="-1" role="dialog" aria-labelledby="#createSection" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                       <div class="modal-content">
@@ -105,64 +111,34 @@
                 </div>
           </div>
         </div>
+        
+        
         <div class="sections">
           <h3 class="sm-headings"> Grade 1 </h3>
           <div class="row">
+            {% for section in section_list %}
             <div class="col-md-4">
               <div class="card card-shadow" style="width: 19rem;">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-lg-6">
-                      <a href="section-details.html"><h3 class="card-title">St. Mark</h3></a>
+                      <a href="section-details.html"><h3 class="card-title">{{section.section_name}}</h3></a>
                     </div>
                     <div class="col-lg-6">
                       <h4 class="card-title"><span class="student-count text-success">3</span>/45</h4>
                     </div>
                   </div>
                   <h6 class="card-subtitle mb-2 text-muted">Room:<br/><span class="card-text link">F612</span></h6>
-                  <h6 class="card-subtitle mb-2 text-muted">Adviser:<br/><span class="card-text link">Mr. Obi Wan Kenobi</span></h6>
+                  <h6 class="card-subtitle mb-2 text-muted">Adviser:<br/><span class="card-text link">{{section.adviser}}</span></h6>
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="card card-shadow" style="width: 19rem;">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <h3 class="card-title">St. Paul</h3>
-                    </div>
-                    <div class="col-lg-6">
-                      <h4 class="card-title"><span class="student-count text-danger">45</span>/45</h4>
-                    </div>
-                  </div>
-                  <h6 class="card-subtitle mb-2 text-muted">Room:<br/><span class="card-text link">F612</span></h6>
-                  <h6 class="card-subtitle mb-2 text-muted">Adviser:<br/><span class="card-text link">Mr. Omigad</span></h6>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card card-shadow" style="width: 19rem;">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <h3 class="card-title">St. Jude</h3>
-                    </div>
-                    <div class="col-lg-6">
-                      <h4 class="card-title"><span class="student-count text-warning">42</span>/45</h4>
-                    </div>
-                  </div>
-                  <h6 class="card-subtitle mb-2 text-muted">Room:<br/><span class="card-text link">F612</span></h6>
-                  <h6 class="card-subtitle mb-2 text-muted">Adviser:<br/><span class="card-text link">Mr. Clean</span></h6>
-                </div>
-              </div>
-            </div>
+            {%endfor%}
           </div>
         </div>
       </div>
     </div>
     <!-- CONTENT -->
-
-    <!-- JQUERY -->
     <!-- Allows dropdown menu to select child -->
     <script>
     $(function(){
@@ -182,4 +158,9 @@
 
       });
     </script>
-{%endblock%}
+
+    <!-- Changes color of student count if student count is 5 less than the total number of students in a class -->
+    <script>
+
+    </script>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block settings %}
 <li class="nav-item">
-  <a class="nav-link active-menu" href="admin-settings.html">Settings</a>
+  <a class="nav-link active-menu" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
 </li>
 {% endblock %}
 
@@ -58,7 +58,7 @@
     <div class="row row-menu">
       <div class="col-lg-4">
         <h3 class="link"> Section </h3>
-        <a href="section-list.html" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Sections</a><br/>
+        <a href="{% url 'section-list' %}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Sections</a><br/>
       </div>
     </div>
     <!--Administrative-->
