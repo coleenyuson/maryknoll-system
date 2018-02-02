@@ -106,6 +106,7 @@ class Section(models.Model):
     section_capacity = models.IntegerField()
     adviser = models.ForeignKey(TeacherDetails, on_delete = models.CASCADE)
     curriculum = models.ForeignKey(Curriculum, on_delete = models.SET_NULL, null = True)
+    room = models.CharField(max_length=50)
     #Section status
     STATUS_CHOICES = (
         (ACTIVE, 'Active'),
@@ -120,8 +121,8 @@ class Section(models.Model):
     class Meta:
         verbose_name = "Section"
     def __str__(self):
-        return self.section_name
-
+        return "%s - %s" % (self.year_level,self.section_name)
+#Also known as section offerings
 class Section_Details(models.Model):
 	sectionDetails_ID = models.AutoField(primary_key=True)
 	section_ID = models.ForeignKey(Section, on_delete=models.CASCADE, default=0)

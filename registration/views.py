@@ -107,7 +107,9 @@ def tableEnrollmentList(request, pk='pk'):
         context,
         request = request,
     )
-    return JsonResponse({'html_form' : html_form})
+    
+    data = {'html_form' : html_form}
+    return JsonResponse(data)
 
 def createEnrollment(request, pk='pk'):
     data = {'form_is_valid' : False }
