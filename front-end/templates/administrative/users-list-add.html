@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <title>System Users</title>
+
+      <!-- globals -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- css files -->
+      <link href="01-css/bootstrap.css" rel="stylesheet" type="text/css" />
+      <link href="01-css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+      <link href="01-css/normalize.css" rel="stylesheet" type="text/css" />
+      <link href="01-css/styles.css" rel="stylesheet" type="text/css" />
+
+      <!-- icons -->
+      <link rel="stylesheet" href="04-fonts/simple-line-icons-master/css/simple-line-icons.css">
+      <link rel="stylesheet" href="04-fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg navbar-light bg-faded bg-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#"></a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="admin-dashboard.html">Home </a>
+            </li>
+            <li class="nav-item active-menu">
+              <a class="nav-link" href="admin-settings.html" style="color: #4688F1;">Settings<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Reports</a>
+            </li>
+          </ul>
+        </div>
+        <span class="navbar-text">Steve Harrington <i class="icon-arrow-down"></i> </span> <!-- User's fullname -->
+        <a href="index.html">
+          <button class="btn-logout"><span>Logout</span></button>
+        </a>
+      </nav>
+    </div>
+    <!-- NAVBAR -->
+    <!-- FORM CONTENT -->
+    <div class="container-fluid bg-content">
+      <div class="content">
+        <form class="heading-label">
+          <div class="row">
+            <div class="col">
+              <h3 class="link" style="margin-top: 10px;">User Information</h3>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+              <label>User ID:</label>
+                <p class="form-control-static">0009</p><!--incremental-->
+              </div>
+              <div class="col-md-4">
+              <label class="heading-label">Date Added:</label>
+                <p class="form-control-static">01/07/18</p><!--incremental-->
+              </div>
+            </div>
+            <div class="row">
+              <!-- All values of employees -->
+              <div class="col-md-6">
+                <label>Employee Name:</label>
+                  <input list="employees" type="text" class="form-control" required> <!-- List makes it searchable-->
+                  <datalist id="employees">
+                    <option value="Mosby, Ted"></option>
+                    <option value="Stinson, Barney"></option>
+                    <option value="Sherbatsky, Robin"></option>
+                  </datalist>
+              </div><!-- All values of employees -->
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label>User Role:</label>
+                <input list="roles" type="text" class="form-control" required> <!-- List makes it searchable-->
+                  <datalist id="employees">
+                    <option value="Administrator"></option>
+                    <option value="Head Registrar"></option>
+                    <option value="Academic Head"></option>
+                    <option value="Cashier"></option>
+                  </datalist>
+              </div>
+              <div class="col-md-6">
+                <label>Department:</label>
+                <input list="departments" type="text" class="form-control" required> <!-- List makes it searchable-->
+                  <datalist id="employees">
+                    <option value="Grade School Department"></option>
+                    <option value="Junior High School Department"></option>
+                    <option value="Senior High School Department"></option><!-- For specific department chairs -->
+                    <option value="Registrar Office"></option>
+                    <option value="Cashier Office"></option>
+                    <option value="Administrator"></option>
+                  </datalist>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Username: <a data-toggle="tooltip" data-placement="right" title="Username is composed of your first name initial, middle initials, and your surname"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+                <p class="form-control-static">tmosby</p><!--autogenerated-->
+              </div>
+              <div class="col-md-6">
+                <label>Password: <a data-toggle="tooltip" data-placement="right" title="Password is encrypted"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label></label><!-- should be encrypted -->
+                <p class="form-control-static">
+                **************************************<a class="reset-password-btn"> Reset</a></p> 
+              </div>
+            </div>
+            <div class="btn-forms" style="display: flex; justify-content: flex-end">
+              <button type="button" class="btn btn-link">Cancel</button><!--Go back to records-->
+              <a href="#" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save System User Details</a>
+            </div>
+          <!--<button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#confirmModal"></button>-->
+          </form>
+        </div>
+      </div>
+    <!-- Bootstrap CDN in case something glitches -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+
+    <script src="02-javascript/bootstrap.bundle.js"></script>
+    <script src="02-javascript/bootstrap.js"></script>
+    <script src="02-javascript/bootstrap.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+    </script>
+  </body>
+</html>
