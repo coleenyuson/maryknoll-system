@@ -118,10 +118,6 @@ def createEnrollment(request, pk='pk'):
         enrollment = Enrollment.objects.latest('enrollment_ID')
     except:
         enrollment = None
-    try:
-        curriculum_list = Curriculum.objects.all()
-    except:
-        curriculum_list = None
     if request.method == 'POST':
         form = RegistrationForms(request.POST)
         if form.is_valid():
@@ -134,7 +130,7 @@ def createEnrollment(request, pk='pk'):
             data['form_is_valid'] = False
     else:
         form = RegistrationForms()
-    context = {'form': form, 'student':current_student, 'last_record':enrollment, 'curriculum_list':curriculum_list}
+    context = {'form': form, 'student':current_student, 'last_record':enrollment}
     data['html_form'] = render_to_string('registrar/forms-registration-create.html',
         context,
         request=request,
