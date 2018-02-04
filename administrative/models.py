@@ -20,7 +20,7 @@ class Employee(models.Model):
 	employee_ID = models.AutoField(primary_key=True)
 	first_name = models.CharField(max_length=200)
 	last_name = models.CharField(max_length=200)
-	
+	department = models.CharField(max_length=200)
 	TYPE_CHOICES = (
 	    (CASHIER, 'Cashier'),
 	    (REGISTRAR, 'Registrar'),
