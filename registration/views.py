@@ -32,7 +32,9 @@ def studentDetails(request, pk='pk'):
     except:
         last_record = Enrollment.objects.filter(student=student)
     return render(request, 'registrar/student-profile.html', {'student': student, 'record':last_record})
-
+    
+def addEnrollment(request):
+    return render(request, 'registrar/student-profile-add.html')
 #AJAX VIEWS --------------------------------------------------------------------
 from django.template.loader import render_to_string
 from django.http import JsonResponse
