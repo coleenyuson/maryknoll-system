@@ -3,6 +3,7 @@ from django.views import generic
 from django.utils import timezone
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .forms import EmployeeForms
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,7 +16,10 @@ def index(request):
 
 @login_required
 def userList(request):
-    return render(request, 'administrative/users-list.html')
+    return render(request, 'administrative/admin-employee-list.html')
+
+def addEmployeeProfile(request):
+    return render(request, 'administrative/admin-employee-list-add.html')
     
 #AJAX VIEWS --------------------------------------------------------------------
 from django.template.loader import render_to_string
@@ -41,8 +45,8 @@ def tableEmployeeList(request):
     )
     return JsonResponse({'html_form' : html_form})
 
-def employeeCreate(request):
-    #data = {'form_is_valid' : False }
+def createEmployeeProfile(request):
+    data = {'form_is_valid' : False }
     try:
         last_employee = Employee.objects.latest('student_ID')
     except:
@@ -57,10 +61,8 @@ def employeeCreate(request):
     else:
         form = EmployeeForms()
     context = {'form': form, 'employee':last_employee}
-    '''data['html_form'] = render_to_string('registrar/partial-student-create.html',
+    data['html_form'] = render_to_string('administrative/forms-employee-create.html',
         context,
         request=request,
     )
-    return JsonResponse(data)'''
-    
-    return render(request, 'administrative/admin-employee.html', context)
+    return JsonResponse(data)
