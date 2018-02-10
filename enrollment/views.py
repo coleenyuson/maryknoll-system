@@ -3,7 +3,7 @@ from django.views import generic
 from django.utils import timezone
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import CurriculumForms
+from .forms import *
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -77,6 +77,34 @@ def sectionList(request):
         'section_list' : section_list
     }
     return render(request,'enrollment/section-list.html', context)
+    
+def addSection(request):
+    return render(request, 'enrollment/section-details-add.html')
+    
+def sectionDetails(request, pk='pk'):
+    section = get_object_or_404(Section, pk=pk)
+    
+    return render(request, 'enrollment/student-details.html', {'section': section})
+    
+#AJAX VIEWS --------------------------------------------------------------------
+
+def generateSectionForm(request):
+    data = {'form_is_valid' : False }
+    try:
+        last_section = Section.objects.latest('section_ID')
+    except:
+        last_section = None
+    if request.method == 'POST':
+        form = SectionForms(request.POST)
+    else:
+        form = SectionForms()
+    context = {'form': form, 'section':last_section}
+    print form
+    data['html_form'] = render_to_string('enrollment/forms-section-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 def tableScholarshipList(request):
     scholarship_list = Scholarship.objects.all()
@@ -98,7 +126,7 @@ def tableScholarshipList(request):
     )
     return JsonResponse({'html_form' : html_form})
 
-'''def createScholarshipProfile(request):
+def createScholarshipProfile(request):
     data = {'form_is_valid' : False }
     try:
         last_scholarship = Scholarship.objects.latest('scholarship_ID')
@@ -118,4 +146,4 @@ def tableScholarshipList(request):
         context,
         request=request,
     )
-    return JsonResponse(data)'''
+    return JsonResponse(data)
