@@ -1,0 +1,26 @@
+<table class="table table-bordered bg-nav table-hover">
+    <thead class="thead-light">
+      <tr>
+        <!-- Refer to database for headings -->
+        <th scope="col">Curriculum ID</th>
+        <th scope="col">Year Level</th>
+        <th scope="col">Curriculum Year</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+     {%for c in curriculum_list%}
+      <tr>
+        <td>{{c.pk}}</td>
+        <td>{{c.year_level}}</td>
+        <td>{{c.school_year}}</td>
+        <td class="text-center"><a href="curriculum-subjects-list.html" class="btn btn-success btn-sm view-button">View</a></td>
+      </tr>
+     {% empty %}
+        <tr>
+          <td colspan="5" class="text-center">No Curriculum</td>
+        </tr>
+     {%endfor%}
+      
+    </tbody>
+</table>
