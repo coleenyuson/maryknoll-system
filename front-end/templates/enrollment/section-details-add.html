@@ -13,11 +13,13 @@
         
       </div>
     </div>
-    
+
+<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "section-create" %}',
+        url: '{% url "section-create-form" %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
