@@ -101,7 +101,7 @@ def generateSectionForm(request):
         form = SectionForms(request.POST)
     else:
         form = SectionForms()
-    context = {'form': form, 'section':last_section}
+    context = {'forms': form, 'section':last_section}
     print form
     data['html_form'] = render_to_string('enrollment/forms-section-create.html',
         context,
