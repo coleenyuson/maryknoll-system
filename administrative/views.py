@@ -48,7 +48,7 @@ def tableEmployeeList(request):
 def createEmployeeProfile(request):
     data = {'form_is_valid' : False }
     try:
-        last_employee = Employee.objects.latest('student_ID')
+        last_employee = Employee.objects.latest('employee_ID')
     except:
         last_employee = None
     if request.method == 'POST':

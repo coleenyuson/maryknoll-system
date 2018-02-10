@@ -1,0 +1,28 @@
+<table class="table table-bordered bg-nav table-hover">
+    <thead class="thead-light">
+      <tr>
+        <!-- Refer to database for headings -->
+        <th scope="col">Scholarship ID <i class="fa fa-sort" aria-hidden="true"></th>
+        <th scope="col">Scholarship Name <i class="fa fa-sort" aria-hidden="true"></th>
+        <th scope="col">Scholarship Type <i class="fa fa-sort" aria-hidden="true"></th>
+        <th scope="col">Valid for</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+     {%for s in scholarship_list%}
+      <tr>
+        <td>{{s.pk}}</td>
+        <td>{{s.scholarship_name}}</td>
+        <td>{{s.get_scholarship_type_display}}</td>
+        <td>{{s.school_year}}</td>
+        <td class="text-center"><a href="scholarship-subjects-list.html" class="btn btn-success btn-sm view-button">View</a></td>
+      </tr>
+     {% empty %}
+        <tr>
+          <td colspan="5" class="text-center">No Scholarship</td>
+        </tr>
+     {%endfor%}
+      
+    </tbody>
+</table>

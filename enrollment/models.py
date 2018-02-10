@@ -10,6 +10,9 @@ ACTIVE = 'a'
 ON_LEAVE = 'o'
 INACTIVE = 'i'
 
+ESC = 'e'
+OTHERS = 't'
+
 class TeacherDetails(models.Model):
     teacher_ID = models.AutoField(primary_key=True)
     employee_name = models.ForeignKey('administrative.Employee', on_delete= models.SET_NULL, null = True)
@@ -42,6 +45,15 @@ class YearLevel(models.Model):
 class Scholarship(models.Model):
 	scholarship_name = models.CharField(max_length=200)
 	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
+	SCHOLARSHIP_CHOICES = (
+        (ESC, 'ESC'),
+        (OTHERS, 'Others'),
+    )
+	scholarship_type = models.CharField(max_length=1,
+        choices=SCHOLARSHIP_CHOICES,
+        blank=False,
+        default=OTHERS
+        )
 	
 	class Meta:
 	    verbose_name = "Scholarship"
@@ -54,6 +66,7 @@ class Curriculum(models.Model):
     curriculum_ID = models.AutoField(primary_key=True)
     year_level = models.ForeignKey(YearLevel, on_delete=models.CASCADE)
     school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE)
+    
     
     class Meta:
         verbose_name = "Curriculum"
