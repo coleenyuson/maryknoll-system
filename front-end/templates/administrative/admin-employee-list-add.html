@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block settings %}
+<li class="nav-item active">
+  <a class="nav-link" href="admin-settings.html" style="color: #4688F1;">Settings</a>
+</li>
+{% endblock %}
+
+{%load static%}
+{% block content %}
+    <div class="container-fluid bg-content wrapper">
+      <div class="content">
+        
+        </div>
+       </div>
+       
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+    
+<script>
+$(function() {
+  $.ajax({
+        url: '{% url "employee-create" %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $(".content").html(data.html_form);
+        }
+  });
+  
+  $(".content").on("submit", ".js-employee-create-form", function() {
+    var form = $(this);
+    $.ajax({
+        url: '{% url "employee-create" %}',
+        data: form.serialize(),
+        type: form.attr("method"),
+        dataType: 'json',
+        success: function(data) {
+            if (data.form_is_valid) {
+                window.location = "{%url 'employee-list' %}"
+            }
+            else {
+                console.log(data.form_is_valid);
+                $(".content").html(data.html_form);
+            }
+        }
+    });
+    return false;
+});
+});
+
+
+</script>
+{%endblock%}

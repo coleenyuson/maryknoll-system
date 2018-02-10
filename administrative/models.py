@@ -16,10 +16,16 @@ ACTIVE = 'a'
 INACTIVE = 'i'
 ON_LEAVE = 'o'
 
+FULL_TIME = 'f'
+PART_TIME = 'p'
+
 class Employee(models.Model):
 	employee_ID = models.AutoField(primary_key=True)
 	first_name = models.CharField(max_length=200)
 	last_name = models.CharField(max_length=200)
+	username = models.CharField(max_length=20)
+	password = models.CharField(max_length=50)
+	
 	
 	TYPE_CHOICES = (
 	    (CASHIER, 'Cashier'),
