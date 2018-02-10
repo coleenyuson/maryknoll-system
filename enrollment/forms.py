@@ -22,3 +22,8 @@ class CurriculumForms(forms.ModelForm):
     class Meta:
         model = Curriculum
         exclude = ('curriculum_ID',)
+        
+class ScholarshipForms(forms.ModelForm):
+    class Meta:
+        model = Scholarship
+        exclude = ('pk',)

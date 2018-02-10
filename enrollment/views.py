@@ -24,7 +24,10 @@ def addCurriculumProfile(request):
 @login_required
 def scholarshipList(request):
     return render(request, 'enrollment/scholarship-list.html')
-    
+
+def addScholarshipProfile(request):
+    return render(request, 'enrollment/scholarship-list-add.html')
+
 #AJAX VIEWS --------------------------------------------------------------------
 from django.template.loader import render_to_string
 from django.http import JsonResponse

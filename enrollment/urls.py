@@ -17,5 +17,7 @@ urlpatterns = [
         #-----------------------SCHOLARSHIP--------------------------------------------------------
         url(r'^scholarship-list/$', views.scholarshipList, name = 'scholarship-list'),
         url(r'^scholarship-list/table$', views.tableScholarshipList, name = 'scholarship-table'),
+        url(r'^scholarship-list/add$', views.addScholarshipProfile, name = 'scholarship-add'),
+        url(r'^scholarship-list/create$', views.createScholarshipProfile, name = 'scholarship-create'),
         
     ]
