@@ -75,19 +75,23 @@ def createCurriculumProfile(request):
     return JsonResponse(data)
 #--------------------------------------SECTION--------------------------------------------------------
 def sectionList(request):
-    section_list = Section.objects.all()
-    context = {
-        'section_list' : section_list
-    }
-    return render(request,'enrollment/section-list.html', context)
+    return render(request,'enrollment/section-list.html')
     
 def addSection(request):
     return render(request, 'enrollment/section-details-add.html')
     
 def sectionDetails(request, pk='pk'):
     section = get_object_or_404(Section, pk=pk)
-    
     return render(request, 'enrollment/student-details.html', {'section': section})
+    
+def sectionTable(request):
+    section_list = Section.objects.all()
+    context = {'section_list': section_list}
+    html_form = render_to_string('enrollment/table-section-list.html',
+        context,
+        request = request,
+    )
+    return JsonResponse({'html_form' : html_form})
     
 #AJAX VIEWS --------------------------------------------------------------------
 
@@ -99,10 +103,18 @@ def generateSectionForm(request):
         last_section = None
     if request.method == 'POST':
         form = SectionForms(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.section_status = 'a'
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
     else:
         form = SectionForms()
     context = {'forms': form, 'section':last_section}
-    print form
+    print(form.is_valid())
+    print(form.errors)
     data['html_form'] = render_to_string('enrollment/forms-section-create.html',
         context,
         request=request,

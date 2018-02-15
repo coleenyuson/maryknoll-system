@@ -14,10 +14,9 @@ STATUS_CHOICES = (
     (INACTIVE, 'Inactive'),
 )
 class SectionForms(forms.ModelForm):
-    section_status= forms.CharField(widget=forms.RadioSelect(choices=STATUS_CHOICES))
     class Meta:
         model = Section
-        exclude = ('section_ID',)
+        exclude = ('section_ID', 'section_status',)
 class CurriculumForms(forms.ModelForm):
     class Meta:
         model = Curriculum

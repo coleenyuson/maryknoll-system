@@ -133,7 +133,7 @@ class Section(models.Model):
     class Meta:
         verbose_name = "Section"
     def __str__(self):
-        return "%s - %s" % (self.year_level,self.section_name)
+        return "%s - %s" % (self.curriculum,self.section_name)
        
 class Section_Enrollee(models.Model):
     enrollee = models.ForeignKey('registration.Enrollment', on_delete=models.CASCADE, default=0)

@@ -12,7 +12,9 @@ urlpatterns = [
         url(r'^curriculum-list/create$', views.createCurriculumProfile, name = 'curriculum-create'),
         #-----------------------SECTION------------------------------------------------------------
         url(r'^section/list$', views.sectionList, name = 'section-list'),
+        url(r'^section/list/table$', views.sectionTable, name = 'section-table'),
         url(r'^section/list/add$', views.addSection, name = 'section-create'),
+        #url(r'^section/list/detail$', views.detailSection, name = 'section-create'),
         url(r'^section/list/add-form$', views.generateSectionForm, name = 'section-create-form'),
         #-----------------------SCHOLARSHIP--------------------------------------------------------
         url(r'^scholarship-list/$', views.scholarshipList, name = 'scholarship-list'),
