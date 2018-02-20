@@ -27,6 +27,13 @@ def scholarshipList(request):
 
 def addScholarshipProfile(request):
     return render(request, 'enrollment/scholarship-list-add.html')
+#--------------------------------------SUBJECT OFFERING------------------------------------------------
+@login_required
+def subjectOfferingList(request):
+    return render(request, 'enrollment/subject-offering.html')
+
+def addSubjectOfferingProfile(request):
+    return render(request, 'enrollment/subject-offering-add.html')
 
 #AJAX VIEWS --------------------------------------------------------------------
 from django.template.loader import render_to_string
@@ -158,6 +165,49 @@ def createScholarshipProfile(request):
         form = ScholarshipForms()
     context = {'form': form, 'scholarship':last_scholarship}
     data['html_form'] = render_to_string('enrollment/forms-scholarship-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+
+#--------------------------------------SUBJECT OFFERING------------------------------------------------
+def tableSubjectOfferingList(request):
+    subjectOffering_list = Offering.objects.all()
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(subjectOffering_list, 10)
+    
+    try:
+        subjectOffering = paginator.page(page)
+    except PageNotAnInteger:
+        subjectOffering = paginator.page(1)
+    except EmptyPage:
+        subjectOffering = paginator.page(paginator.num_pages)
+        
+    context = {'subjectOffering_list': subjectOffering}
+    html_form = render_to_string('enrollment/table-subject-offering.html',
+        context,
+        request = request,
+    )
+    return JsonResponse({'html_form' : html_form})
+
+def createSubjectOfferingProfile(request):
+    data = {'form_is_valid' : False }
+    try:
+        last_subjectOffering = SubjectOffering.objects.latest('subjectOffering_ID')
+    except:
+        last_subjectOffering = None
+    if request.method == 'POST':
+        form = SubjectOfferingForms(request.POST)
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = SubjectOfferingForms()
+    context = {'form': form, 'subjectOffering':last_subjectOffering}
+    data['html_form'] = render_to_string('enrollment/forms-subject-offering-create.html',
         context,
         request=request,
     )

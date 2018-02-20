@@ -26,3 +26,8 @@ class ScholarshipForms(forms.ModelForm):
     class Meta:
         model = Scholarship
         exclude = ('pk',)
+        
+class SubjectOfferingForms(forms.ModelForm):
+    class Meta:
+        model = Offering
+        exclude = ('pk','school_year')

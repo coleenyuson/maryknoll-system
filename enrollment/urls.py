@@ -21,5 +21,11 @@ urlpatterns = [
         url(r'^scholarship-list/table$', views.tableScholarshipList, name = 'scholarship-table'),
         url(r'^scholarship-list/add$', views.addScholarshipProfile, name = 'scholarship-add'),
         url(r'^scholarship-list/create$', views.createScholarshipProfile, name = 'scholarship-create'),
+        #-----------------------SUBJECT OFFERING----------------------------------------------------
+        url(r'^subjectOffering-list/$', views.subjectOfferingList, name = 'subjectOffering-list'),
+        url(r'^subjectOffering-list/table$', views.tableSubjectOfferingList, name = 'subjectOffering-table'),
+        url(r'^subjectOffering-list/add$', views.addSubjectOfferingProfile, name = 'subjectOffering-add'),
+        url(r'^subjectOffering-list/create$', views.createSubjectOfferingProfile, name = 'subjectOffering-create'),
+        
         
     ]
