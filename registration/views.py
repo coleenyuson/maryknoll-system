@@ -7,7 +7,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
-from enrollment.models import *
 from .models import *
 from .forms import StudentForms, RegistrationForms
 
@@ -28,7 +27,7 @@ def addStudentProfile(request):
 def studentDetails(request, pk='pk'):
     student = get_object_or_404(Student, pk=pk)
     try:
-        last_record = Enrollment.objects.filter(student=student).latest('enrollment_ID')
+        last_record = Enrollment.objects.filter(student=student).latest('subject_ID')
     except:
         last_record = Enrollment.objects.filter(student=student)
     return render(request, 'registrar/student-profile.html', {'student': student, 'record':last_record})
@@ -93,19 +92,19 @@ def createStudentProfile(request):
 def tableEnrollmentList(request, pk='pk'):
     student = get_object_or_404(Student, pk=pk)
     
-    enrollment_list = Enrollment.objects.filter(student = student)
+    subject_list = Enrollment.objects.filter(student = student)
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(enrollment_list, 4)
+    paginator = Paginator(subject_list, 4)
     
     try:
-        enrollments = paginator.page(page)
+        subjects = paginator.page(page)
     except PageNotAnInteger:
-        enrollments = paginator.page(1)
+        subjects = paginator.page(1)
     except EmptyPage:
-        enrollments = paginator.page(paginator.num_pages)
+        subjects = paginator.page(paginator.num_pages)
         
-    context = {'enrollment_list': enrollments}
+    context = {'subject_list': subjects}
     html_form = render_to_string('registrar/table-student-profile.html',
         context,
         request = request,
@@ -118,9 +117,9 @@ def createEnrollment(request, pk='pk'):
     data = {'form_is_valid' : False }
     current_student = get_object_or_404(Student, pk=pk)
     try:
-        enrollment = Enrollment.objects.latest('enrollment_ID')
+        subject = Enrollment.objects.latest('subject_ID')
     except:
-        enrollment = None
+        subject = None
     if request.method == 'POST':
         form = RegistrationForms(request.POST)
         form.date_enrolled = datetime.now()
@@ -136,7 +135,7 @@ def createEnrollment(request, pk='pk'):
             data['form_is_valid'] = False
     else:
         form = RegistrationForms()
-    context = {'form': form, 'student':current_student, 'last_record':enrollment}
+    context = {'form': form, 'student':current_student, 'last_record':subject}
     data['html_form'] = render_to_string('registrar/forms-registration-create.html',
         context,
         request=request,
@@ -162,3 +161,48 @@ def verifyActive():
             curr_student.save()
             
         
+#REPORTS -------------------------------------------------------------
+
+from django.db import models
+from django.http import StreamingHttpResponse
+from django.views.generic import View
+import csv
+class Echo(object):
+    """An object that implements just the write method of the file-like interface.
+    """
+    def write(self, value):
+        """Write the value by returning it, instead of storing in a buffer."""
+        return value
+class ContactLogExportCsvView(View):
+    def get(self, request, *args, **kwargs):
+        student_query = Student.objects.all() # Assume 50,000 objects inside
+        model = student_query.model
+        model_fields = model._meta.fields + model._meta.many_to_many
+        headers = [field.name for field in model_fields] # Create CSV headers
+        def get_row(obj):
+            row = []
+            for field in model_fields:
+                if type(field) == models.ForeignKey:
+                    val = getattr(obj, field.name)
+                    if val:
+                        val = val.__unicode__()
+                elif type(field) == models.ManyToManyField:
+                    val = u', '.join([item.__unicode__() for item in getattr(obj, field.name).all()])
+                elif field.choices:
+                    val = getattr(obj, 'get_%s_display'%field.name)()
+                else:
+                    val = getattr(obj, field.name)
+                row.append(unicode(val).encode("utf-8"))
+            return row
+        def stream(headers, data): # Helper function to inject headers
+            if headers:
+                yield headers
+            for obj in data:
+                yield get_row(obj)
+        pseudo_buffer = Echo()
+        writer = csv.writer(pseudo_buffer)
+        response = StreamingHttpResponse(
+            (writer.writerow(row) for row in stream(headers, student_query)),
+            content_type="text/csv")
+        response['Content-Disposition'] = 'attachment; filename="all_Students.csv"'
+        return response

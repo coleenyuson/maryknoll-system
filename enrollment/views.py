@@ -80,6 +80,15 @@ def createCurriculumProfile(request):
         request=request,
     )
     return JsonResponse(data)
+    
+def curriculumDetails(request, pk='pk'):
+    curriculum = get_object_or_404(Curriculum, pk=pk)
+    try:
+        last_record = Subjects.objects.filter(curriculum=curriculum).latest('enrollment_ID')
+    except:
+        last_record = Subjects.objects.filter(curriculum=curriculum)
+    return render(request, 'enrollment/curriculum-subjects-list.html', {'curriculum': curriculum, 'record':last_record})
+    
 #--------------------------------------SECTION--------------------------------------------------------
 def sectionList(request):
     return render(request,'enrollment/section-list.html')
@@ -89,7 +98,7 @@ def addSection(request):
     
 def sectionDetails(request, pk='pk'):
     section = get_object_or_404(Section, pk=pk)
-    return render(request, 'enrollment/student-details.html', {'section': section})
+    return render(request, 'enrollment/section-details.html', {'section': section})
     
 def sectionTable(request):
     section_list = Section.objects.all()
@@ -212,3 +221,11 @@ def createSubjectOfferingProfile(request):
         request=request,
     )
     return JsonResponse(data)
+    
+def subjectOfferingDetail(request, pk='pk'):
+    subjOffering = get_object_or_404(Student, pk=pk)
+    try:
+        last_record = Enrollment.objects.filter(subjOffering=subjOffering).latest('enrollment_ID')
+    except:
+        last_record = Enrollment.objects.filter(subjOffering=subjOffering)
+    return render(request, 'enrollment/subject-offering-add.html.html', {'subjOffering': subjOffering, 'record':last_record})

@@ -14,7 +14,7 @@
         <td>{{c.pk}}</td>
         <td>{{c.year_level}}</td>
         <td>{{c.school_year}}</td>
-        <td class="text-center"><a href="curriculum-subjects-list.html" class="btn btn-success btn-sm view-button">View</a></td>
+        <td class="text-center"><a href="{% url 'curriculum-detail' pk=c.curriculum_ID %}" class="btn btn-success btn-sm view-button">View</a></td>
       </tr>
      {% empty %}
         <tr>

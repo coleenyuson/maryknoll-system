@@ -10,12 +10,14 @@ urlpatterns = [
         url(r'^curriculum-list/table$', views.tableCurriculumList, name = 'curriculum-table'),
         url(r'^curriculum-list/add$', views.addCurriculumProfile, name = 'curriculum-add'),
         url(r'^curriculum-list/create$', views.createCurriculumProfile, name = 'curriculum-create'),
+        url(r'^curriculum-list/(?P<pk>\d+)/$', views.curriculumDetails, name = 'curriculum-detail'),
         #-----------------------SECTION------------------------------------------------------------
         url(r'^section/list$', views.sectionList, name = 'section-list'),
         url(r'^section/list/table$', views.sectionTable, name = 'section-table'),
         url(r'^section/list/add$', views.addSection, name = 'section-create'),
         #url(r'^section/list/detail$', views.detailSection, name = 'section-create'),
         url(r'^section/list/add-form$', views.generateSectionForm, name = 'section-create-form'),
+        url(r'^section/list/(?P<pk>\d+)/$', views.sectionDetails, name = 'section-detail'),
         #-----------------------SCHOLARSHIP--------------------------------------------------------
         url(r'^scholarship-list/$', views.scholarshipList, name = 'scholarship-list'),
         url(r'^scholarship-list/table$', views.tableScholarshipList, name = 'scholarship-table'),
@@ -26,6 +28,6 @@ urlpatterns = [
         url(r'^subjectOffering-list/table$', views.tableSubjectOfferingList, name = 'subjectOffering-table'),
         url(r'^subjectOffering-list/add$', views.addSubjectOfferingProfile, name = 'subjectOffering-add'),
         url(r'^subjectOffering-list/create$', views.createSubjectOfferingProfile, name = 'subjectOffering-create'),
-        
+        url(r'^subjectOffering-list/(?P<pk>\d+)/$', views.subjectOfferingDetail, name = 'subjectOffering-detail'),
         
     ]

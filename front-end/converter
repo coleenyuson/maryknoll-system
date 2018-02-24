@@ -1,4 +1,6 @@
-{{form.school_year|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
-            {% if form.school_year.errors %}
-              <p class="help-block">{{ form.school_year.errors }}</p>
-            {% endif %}
+subjOffering = get_object_or_404(Student, pk=pk)
+    try:
+        last_record = Enrollment.objects.filter(subjOffering=subjOffering).latest('enrollment_ID')
+    except:
+        last_record = Enrollment.objects.filter(subjOffering=subjOffering)
+    return render(request, 'registrar/enrollment/subject-offering-add.html.html', {'subjOffering': subjOffering, 'record':last_record})

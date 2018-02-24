@@ -17,6 +17,7 @@ class SectionForms(forms.ModelForm):
     class Meta:
         model = Section
         exclude = ('section_ID', 'section_status',)
+        
 class CurriculumForms(forms.ModelForm):
     class Meta:
         model = Curriculum

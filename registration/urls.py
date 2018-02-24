@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
         url(r'^$', views.index, name = 'reg-index'),
         url(r'^student-list/$', views.registrationList, name = 'student-list'),
+        url(r'^student-list/download$', views.ContactLogExportCsvView.as_view(), name = 'student-list-download'), #new feature, delete this line if you have seen this already -aji
         url(r'^student-list/table$', views.tableStudentList, name = 'student-table'),
         url(r'^student-list/add$', views.addStudentProfile, name = 'student-add'),
         url(r'^student-list/create$', views.createStudentProfile, name = 'student-create'),

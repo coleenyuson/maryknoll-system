@@ -6,7 +6,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-lg-6">
-          <a href="section-details.html"><h3 class="card-title">{{section.section_name}}</h3></a>
+          <a href="{% url 'section-detail' pk=section.section_ID %}"><h3 class="card-title">{{section.section_name}}</h3></a>
         </div>
         <div class="col-lg-6">
           <h4 class="card-title"><span class="student-count text-success">3/</span>{{section.section_capacity}}</h4>

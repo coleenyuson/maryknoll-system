@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.core.urlresolvers import reverse
 from django.db import models
 #import registration
 #import administrative
@@ -73,6 +73,9 @@ class Curriculum(models.Model):
         
     def __str__(self):
         return "%s - %s" % (self.year_level, self.school_year)
+        
+    def get_abosulute_url(self):
+	    return reverse('curriculum-detail', kwargs={"id": self.id})
 
 class Subjects(models.Model):
     subject_ID = models.AutoField(primary_key=True)
@@ -97,6 +100,7 @@ class Subjects(models.Model):
         
     def __str__(self):
         return self.subject_name
+        
 	
  
 class Section(models.Model):
@@ -121,6 +125,9 @@ class Section(models.Model):
         verbose_name = "Section"
     def __str__(self):
         return "%s - %s" % (self.curriculum,self.section_name)
+    
+    def get_abosulute_url(self):
+	    return reverse('section-detail', kwargs={"id": self.id})
         
 class Offering(models.Model):
 	offering_ID = models.AutoField(primary_key=True)
@@ -134,6 +141,9 @@ class Offering(models.Model):
 	    verbose_name = "Offered Subject"
 	def __str__(self):
 	    return "%s - - - %s" % (self.subject, self.subject.subject_description)
+	 
+	def get_abosulute_url(self):
+	    return reverse('subjectOffering-details', args=[str(self.offering_ID)])
 	    
 ''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
 
@@ -154,6 +164,7 @@ class Section_Enrollee(models.Model):
 	    verbose_name = "Enrollees in Sections"
     def __str__(self):
         return "%s enrolled in %s" % (self.enrollee, self.section)
+        
 class Section_Offerings(models.Model):
 	sectionDetails_ID = models.AutoField(primary_key=True)
 	section_ID = models.ForeignKey(Section, on_delete=models.CASCADE, default=0)
