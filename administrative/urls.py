@@ -8,4 +8,5 @@ urlpatterns = [
         url(r'^employee-list/table$', views.tableEmployeeList, name = 'employee-table'),
         url(r'^employee-list/add$', views.addEmployeeProfile, name = 'employee-add'),
         url(r'^employee-list/create$', views.createEmployeeProfile, name = 'employee-create'),
+        
     ]

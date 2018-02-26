@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-
 from django.db import models
 #from registration.models import Student
 #from enrollment.models import School_Year
@@ -23,8 +22,17 @@ class Employee(models.Model):
 	employee_ID = models.AutoField(primary_key=True)
 	first_name = models.CharField(max_length=200)
 	last_name = models.CharField(max_length=200)
-	username = models.CharField(max_length=20)
-	password = models.CharField(max_length=50)
+	
+	WORK_CHOICES = (
+		(FULL_TIME, 'Full Time'),
+		(PART_TIME, 'Part Time'),
+		(OTHERS, 'Others'),
+		)
+	work_type = models.CharField(max_length=1,
+	    choices=WORK_CHOICES,
+	    blank=False,
+	    default=OTHERS
+	    )
 	
 	
 	TYPE_CHOICES = (
@@ -57,6 +65,9 @@ class Employee(models.Model):
 		
 	def __str__(self):
 		return self.first_name
+		
+	'''def get_abosulute_url(self):
+	    return reverse('employee-details', kwargs={"id": self.id})'''
 	
 ON_HOLD = "h"
 APPROVED = "p"

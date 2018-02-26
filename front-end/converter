@@ -1,6 +1,23 @@
-subjOffering = get_object_or_404(Student, pk=pk)
+def tableCurriculumSubjectList(request, pk='pk'):
+    curriculum = get_object_or_404(Curriculum, pk=pk)
+    
+    subject_list = Subject.objects.filter(curriculum = curriculum)
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(enrollment_list, 4)
+    
     try:
-        last_record = Enrollment.objects.filter(subjOffering=subjOffering).latest('enrollment_ID')
-    except:
-        last_record = Enrollment.objects.filter(subjOffering=subjOffering)
-    return render(request, 'registrar/enrollment/subject-offering-add.html.html', {'subjOffering': subjOffering, 'record':last_record})
+        subject = paginator.page(page)
+    except PageNotAnInteger:
+        subject = paginator.page(1)
+    except EmptyPage:
+        subject = paginator.page(paginator.num_pages)
+        
+    context = {'subject_list': subject}
+    html_form = render_to_string('registrar/table-curriculum-subject-list.html',
+        context,
+        request = request,
+    )
+    
+    data = {'html_form' : html_form}
+    return JsonResponse(data)

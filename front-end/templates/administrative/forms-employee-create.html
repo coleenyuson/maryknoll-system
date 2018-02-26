@@ -29,22 +29,14 @@
 
               <div class="row">
                   <!-- Emp Username -->
-                  <label class="control-label col-sm-2" for="empUN">Username:</label>
+                  <label class="control-label col-sm-2" for="empUN">Work Type:</label>
                   <div class="col-sm-4">
-                    {{form.username|add_class:"form-control"|attr:"placeholder = Enter First Name"}}
-                    {% if form.username.errors %}
-                      <p class="help-block">{{ form.username.errors }}</p>
+                    {{form.work_type|add_class:"form-control"|attr:"placeholder = Work Type"}}
+                    {% if form.work_type.errors %}
+                      <p class="help-block">{{ form.work_type.errors }}</p>
                     {% endif %}
                   </div>
                 
-                  <!-- Emp Password -->
-                  <label class="control-label col-sm-2" for="empPD">Password:</label>
-                  <div class="col-sm-4">
-                    {{form.password|add_class:"form-control"|attr:"placeholder = Enter First Name"}}
-                    {% if form.password.errors %}
-                      <p class="help-block">{{ form.password.errors }}</p>
-                    {% endif %}
-                  </div>
               </div>
 
               <div style="margin: 10px 10px 10px 10px"> </div>

@@ -90,6 +90,30 @@ def curriculumDetails(request, pk='pk'):
         last_record = Subjects.objects.filter(curriculum=curriculum)
     return render(request, 'enrollment/curriculum-subjects-list.html', {'curriculum': curriculum, 'record':last_record})
     
+def tableCurriculumSubjectList(request, pk='pk'):
+    curriculum = get_object_or_404(Curriculum, pk=pk)
+    
+    subject_list = Subjects.objects.filter(curriculum = curriculum)
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(subject_list, 4)
+    
+    try:
+        subject = paginator.page(page)
+    except PageNotAnInteger:
+        subject = paginator.page(1)
+    except EmptyPage:
+        subject = paginator.page(paginator.num_pages)
+        
+    context = {'subject_list': subject, "year_level": curriculum.year_level}
+    html_form = render_to_string('enrollment/table-curriculum-subject-list.html',
+        context,
+        request = request,
+    )
+    
+    data = {'html_form' : html_form}
+    return JsonResponse(data)
+    
 #--------------------------------------SECTION--------------------------------------------------------
 def sectionList(request):
     return render(request,'enrollment/section-list.html')
@@ -110,9 +134,7 @@ def sectionTable(request):
     )
     return JsonResponse({'html_form' : html_form})
 
-def sectionTableStudent(request, pk='pk'):
-    section = get_object_or_404(Section, pk=pk)
-    return render(request, 'enrollment/table-section-details.html', {'section': section})
+
     
     
 #AJAX VIEWS --------------------------------------------------------------------

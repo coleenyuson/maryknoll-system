@@ -15,7 +15,7 @@
                   <td>{{emp.employee_ID}}</td>
                   <td>{{emp.last_name}}, {{emp.first_name}}</td>
                   <td>{{emp.get_emp_type_display}}</td>
-                  <td>{{emp.emp_workType}}</td>
+                  <td>{{emp.get_work_type_display}}</td>
                   <td><i class="fa fa-circle 
                   {%if emp.emp_status == "a"%}
                       active-status">
@@ -24,7 +24,7 @@
                       inactive-status">
                       </i> Inactive</td>
                   {%endif%}
-                  <td class="text-center"><a href="#" class="btn btn-success btn-sm view-button">View</a>
+                  <td class="text-center"><a href="#" class="btn btn-success btn-sm view-button">Edit</a>
                 </tr>
               {% empty %}
                 <tr>

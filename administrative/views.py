@@ -66,3 +66,26 @@ def createEmployeeProfile(request):
         request=request,
     )
     return JsonResponse(data)
+    
+'''def updateEmployee(request, pk='pk'):
+    instance = get_object_or_404(Employee, pk=pk)
+    try:
+        last_employee = Employee.objects.latest('employee_ID')
+    except:
+        last_employee = None
+    if request.method == 'POST':
+        form = EmployeeForms(request.POST or None)
+        if form.is_valid(commit=False):
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = EmployeeForms()
+    context = {'form': form, 'employee':last_employee}
+    data['html_form'] = render_to_string('administrative/forms-employee-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)'''
+    

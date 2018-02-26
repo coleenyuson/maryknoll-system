@@ -1,22 +1,9 @@
-{% extends 'base.html' %}
-{% block settings %}
-<li class="nav-item active-menu">
-  <a class="nav-link" href="{% url 'admin-settings' %}">Settings</a>
-</li>
-{% endblock %}
-
-{%load static%}
-{% block content %}
-    <!-- FORM CONTENT -->
-    <div class="container-fluid bg-content">
-      <div class="content">
-        <form class="heading-label">
+<form class="heading-label">
           <div class="row">
             <div class="col">
               <h3 class="link" style="margin-top: 10px;">Subject Details</h3>
             </div>
           </div>
-            <form>
             <div class="row">
               <div class="col-md-4">
                 <label>Year Level:</label>
@@ -56,37 +43,6 @@
                   <a href="curriculum-list.html" class="btn btn-link">Cancel</a>
                   <a href="#" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Curriculum Details</a>
             </div>
-          </form>
         </div>
       </div>
     </form>
-  </div>
-  <!-- Bootstrap CDN in case something glitches -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-
-  <script src="02-javascript/bootstrap.bundle.js"></script>
-  <script src="02-javascript/bootstrap.js"></script>
-  <script src="02-javascript/bootstrap.min.js"></script>
-
-    <script>
-      var count=1;
-      var add = function(){
-        if(count >= 15) return;
-        $('#addSubjects').append('<div class="row" id="addSubjects"><div class="col-md-2"> <label>Subject ID:</label><p class="form-control-static">0001</p></div><div class="col-md-6"><label>Subject Name:</label><input type="text" class="form-control" required></div><div class="col-md-2"><label>Units:</label><input type="number" class="form-control" required></div><div class="col-md-2 text-center delete-btn"><a href="#" class="delete-row warning" onclick="deleteRow(this)"><i class="fa fa-close"></i></div></div>') // Increment SubjectID
-        count++;
-      };
-    </script>
-
-    <script>
-      function deleteRow(obj){
-        $(obj).closest('.row').remove();
-      }
-    </script>
-
-    <script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();   
-    });
-    </script>
-{%endblock%}

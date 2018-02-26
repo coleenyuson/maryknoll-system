@@ -24,6 +24,7 @@
               </div>
             </div>
             <div class="row table-records table-responsive" id="curriculum-subject-listings">
+               <!--- INSERT TABLE HERE --->
                
             </div>
           </div>
@@ -41,5 +42,19 @@
         count++;
       };
     </script>
+  
+<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+<script>
+$(function() {
+  $.ajax({
+        url: '{% url "subject-table" curriculum.curriculum_ID %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $("#curriculum-subject-listings").html(data.html_form);
+        }
+    });
+});
+</script>
 
 {%endblock%}
