@@ -87,6 +87,7 @@ class Subjects(models.Model):
         (ON_LEAVE, 'On Leave'),
         (INACTIVE, 'Inactive'),
     )
+    units = models.IntegerField(null = True)
     subject_status = models.CharField(max_length=1,
         choices=STATUS_CHOICES,
         blank=False,

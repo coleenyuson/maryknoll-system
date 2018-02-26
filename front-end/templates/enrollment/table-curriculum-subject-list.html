@@ -1,0 +1,27 @@
+<table class="table table-bordered bg-nav table-hover">
+                <thead class="thead-light">
+                  <tr>
+                    <!-- Refer to database for headings -->
+                    <th scope="col">Subject ID</th>
+                    <th scope="col">Grade Level</th>
+                    <th scope="col">Subject Name</th>
+                    <th scope="col">Credit Units</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%for s in scholarship_list%}
+                  <tr>
+                    <td>0001</td>
+                    <td>Grade 6</td>
+                    <td>Mathematics VI</td>
+                    <td>3/3</td>
+                    <td class="text-center"><a href="#" class="btn btn-secondary btn-sm view-button">Edit</a></td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="5" class="text-center">No Scholarship</td>
+                  </tr>
+                 {%endfor%}
+                </tbody>
+              </table>

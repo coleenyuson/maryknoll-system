@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 from .models import *
+from registration.models import *
 
 @login_required
 def index(request):
@@ -108,6 +109,11 @@ def sectionTable(request):
         request = request,
     )
     return JsonResponse({'html_form' : html_form})
+
+def sectionTableStudent(request, pk='pk'):
+    section = get_object_or_404(Section, pk=pk)
+    return render(request, 'enrollment/table-section-details.html', {'section': section})
+    
     
 #AJAX VIEWS --------------------------------------------------------------------
 
@@ -169,6 +175,7 @@ def createScholarshipProfile(request):
             form.save()
             data['form_is_valid'] = True
         else:
+            print form.errors
             data['form_is_valid'] = False
     else:
         form = ScholarshipForms()

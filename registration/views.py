@@ -92,19 +92,19 @@ def createStudentProfile(request):
 def tableEnrollmentList(request, pk='pk'):
     student = get_object_or_404(Student, pk=pk)
     
-    subject_list = Enrollment.objects.filter(student = student)
+    enrollment_list = Enrollment.objects.filter(student = student)
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(subject_list, 4)
+    paginator = Paginator(enrollment_list, 4)
     
     try:
-        subjects = paginator.page(page)
+        enrollment = paginator.page(page)
     except PageNotAnInteger:
-        subjects = paginator.page(1)
+        enrollment = paginator.page(1)
     except EmptyPage:
-        subjects = paginator.page(paginator.num_pages)
+        enrollment = paginator.page(paginator.num_pages)
         
-    context = {'subject_list': subjects}
+    context = {'enrollment_list': enrollment}
     html_form = render_to_string('registrar/table-student-profile.html',
         context,
         request = request,
@@ -117,9 +117,9 @@ def createEnrollment(request, pk='pk'):
     data = {'form_is_valid' : False }
     current_student = get_object_or_404(Student, pk=pk)
     try:
-        subject = Enrollment.objects.latest('subject_ID')
+        enrollment = Enrollment.objects.latest('enrollment_ID')
     except:
-        subject = None
+        enrollment = None
     if request.method == 'POST':
         form = RegistrationForms(request.POST)
         form.date_enrolled = datetime.now()
@@ -135,7 +135,7 @@ def createEnrollment(request, pk='pk'):
             data['form_is_valid'] = False
     else:
         form = RegistrationForms()
-    context = {'form': form, 'student':current_student, 'last_record':subject}
+    context = {'form': form, 'student':current_student, 'last_record':enrollment}
     data['html_form'] = render_to_string('registrar/forms-registration-create.html',
         context,
         request=request,

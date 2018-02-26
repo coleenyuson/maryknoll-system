@@ -18,6 +18,7 @@ urlpatterns = [
         #url(r'^section/list/detail$', views.detailSection, name = 'section-create'),
         url(r'^section/list/add-form$', views.generateSectionForm, name = 'section-create-form'),
         url(r'^section/list/(?P<pk>\d+)/$', views.sectionDetails, name = 'section-detail'),
+        
         #-----------------------SCHOLARSHIP--------------------------------------------------------
         url(r'^scholarship-list/$', views.scholarshipList, name = 'scholarship-list'),
         url(r'^scholarship-list/table$', views.tableScholarshipList, name = 'scholarship-table'),
