@@ -34,7 +34,7 @@ $(function(){
           dataType: 'json',
           success: function(data) {
               if (data.form_is_valid) {
-                  window.location = "{% url 'student-details' student.student_ID%}"
+                  window.location = "{% url 'enrollment-create' student.student_ID%}"
               }
               else {
                   //$(".content").html(data.html_form);
