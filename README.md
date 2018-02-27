@@ -63,13 +63,13 @@ Configure the web host's WSGI with:
 import os
 import sys
 
-#assuming your manage.py is located at /home/user/lol-project then
-path = '/home/user/lol-project'
+#assuming your manage.py is located at /home/maryknoll/project/maryknoll-system then
+path = '/home/maryknoll/project/maryknoll-system'
 if path not in sys.path:
     sys.path.append(path)
 
-#assuming your settings.py is located at /home/user/lol-project/lol-project then
-os.environ['DJANGO_SETTINGS_MODULE'] = 'local_library_website.settings'
+#assuming your settings.py is located at /home/maryknoll/project/maryknoll-system/main then
+os.environ['DJANGO_SETTINGS_MODULE'] = 'main.settings'
 
 
 from django.core.wsgi import get_wsgi_application
