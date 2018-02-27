@@ -30,7 +30,7 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".js-employee-create-form", function() {
+    $(".content").on("submit", ".js-employee-create-form", function() {
     var form = $(this);
     $.ajax({
         url: '{% url "employee-create" %}',
@@ -48,7 +48,8 @@ $(function() {
         }
     });
     return false;
-});
+    });
+    
 });
 
 

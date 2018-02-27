@@ -66,8 +66,8 @@ class Employee(models.Model):
 	def __str__(self):
 		return self.first_name
 		
-	'''def get_abosulute_url(self):
-	    return reverse('employee-details', kwargs={"id": self.id})'''
+	def get_abosulute_url(self):
+	    return reverse('employee-details', kwargs={"id": self.id})
 	
 ON_HOLD = "h"
 APPROVED = "p"

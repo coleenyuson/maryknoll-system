@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import EmployeeForms
+from django.http import HttpResponseRedirect
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,6 +21,8 @@ def userList(request):
 
 def addEmployeeProfile(request):
     return render(request, 'administrative/admin-employee-list-add.html')
+
+
     
 #AJAX VIEWS --------------------------------------------------------------------
 from django.template.loader import render_to_string
@@ -67,25 +70,14 @@ def createEmployeeProfile(request):
     )
     return JsonResponse(data)
     
-'''def updateEmployee(request, pk='pk'):
+def updateEmployeeForm(request, pk='pk'):
     instance = get_object_or_404(Employee, pk=pk)
-    try:
-        last_employee = Employee.objects.latest('employee_ID')
-    except:
-        last_employee = None
-    if request.method == 'POST':
-        form = EmployeeForms(request.POST or None)
-        if form.is_valid(commit=False):
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            data['form_is_valid'] = False
-    else:
-        form = EmployeeForms()
-    context = {'form': form, 'employee':last_employee}
-    data['html_form'] = render_to_string('administrative/forms-employee-create.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)'''
+    form = EmployeeForms(request.POST or None, instance = instance)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        return HttpResponseRedirect('administrative/admin-employee-list.html')
+    context = {'form': form, 'instance': instance}
+    return render(request, 'administrative/forms-employee-update.html', context)
+    
     
