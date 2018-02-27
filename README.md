@@ -25,7 +25,7 @@ Assuming you are using any linux OS (or git bash on windows), you can run this i
 ```
 sudo apt-get update
 sudo apt-get install python-pip
-sudo pip install django
+sudo pip install django==1.9
 ```
 
 To check if you have successfully installed django and its version:
