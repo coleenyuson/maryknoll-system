@@ -22,6 +22,10 @@ def userList(request):
 def addEmployeeProfile(request):
     return render(request, 'administrative/admin-employee-list-add.html')
 
+def updateEmployee(request, pk='pk'):
+    instance = get_object_or_404(Employee, pk=pk)
+    return render(request, 'administrative/admin-employee-list-update.html', {'instance': instance})
+
 
     
 #AJAX VIEWS --------------------------------------------------------------------
@@ -72,12 +76,26 @@ def createEmployeeProfile(request):
     
 def updateEmployeeForm(request, pk='pk'):
     instance = get_object_or_404(Employee, pk=pk)
-    form = EmployeeForms(request.POST or None, instance = instance)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
-        return HttpResponseRedirect('administrative/admin-employee-list.html')
-    context = {'form': form, 'instance': instance}
-    return render(request, 'administrative/forms-employee-update.html', context)
+    data = {'form_is_valid' : False }
+    try:
+        last_employee = Employee.objects.latest('employee_ID')
+    except:
+        last_employee = None
+    if request.method == 'POST':
+        form = EmployeeForms(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = EmployeeForms(instance = instance)
+    context = {'form': form, 'employee':last_employee, 'instance': instance}
+    data['html_form'] = render_to_string('administrative/forms-employee-update.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
     
     

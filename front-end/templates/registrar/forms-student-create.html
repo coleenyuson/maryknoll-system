@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form method="POST" action="{% url 'student-create' %}" class="js-student-create-form">
+<form method="POST" action="{% url 'student-create' %}" class="heading-label js-student-create-form">
 {% csrf_token %}
     
         <div class="row">
@@ -61,12 +61,10 @@
           </div>
           <div class="col-md-4{% if form.birthdate.errors %} text-danger has-error{% endif %}">
             <label>Date of Birth:</label><br/>
-            <div class="col">
             {{form.birthdate|add_class:"form-control"|attr:"placeholder:12/30/2000"|attr:"type:date"}}
             {% if form.birthdate.errors %}
                 <p class="help-block">{{ form.birthdate.errors }}</p>
             {% endif %}
-          </div>
           </div>
           <div class="col-md-2{% if form.gender.errors %} text-danger has-error{% endif %}">
             <label>Gender:</label><br/>

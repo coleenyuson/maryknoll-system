@@ -7,18 +7,22 @@
 
 {%load static%}
 {% block content %}
-    <!-- FORM CONTENT -->
-    <div class="container-fluid bg-content">
+    <div class="container-fluid bg-content wrapper">
       <div class="content">
         
-          
-      </div>
-    </div>
+        </div>
+       </div>
+       
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
 
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "scholarship-create" %}',
+        url: '{% url "employee-update-form" instance.employee_ID%}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -26,16 +30,16 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".js-scholarship-create-form", function() {
+    $(".content").on("submit", ".js-employee-update-form", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "scholarship-create" %}',
+        url: '{% url "employee-update-form" instance.employee_ID%}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'scholarship-list' %}"
+                window.location = "{%url 'employee-list' %}"
             }
             else {
                 console.log(data.form_is_valid);
@@ -44,7 +48,8 @@ $(function() {
         }
     });
     return false;
-});
+    });
+    
 });
 
 
