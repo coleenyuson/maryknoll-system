@@ -1,10 +1,75 @@
-<html>
-  
-<body>
-  <h1>Form</h1>
-  <form method='POST' action=''>{% csrf_token %}
-    {{form.as_p}}
-  </form>
-  <input type='submit' value='Update'/>
-</body>
-</html>
+<div class="form-heading margin">
+          <h1> Settings - Employee Profile </h1>
+        </div>
+          {% load widget_tweaks %}
+          <form action="{% url 'employee-update-form' pk=instance.employee_ID %}" method="POST" class="js-employee-update-form">
+          {% csrf_token %}
+
+               <!-- Emp First Name -->
+              <div class="row">
+                  <label class="control-label col-sm-2" for="empFN">First Name:</label>
+                  <div class="col-sm-4">
+                    {{form.first_name|add_class:"form-control"|attr:"placeholder = Enter First Name"}}
+                    {% if form.first_name.errors %}
+                      <p class="help-block">{{ form.first_name.errors }}</p>
+                    {% endif %}
+                  </div>
+
+                <!-- Emp Last Name -->
+                  <label class="control-label col-sm-2" for="empLN">Last Name:</label>
+                  <div class="col-sm-4">
+                    {{form.last_name|add_class:"form-control"|attr:"placeholder = Enter First Name"}}
+                    {% if form.last_name.errors %}
+                      <p class="help-block">{{ form.last_name.errors }}</p>
+                    {% endif %}
+                  </div>
+              </div>
+
+              <div style="margin: 10px 10px 10px 10px"> </div>
+
+              <div class="row">
+                  <!-- Emp Username -->
+                  <label class="control-label col-sm-2" for="empUN">Work Type:</label>
+                  <div class="col-sm-4">
+                    {{form.work_type|add_class:"form-control"|attr:"placeholder = Work Type"}}
+                    {% if form.work_type.errors %}
+                      <p class="help-block">{{ form.work_type.errors }}</p>
+                    {% endif %}
+                  </div>
+                
+              </div>
+
+              <div style="margin: 10px 10px 10px 10px"> </div>
+
+              <div class="row">
+                  <div class="col-md-2">
+                    <label>Employee Type:</label><br/>
+                    {{form.emp_type|add_class:"form-control"}}
+                    {% if form.emp_type.errors %}
+                        <p class="help-block">{{ form.emp_type.errors }}</p>
+                    {% endif %}
+                  </div>
+
+                  <div class="col-md-2">
+                    <label>Employee Status:</label>
+                    {{form.emp_status|add_class:"form-control"}}
+                    {% if form.emp_status.errors %}
+                        <p class="help-block">{{ form.emp_status.errors }}</p>
+                    {% endif %}
+                  </div>
+                  
+              </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="float-right">
+                        <input type="submit" class="btn btn-primary" value="Save Employee Profile"></input> 
+                    </div>
+                  </div>
+                </div>
+
+
+
+          </form>

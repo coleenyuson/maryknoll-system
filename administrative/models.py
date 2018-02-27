@@ -67,7 +67,7 @@ class Employee(models.Model):
 		return self.first_name
 		
 	def get_abosulute_url(self):
-	    return reverse('employee-details', kwargs={"id": self.id})
+	    return reverse('employee-list', kwargs={"id": self.id})
 	
 ON_HOLD = "h"
 APPROVED = "p"
