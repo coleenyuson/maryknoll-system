@@ -24,7 +24,7 @@
                       inactive-status">
                       </i> Inactive</td>
                   {%endif%}
-                  <td class="text-center"><a href="{% url 'employee-update-form' pk=emp.employee_ID %}" class="btn btn-success btn-sm view-button">Edit</a>
+                  <td class="text-center"><a href="{% url 'employee-update' pk=emp.employee_ID %}" class="btn btn-success btn-sm view-button">Edit</a>
                 </tr>
               {% empty %}
                 <tr>
