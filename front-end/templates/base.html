@@ -34,8 +34,8 @@
         {% endblock %}
       </ul>
     </div>
-    <span class="navbar-text">Steve Harrington <i class="icon-arrow-down"></i> </span> <!-- User's fullname -->
-    <a href="{% url 'logout' %}">
+    <span class="navbar-text">{{ user.get_username }} <i class="icon-arrow-down"></i> </span> <!-- User's fullname -->
+    <a href="{% url 'logout' %}?next={{request.path}}">
       <button class="btn-logout" action=""><span>Logout</span></button>
     </a>
   </nav>
