@@ -237,6 +237,35 @@ def createScholarshipProfile(request):
     )
     return JsonResponse(data)
 
+def updateScholarship(request, pk='pk'):
+    instance = get_object_or_404(Scholarship, pk=pk)
+    return render(request, 'enrollment/scholarship-list-update.html', {'instance': instance})
+
+
+def editScholarshipForm(request, pk='pk'):
+    instance = get_object_or_404(Scholarship, pk=pk)
+    data = {'form_is_valid' : False }
+    try:
+        last_scholarship = Scholarship.objects.latest('scholarship_ID')
+    except:
+        last_scholarship = None
+    if request.method == 'POST':
+        form = ScholarshipForms(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = ScholarshipForms(instance = instance)
+    context = {'form': form, 'scholarship':last_scholarship, 'instance': instance}
+    data['html_form'] = render_to_string('enrollment/forms-scholarship-edit.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+    
 #--------------------------------------SUBJECT OFFERING------------------------------------------------
 def tableSubjectOfferingList(request):
     subjectOffering_list = Offering.objects.all()

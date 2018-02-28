@@ -1,25 +1,25 @@
 
 urls
 
-url(r'^curriculum-list/update/(?P<pk>\d+)$', views.updateCurriculum, name = 'curriculum-update'),
-url(r'^curriculum-list/edit-form/(?P<pk>\d+)$', views.editCurriculumForm, name = 'curriculum-edit'),
+url(r'^scholarship-list/update/(?P<pk>\d+)$', views.updateScholarship, name = 'scholarship-update'),
+url(r'^scholarship-list/edit-form/(?P<pk>\d+)$', views.editScholarship, name = 'scholarship-edit-form'),
 
 views
 
-def updateCurriculum(request, pk='pk'):
-    instance = get_object_or_404(Curriculum, pk=pk)
-    return render(request, 'enrollment/admin-curriculum-list-update.html', {'instance': instance})
+def updateScholarship(request, pk='pk'):
+    instance = get_object_or_404(Scholarship, pk=pk)
+    return render(request, 'enrollment/scholarship-list-update.html', {'instance': instance})
 
 
-def updateCurriculumForm(request, pk='pk'):
-    instance = get_object_or_404(Curriculum, pk=pk)
+def updateScholarshipForm(request, pk='pk'):
+    instance = get_object_or_404(Scholarship, pk=pk)
     data = {'form_is_valid' : False }
     try:
-        last_curriculum = Curriculum.objects.latest('curriculum_ID')
+        last_scholarship = Scholarship.objects.latest('scholarship_ID')
     except:
-        last_curriculum = None
+        last_scholarship = None
     if request.method == 'POST':
-        form = CurriculumForms(request.POST, instance = instance)
+        form = ScholarshipForms(request.POST, instance = instance)
         if form.is_valid():
             instance = form.save()
             instance.save()
@@ -27,9 +27,9 @@ def updateCurriculumForm(request, pk='pk'):
         else:
             data['form_is_valid'] = False
     else:
-        form = CurriculumForms(instance = instance)
-    context = {'form': form, 'curriculum':last_curriculum, 'instance': instance}
-    data['html_form'] = render_to_string('enrollment/forms-curriculum-update.html',
+        form = ScholarshipForms(instance = instance)
+    context = {'form': form, 'scholarship':last_scholarship, 'instance': instance}
+    data['html_form'] = render_to_string('enrollment/forms-scholarship-edit.html',
         context,
         request=request,
     )

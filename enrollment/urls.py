@@ -28,6 +28,9 @@ urlpatterns = [
         url(r'^scholarship-list/table$', views.tableScholarshipList, name = 'scholarship-table'),
         url(r'^scholarship-list/add$', views.addScholarshipProfile, name = 'scholarship-add'),
         url(r'^scholarship-list/create$', views.createScholarshipProfile, name = 'scholarship-create'),
+        
+        url(r'^scholarship-list/update/(?P<pk>\d+)$', views.updateScholarship, name = 'scholarship-update'),
+        url(r'^scholarship-list/edit-form/(?P<pk>\d+)$', views.editScholarshipForm, name = 'scholarship-edit-form'),
         #-----------------------SUBJECT OFFERING----------------------------------------------------
         url(r'^subjectOffering-list/$', views.subjectOfferingList, name = 'subjectOffering-list'),
         url(r'^subjectOffering-list/table$', views.tableSubjectOfferingList, name = 'subjectOffering-table'),
