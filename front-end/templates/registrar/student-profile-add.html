@@ -24,8 +24,8 @@ $(function(){
             $(".content").html(data.html_form);
         }
     });
-  
-  $(".content").on("submit", ".enrollment-form", function() {
+});
+ $(".content").on("submit", ".enrollment-form", function() {
       var form = $(this);
       $.ajax({
           url: '{% url "enrollment-create" student.student_ID%}',
@@ -34,15 +34,14 @@ $(function(){
           dataType: 'json',
           success: function(data) {
               if (data.form_is_valid) {
-                  window.location = "{% url 'enrollment-create' student.student_ID%}"
+                  window.location = "{% url 'student-details' student.student_ID%}"
               }
               else {
-                  //$(".content").html(data.html_form);
+                  $(".content").html(data.html_form);
               }
           }
       });
       return false;
   });
-});
 </script>
 {% endblock %}
