@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.core.urlresolvers import reverse
 #from registration.models import Student
@@ -88,7 +89,7 @@ class Promissory(models.Model):
 	    (APPROVED, 'Approved'),
 	    (DECLINED, 'Declined'),
 	)
-	emp_status = models.CharField(max_length=1,
+	promissory_status = models.CharField(max_length=1,
 	    choices=STATUS_CHOICES,
 	    blank=False,
 	    default=ON_HOLD
