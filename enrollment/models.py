@@ -75,7 +75,7 @@ class Curriculum(models.Model):
         return "%s - %s" % (self.year_level, self.school_year)
         
     def get_abosulute_url(self):
-	    return reverse('curriculum-detail', kwargs={"id": self.id})
+	    return reverse('curriculum-list', kwargs={"id": self.id})
 
 class Subjects(models.Model):
     subject_ID = models.AutoField(primary_key=True)
