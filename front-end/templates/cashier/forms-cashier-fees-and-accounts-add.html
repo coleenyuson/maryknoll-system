@@ -1,0 +1,37 @@
+{% load widget_tweaks %}
+<form method="POST" action="{% url 'form-fees-and-accounts-add' %}" class="heading-label parts-forms">{% csrf_token %}
+  <div class="row">
+    <div class="col">
+      <h3 class="link" style="margin-top: 10px;">Fees and Accounts Details</h3>
+    </div>
+  </div>
+  <form>
+    <div class="row">
+      <div class="col-md-4">
+        <label>*Year Level:</label>
+        <select class="custom-select btn-block" required>
+          <option selected>Choose a year level..</option>
+          <option value="1">Kindergarten 1</option>
+          <option value="2">Kindergarten 2</option>
+          <option value="3">Grade School 1</option>
+          <option value="3">Grade School 2</option>
+          <!-- Values should be from the database SchoolYearID -->
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label>Particular Name:</label> 
+        {{form.particular_name|add_class:"form-control"}}
+      </div>
+      <div class="col-md-6">
+        <label>*Fee Amount:</label>
+        <input type="number" class="form-control" id="feeAmount">
+      </div>
+    </div>
+  </div>
+<div class="btn-forms" style="display: flex; justify-content: flex-end">
+  <a href="scholarship-list.html" class="btn btn-link">Cancel</a>
+  <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle" aria-hidden="true"></i> Save Particular Details</button>
+</div>
+</form>

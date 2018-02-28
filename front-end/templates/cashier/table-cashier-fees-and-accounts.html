@@ -1,0 +1,58 @@
+<table class="table table-bordered bg-nav table-hover">
+  <thead class="thead-light">
+    <tr>
+      <!-- Refer to database for headings -->
+      <th scope="col">Particular Name</th>
+      <th scope="col">Fee Amount</th>
+      <th scope="col">Year Level</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for parts in particulars%}
+    <tr>
+      <td> {{parts.particular_name}} </td>
+      <td> *5,000 </td>
+      <td> *Grade 12 </td>
+      <td class="text-center">
+        <a href="{%url 'fees-and-accounts-edit' pk=parts.particular_ID %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="6" class="text-center">No Particulars</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+</div>
+{% if particulars.has_other_pages %}
+<nav aria-label="Page navigation" class="no-print">
+  <ul class="pagination pagination-md justify-content-center">
+    {% if particulars.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="javascript:generatePage({{ particulars.previous_page_number }})" tabindex="-1">Previous</a>
+    </li>
+    {%else%}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    {%endif%} 
+    {% for i in particulars.paginator.page_range %} 
+      {% if particulars.number == i %}
+        <li class="page-item active"><a class="page-link " href="#" >{{i}}<span class="sr-only">(current)</span></a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:generatePage({{i}})">{{i}}</a></li>
+      {% endif %} 
+    {% endfor %} 
+    {% if particulars.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="javascript:generatePage({{ particulars.next_page_number }})">Next</a>
+    </li>
+    {%else%}
+    <li class="page-item disabled">
+      <a class="page-link" href="#">Next</a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+{% endif %}
