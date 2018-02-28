@@ -2,31 +2,87 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from .forms import *
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import *
 
+#FOR AJAX IMPORTS
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 # Create your views here.
 
 def index(request):
     return render(request, 'index.html')
 
-# PARTICULARS #  
-def listParticulars(request):
-    particulars = Particular.objects.all()
+# FEES AND ACCOUNTS || PARTICULARS # 
+def openFeeAccount(request):
+    return render(request, 'cashier/cashier-fees-and-accounts.html')
+def tableFeeAccount(request):
+    particulars_list = Particular.objects.all()
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(particulars_list, 10)
     
-    return render(request, 'particulars/particulars-list.html', {'particulars':particulars})
+    try:
+        particulars = paginator.page(page)
+    except PageNotAnInteger:
+        particulars = paginator.page(1)
+    except EmptyPage:
+        particulars = paginator.page(paginator.num_pages)
+        
+    context = {'particulars': particulars}
+    html_form = render_to_string('cashier/table-cashier-fees-and-accounts.html',
+        context,
+        request = request,
+    )
+    return JsonResponse({'html_form' : html_form})
 
-def addParticulars(request):
+def openFeeAccountAdd(request):
+    return render(request, 'cashier/cashier-fees-and-accounts-add.html')
+def formFeeAccountAdd(request):
+    data = {'form_is_valid' : False }
     if request.method == 'POST':
         form = ParticularForms(request.POST)
         if form.is_valid():
+            post = form.save(commit=False)
+            post.particular_details = "Auto-generated"
+            
             form.save()
-            return HttpResponseRedirect(reverse('list-particulars'))
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
     else:
         form = ParticularForms()
     context = {'form': form}
-    
-    return render(request, 'particulars/add-particulars.html', context)
+    data['html_form'] = render_to_string('cashier/forms-cashier-fees-and-accounts-add.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+def openFeeAccountEdit(request,pk='pk'):
+    particular = Particular.objects.get(particular_ID = pk)
+    return render(request, 'cashier/cashier-fees-and-accounts-edit.html',{'particular':particular})
 
+def formFeeAccountEdit(request,pk='pk'):
+    particular = Particular.objects.get(particular_ID = pk)
+    data = {'form_is_valid' : False }
+    if request.method == 'POST':
+        form = ParticularForms(request.POST,instance = particular)
+        if form.is_valid():
+            particular = form.save()
+            particular.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = ParticularForms(instance = particular)
+    context = {'form': form}
+    data['html_form'] = render_to_string('cashier/forms-cashier-fees-and-accounts-add.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+    
 # END PARTICULARS #
 # ACCOUNTS #
 def listAccounts(request):

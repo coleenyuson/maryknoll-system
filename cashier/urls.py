@@ -3,5 +3,17 @@ from django.conf.urls import url, include
 from . import views
 
 urlpatterns = [
-        
+        url(r'^fees-and-accounts$', views.openFeeAccount, name = 'fees-and-accounts'),
+        url(r'^fees-and-accounts/add$', views.openFeeAccountAdd, name = 'fees-and-accounts-add'),
+        url(r'^fees-and-accounts/edit/(?P<pk>\d+)$', views.openFeeAccountEdit, name = 'fees-and-accounts-edit'),
+    ]
+
+
+
+
+#AJAX URLS-----------------------------------------------------------------
+urlpatterns += [
+        url(r'^fees-and-accounts/table$', views.tableFeeAccount, name = 'table-fees-and-accounts'),
+        url(r'^fees-and-accounts/add/form$', views.formFeeAccountAdd, name = 'form-fees-and-accounts-add'),
+        url(r'^fees-and-accounts/edit/form/edit/(?P<pk>\d+)$', views.formFeeAccountEdit, name = 'form-fees-and-accounts-edit'),
     ]

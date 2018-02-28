@@ -1,206 +1,171 @@
 {% load widget_tweaks %}
 <div class="content">
-<form method="POST" action="{% url 'student-create' %}" class="heading-label js-student-create-form">
-{% csrf_token %}
-    
-        <div class="row">
-          <div class="col">
-            <h3 class="link" style="margin-top: 10px;">Student Information</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-          <label>Student ID:</label>
-            <p class="form-control-static">000{{student.student_ID|add:"1"}}</p><!--incremental-->
-          </div>
-          <div class="col-md-4{% if field.errors %} text-danger has-error{% endif %}">
-            <label>Student level:</label><br/><!-- unsure with the term pa-->
-            {{form.student_level|add_class:"form-control"}}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-10">
-            <label>Student Profile Picture:</label><br>
-            <label class="custom-file profile-picture">
+  <form method="POST" action="{% url 'student-create' %}" class="heading-label js-student-create-form">
+    {% csrf_token %}
+
+    <div class="row">
+      <div class="col">
+        <h3 class="link" style="margin-top: 10px;">Student Information</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <label>Student ID:</label>
+        <p class="form-control-static">000{{student.student_ID|add:"1"}}</p>
+        <!--incremental-->
+      </div>
+      <div class="col-md-4{% if field.errors %} text-danger has-error{% endif %}">
+        <label>Student level:</label><br/>
+        <!-- unsure with the term pa-->
+        {{form.student_level|add_class:"form-control"}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-10">
+        <label>Student Profile Picture:</label><br>
+        <label class="custom-file profile-picture">
             <input type="file" id="file" class="custom-file-input">
             <span class="custom-file-control"></span>
             </label>
-          </div>
-          
-        </div>
-        <div class="row">
-          <div class="col-md-4{% if form.first_name.errors %} text-danger has-error{% endif %}">
-            <label>First name:</label>
-              {{form.first_name|add_class:"form-control"}}
-              {% if form.first_name.errors %}
-                <p class="help-block">{{ form.first_name.errors }}</p>
-              {% endif %}
-          </div>
-          <div class="col-md-4{% if form.middle_name.errors %} text-danger has-error{% endif %}">
-            <label>Middle name:</label>
-              {{form.middle_name|add_class:"form-control"}}
-              {% if form.middle_name.errors %}
-                <p class="help-block">{{ form.middle_name.errors }}</p>
-              {% endif %}
-          </div>
-          <div class="col-md-4{% if form.last_name.errors %} text-danger has-error{% endif %}">
-            <label>Last name:</label>
-              {{form.last_name|add_class:"form-control"}}
-              {% if form.last_name.errors %}
-                <p class="help-block">{{ form.last_name.errors }}</p>
-              {% endif %}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6{% if form.birthplace.errors %} text-danger has-error{% endif %}">
-            <label>Place of Birth:</label>
-            {{form.birthplace|add_class:"form-control"}}
-            <!-- Kung pwede API dito ng mga places in the Philippines and outside -->
-            {% if form.birthplace.errors %}
-                <p class="help-block">{{ form.birthplace.errors }}</p>
-            {% endif %}
-          </div>
-          <div class="col-md-4{% if form.birthdate.errors %} text-danger has-error{% endif %}">
-            <label>Date of Birth:</label><br/>
-            {{form.birthdate|add_class:"form-control"|attr:"placeholder:12/30/2000"|attr:"type:date"}}
-            {% if form.birthdate.errors %}
-                <p class="help-block">{{ form.birthdate.errors }}</p>
-            {% endif %}
-          </div>
-          <div class="col-md-2{% if form.gender.errors %} text-danger has-error{% endif %}">
-            <label>Gender:</label><br/>
-            {{form.gender|add_class:"form-control"}}
-            {% if form.gender.errors %}
-                <p class="help-block">{{ form.gender.errors }}</p>
-            {% endif %}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col{% if form.home_addr.errors %} text-danger has-error{% endif %}">
-            <label>Home Address:</label>
-            {{form.home_addr|add_class:"form-control"}}  
-            {% if form.home_addr.errors %}
-                <p class="help-block">{{ form.home_addr.errors }}</p>
-            {% endif %}</div>
-        </div>
-        <div class="row">
-          <div class="col{% if form.postal_addr.errors %} text-danger has-error{% endif %}">
-            <label>Postal Address:</label>
-            {{form.postal_addr|add_class:"form-control"}}
-            {% if form.postal_addr.errors %}
-                <p class="help-block">{{ form.postal_addr.errors }}</p>
-            {% endif %}
-          </div>
-        </div>
-        <h5 class="sm-headings">Parental Information </h5>
-        <div class="row">
-          <div class="col-md-4{% if form.f_firstname.errors %} text-danger has-error{% endif %}">
-            <label>Father's First Name:</label>
-            {{form.f_firstname|add_class:"form-control"}}
-            {% if form.f_firstname.errors %}
-                <p class="help-block">{{ form.f_firstname.errors }}</p>
-            {% endif %}
-          </div>
-          <div class="col-md-4{% if form.f_middlename.errors %} text-danger has-error{% endif %}">
-            <label>Father's Middle Name:</label>
-            {{form.f_middlename|add_class:"form-control"}}
-            {% if form.f_middlename.errors %}
-                <p class="help-block">{{ form.f_middlename.errors }}</p>
-            {% endif %}
-          </div>
-          <div class="col-md-4{% if form.f_lastname.errors %} text-danger has-error{% endif %}">
-            <label>Father's Last Name:</label>
-            {{form.f_lastname|add_class:"form-control"}}
-            {% if form.f_lastname.errors %}
-                <p class="help-block">{{ form.f_lastname.errors }}</p>
-            {% endif %}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4{% if form.f_occupation.errors %} text-danger has-error{% endif %}">
-            <label>Father's Occupation:</label>
-            {{form.f_occupation|add_class:"form-control"}}
-            {% if form.f_occupation.errors %}
-                <p class="help-block">{{ form.f_occupation.errors }}</p>
-            {% endif %}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4{% if form.m_firstname.errors %} text-danger has-error{% endif %}">
-            <label>Mother's First Name:</label>
-            {{form.m_firstname|add_class:"form-control"}}
-            {% if form.m_firstname.errors %}
-                <p class="help-block">{{ form.m_firstname.errors }}</p>
-            {% endif %}
-          </div>
-          <div class="col-md-4{% if form.m_middlename.errors %} text-danger has-error{% endif %}">
-            <label>Mother's Middle Name:</label>
-            {{form.m_middlename|add_class:"form-control"}}
-            {% if form.m_middlename.errors %}
-                <p class="help-block">{{ form.m_middlename.errors }}</p>
-            {% endif %}
-          </div>
-          <div class="col-md-4{% if form.m_lastname.errors %} text-danger has-error{% endif %}">
-            <label>Mother's Last Name:</label>
-            {{form.m_lastname|add_class:"form-control"}}
-            {% if form.m_lastname.errors %}
-                <p class="help-block">{{ form.m_lastname.errors }}</p>
-            {% endif %}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4{% if form.m_occcupation.errors %} text-danger has-error{% endif %}">
-            <label>Mother's Occupation:</label>
-            {{form.m_occcupation|add_class:"form-control"}}
-            {% if form.m_occcupation.errors %}
-                <p class="help-block">{{ form.m_occcupation.errors }}</p>
-            {% endif %}
-          </div>
-        </div>
-        <h5 class="sm-headings">Sisters/Brothers enrolled in Maryknoll (Maximum: 5)</h5>
-        <div class="row" id="addSibs">
-          <div class="col-md-6">
-            <label>Sibling's Name</label>
-            <input type="text" class="form-control" placeholder="Last name, First name">
-            <!-- Dito sana ba kay autocomplete from database records -->
-          </div>
-          <div class="col-md-6">
-            <label>Year Graduated</label>
-              <input type="text" class="form-control">
-          </div>
-        </div>
-        <div class="row">
-          <button type="button" onclick="add()" class="btn btn-link"><i class="fa fa-plus" aria-hidden="true"></i> Add another sibling</button>
-        </div>
-        <div class="row">
-          <div class="col-md-6{% if form.guardian.errors %} text-danger has-error{% endif %}">
-            <label>Guardian's Name</label>
-            {{form.guardian|add_class:"form-control"}}
-            {% if form.guardian.errors %}
-                <p class="help-block">{{ form.guardian.errors }}</p>
-            {% endif %}
-          </div>
-          <div class="col-md-6{% if form.guardian_addr.errors %} text-danger has-error{% endif %}">
-            <label>Address</label>
-            {{form.guardian_addr|add_class:"form-control"}}
-            {% if form.guardian_addr.errors %}
-                <p class="help-block">{{ form.guardian_addr.errors }}</p>
-            {% endif %}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col{% if form.last_school.errors %} text-danger has-error{% endif %}">
-            <label>School Last Attended:</label>
-            {{form.last_school|add_class:"form-control"}}
-            {% if form.last_school.errors %}
-                <p class="help-block">{{ form.last_school.errors }}</p>
-            {% endif %}
-          </div>
-          </div>
+      </div>
+
     </div>
-  <div class="modal-footer">
-      <a href="{%url 'student-list' %}"> <button type="button" class="btn btn-link" >Cancel</button> </a>
-      <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle" aria-hidden="true"></i> Save student profile</button>
-  </div>
-  </form>
+    <div class="row">
+      <div class="col-md-4{% if form.first_name.errors %} text-danger has-error{% endif %}">
+        <label>First name:</label> {{form.first_name|add_class:"form-control"}} {% if form.first_name.errors %}
+        <p class="help-block">{{ form.first_name.errors }}</p>
+        {% endif %}
+      </div>
+      <div class="col-md-4{% if form.middle_name.errors %} text-danger has-error{% endif %}">
+        <label>Middle name:</label> {{form.middle_name|add_class:"form-control"}} {% if form.middle_name.errors %}
+        <p class="help-block">{{ form.middle_name.errors }}</p>
+        {% endif %}
+      </div>
+      <div class="col-md-4{% if form.last_name.errors %} text-danger has-error{% endif %}">
+        <label>Last name:</label> {{form.last_name|add_class:"form-control"}} {% if form.last_name.errors %}
+        <p class="help-block">{{ form.last_name.errors }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6{% if form.birthplace.errors %} text-danger has-error{% endif %}">
+        <label>Place of Birth:</label> {{form.birthplace|add_class:"form-control"}}
+        <!-- Kung pwede API dito ng mga places in the Philippines and outside -->
+        {% if form.birthplace.errors %}
+        <p class="help-block">{{ form.birthplace.errors }}</p>
+        {% endif %}
+      </div>
+      <div class="col-md-4{% if form.birthdate.errors %} text-danger has-error{% endif %}">
+        <label>Date of Birth:</label><br/> {{form.birthdate|add_class:"form-control"|attr:"placeholder:12/30/2000"|attr:"type:date"}} {% if form.birthdate.errors %}
+        <p class="help-block">{{ form.birthdate.errors }}</p>
+        {% endif %}
+      </div>
+      <div class="col-md-2{% if form.gender.errors %} text-danger has-error{% endif %}">
+        <label>Gender:</label><br/> {{form.gender|add_class:"form-control"}} {% if form.gender.errors %}
+        <p class="help-block">{{ form.gender.errors }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col{% if form.home_addr.errors %} text-danger has-error{% endif %}">
+        <label>Home Address:</label> {{form.home_addr|add_class:"form-control"}} {% if form.home_addr.errors %}
+        <p class="help-block">{{ form.home_addr.errors }}</p>
+        {% endif %}</div>
+    </div>
+    <div class="row">
+      <div class="col{% if form.postal_addr.errors %} text-danger has-error{% endif %}">
+        <label>Postal Address:</label> {{form.postal_addr|add_class:"form-control"}} {% if form.postal_addr.errors %}
+        <p class="help-block">{{ form.postal_addr.errors }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <h5 class="sm-headings">Parental Information </h5>
+    <div class="row">
+      <div class="col-md-4{% if form.f_firstname.errors %} text-danger has-error{% endif %}">
+        <label>Father's First Name:</label> {{form.f_firstname|add_class:"form-control"}} {% if form.f_firstname.errors %}
+        <p class="help-block">{{ form.f_firstname.errors }}</p>
+        {% endif %}
+      </div>
+      <div class="col-md-4{% if form.f_middlename.errors %} text-danger has-error{% endif %}">
+        <label>Father's Middle Name:</label> {{form.f_middlename|add_class:"form-control"}} {% if form.f_middlename.errors %}
+        <p class="help-block">{{ form.f_middlename.errors }}</p>
+        {% endif %}
+      </div>
+      <div class="col-md-4{% if form.f_lastname.errors %} text-danger has-error{% endif %}">
+        <label>Father's Last Name:</label> {{form.f_lastname|add_class:"form-control"}} {% if form.f_lastname.errors %}
+        <p class="help-block">{{ form.f_lastname.errors }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4{% if form.f_occupation.errors %} text-danger has-error{% endif %}">
+        <label>Father's Occupation:</label> {{form.f_occupation|add_class:"form-control"}} {% if form.f_occupation.errors %}
+        <p class="help-block">{{ form.f_occupation.errors }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4{% if form.m_firstname.errors %} text-danger has-error{% endif %}">
+        <label>Mother's First Name:</label> {{form.m_firstname|add_class:"form-control"}} {% if form.m_firstname.errors %}
+        <p class="help-block">{{ form.m_firstname.errors }}</p>
+        {% endif %}
+      </div>
+      <div class="col-md-4{% if form.m_middlename.errors %} text-danger has-error{% endif %}">
+        <label>Mother's Middle Name:</label> {{form.m_middlename|add_class:"form-control"}} {% if form.m_middlename.errors %}
+        <p class="help-block">{{ form.m_middlename.errors }}</p>
+        {% endif %}
+      </div>
+      <div class="col-md-4{% if form.m_lastname.errors %} text-danger has-error{% endif %}">
+        <label>Mother's Last Name:</label> {{form.m_lastname|add_class:"form-control"}} {% if form.m_lastname.errors %}
+        <p class="help-block">{{ form.m_lastname.errors }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4{% if form.m_occcupation.errors %} text-danger has-error{% endif %}">
+        <label>Mother's Occupation:</label> {{form.m_occcupation|add_class:"form-control"}} {% if form.m_occcupation.errors %}
+        <p class="help-block">{{ form.m_occcupation.errors }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <h5 class="sm-headings">Sisters/Brothers enrolled in Maryknoll (Maximum: 5)</h5>
+    <div class="row" id="addSibs">
+      <div class="col-md-6">
+        <label>Sibling's Name</label>
+        <input type="text" class="form-control" placeholder="Last name, First name">
+        <!-- Dito sana ba kay autocomplete from database records -->
+      </div>
+      <div class="col-md-6">
+        <label>Year Graduated</label>
+        <input type="text" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <button type="button" onclick="add()" class="btn btn-link"><i class="fa fa-plus" aria-hidden="true"></i> Add another sibling</button>
+    </div>
+    <div class="row">
+      <div class="col-md-6{% if form.guardian.errors %} text-danger has-error{% endif %}">
+        <label>Guardian's Name</label> {{form.guardian|add_class:"form-control"}} {% if form.guardian.errors %}
+        <p class="help-block">{{ form.guardian.errors }}</p>
+        {% endif %}
+      </div>
+      <div class="col-md-6{% if form.guardian_addr.errors %} text-danger has-error{% endif %}">
+        <label>Address</label> {{form.guardian_addr|add_class:"form-control"}} {% if form.guardian_addr.errors %}
+        <p class="help-block">{{ form.guardian_addr.errors }}</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col{% if form.last_school.errors %} text-danger has-error{% endif %}">
+        <label>School Last Attended:</label> {{form.last_school|add_class:"form-control"}} {% if form.last_school.errors %}
+        <p class="help-block">{{ form.last_school.errors }}</p>
+        {% endif %}
+      </div>
+    </div>
+</div>
+<div class="modal-footer">
+  <a href="{%url 'student-list' %}"> <button type="button" class="btn btn-link" >Cancel</button> </a>
+  <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle" aria-hidden="true"></i> Save student profile</button>
+</div>
+</form>
 </div>
