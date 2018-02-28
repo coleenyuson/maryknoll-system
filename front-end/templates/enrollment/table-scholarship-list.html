@@ -16,7 +16,7 @@
         <td>{{s.scholarship_name}}</td>
         <td>{{s.get_scholarship_type_display}}</td>
         <td>{{s.school_year}}</td>
-        <td class="text-center"><a href="scholarship-subjects-list.html" class="btn btn-success btn-sm view-button">View</a></td>
+        <td class="text-center"><a href="{% url 'scholarship-update' pk=s.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
       </tr>
      {% empty %}
         <tr>

@@ -75,7 +75,7 @@ class Curriculum(models.Model):
         return "%s - %s" % (self.year_level, self.school_year)
         
     def get_abosulute_url(self):
-	    return reverse('curriculum-detail', kwargs={"id": self.id})
+	    return reverse('curriculum-list', kwargs={"id": self.id})
 
 class Subjects(models.Model):
     subject_ID = models.AutoField(primary_key=True)
@@ -144,7 +144,7 @@ class Offering(models.Model):
 	    return "%s - - - %s" % (self.subject, self.subject.subject_description)
 	 
 	def get_abosulute_url(self):
-	    return reverse('subjectOffering-details', args=[str(self.offering_ID)])
+	    return reverse('subjectOffering-list', args=[str(self.offering_ID)])
 	    
 ''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
 

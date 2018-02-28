@@ -1,0 +1,363 @@
+{% extends 'base.html' %} {% block settings %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
+</li>
+{% endblock %} {%load static%} {% block content %}
+    <!-- CONTENT -->
+
+    <div class="container-fluid bg-content wrapper">
+      <div class="content">
+        <div class="form-heading margin">
+          <h3> Transaction </h3>
+        </div>
+        
+        <!-- Date and Time -->
+        <div class="row">
+          <div class="col-sm-2">
+            <label> Date: </label>
+          </div>
+          <div class="col-sm-2">
+            <div id="currentDate"> </div>
+          </div>
+          <div class="col-sm-2">
+            <label> Time: </label>
+          </div>
+          <div class="col-sm-2">
+            <div id="currentTime"> </div>
+          </div>
+        </div>
+
+        <!-- FORM -->
+        <form>
+        <!-- Student Information -->
+          <div class="col">
+            <div class="row"> 
+
+              <div class="col-lg-8">  <!-- left side -->
+
+                <h5 class="sm-headings"> Particulars </h5>
+                <div id="addParticulars">
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <label>Particular Name:</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="col-sm-3">
+                      <label>Amount: </label>
+                      <p class="form-control-static">00.00</p>
+                    </div>
+                    <div class="col-sm-2">
+                      <label>Qty:</label>
+                        <input type="number" class="form-control" required>
+                    </div>
+                    <div class="col-sm-2 text-center delete-btn">
+                      <a href="#" class="delete-row warning" onclick="deleteRow(this)"><i class="fa fa-close"></i> </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <button type="button" onclick="add()" class="btn btn-link"><i class="fa fa-plus" aria-hidden="true"></i> Add additional subject</button>
+                </div>
+
+              </div> <!-- left side -->
+
+              <div class="col-lg-4"> <!-- Right side -->
+
+                <div class="card" id="paymentSummary">
+                  <div class="card-block">
+                    <div class="col">
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <h6> OR Number </h6>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="float-right">
+                            <p class="form-control-static">0001</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <hr>
+
+                      <h5 class="sm-headings"> Mode of Payment </h5>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label class="custom-control custom-radio">
+                            <input id="radioCashPayment" name="radio-payment" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Cash</span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label class="custom-control custom-radio">
+                            <input id="radioCheckPayment" name="radio-payment" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Check</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div id="cashMode" >
+                        <div class="row">
+                          <div class="col-md-5">
+                            <label>Cash Amount:</label>
+                          </div>
+                          <div class="col-md-7">
+                            <input type="number" class="form-control" required>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div id="checkMode" >
+                        <div class="row">
+                          <div class="col-md-5">
+                            <label>Credit Number:</label>
+                          </div>
+                          <div class="col-md-7">
+                            <input type="text" class="form-control" required>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-5">
+                            <label>Amount:</label>
+                          </div>
+
+                          <div class="col-md-7">
+                            <input type="number" class="form-control" required>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-5">
+                            <label>Bank Branch:</label>
+                          </div>
+
+                          <div class="col-md-7">
+                            <input type="text" class="form-control" required>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <hr>
+
+                      <div class="row">
+                        <div class="col-md-7">
+                          <h2> Total Amount Due </h2>
+                        </div>
+                        <div class="col-md-5">
+                          <div class="float-right">
+                            <p class="form-control-static"> <h2 class="amount-emphasis"> ₱ 8,580.00 </h1> </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-7">
+                          <h3> Subtotal</h3>
+                        </div>
+                        <div class="col-md-5">
+                          <div class="float-right">
+                            <p class="form-control-static"> <h3> ₱ 10,580.00 </h3> </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-7">
+                          <h3> Discount </h3>
+                        </div>
+                        <div class="col-md-5">
+                          <div class="float-right">
+                            <p class="form-control-static"> <h3> ₱ 2,000.00 </h3> </p>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div> <!-- Right side -->
+
+            </div>
+          </div> <!-- end tag for col -->
+          
+          <div class="btn-forms" style="display: flex; justify-content: flex-end">
+            <a href="scholarship-list.html" class="btn btn-link">Cancel</a>
+            <a href="#" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Create Payment Transaction </a>
+          </div>
+
+        </form>
+        <!-- End of FORM -->
+
+      </div> <!-- end tag for content -->
+    </div> <!-- end tag for container -->
+
+    <!-- CONTENT -->
+
+    <script>
+      var today = new Date(month, day, year);
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+
+      var yyyy = today.getFullYear();
+      if(dd<10){
+          dd='0'+dd;
+      } 
+      if(mm<10){
+          mm='0'+mm;
+      } 
+      var today = dd+'/'+mm+'/'+yyyy;
+      document.getElementById("currentDate").value = today;
+    </script>
+
+    <script>
+      function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+
+        var text = "";
+
+        h = checkHour(h);
+        m = checkTime(m);
+        s = checkTime(s);
+        text = getCurrentTime(h);
+         document.getElementById('currentTime').innerHTML = h + ":" + m + ":" + s + text;
+        var t = setTimeout(startTime, 500);
+      }
+      function getText(h, m, s) {
+        if if (i >= 13 && i <= 24) {
+          //PM
+         return " PM";
+        }
+        else {
+          //AM
+          return " AM";
+        }
+      }
+
+      function checkTime(i) {
+          if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+          return i;
+      }
+      function checkHour(i) {
+        if (i >= 13 && i <= 24) {
+          switch (i) {
+            case 13:
+              return i = 1;
+              break;
+            case 14:
+              return i = 2;
+              break;
+            case 15:
+              return i = 3;
+            case 16:
+              return i = 4;
+              break;
+            case 17:
+              return i = 5;
+              break;
+            case 18:
+              return i = 6;
+              break;
+            case 19:
+              return i = 7;
+              break;
+            case 20:
+              return i = 8;
+              break;
+            case 21:
+              return i = 9;
+              break;
+            case 22:
+              return i = 10;
+              break;
+            case 23:
+              return i = 11;
+              break;
+            case 24:
+              return i = 12;
+              break;
+          }
+        }
+        else {
+          return i = i;
+        }
+      }
+    </script>
+
+    <script>
+      var count=1;
+      var add = function(){
+        if(count >= 15) return;
+        $('#addParticulars').append('<div id="addParticulars"><div class="row"><div class="col-sm-4"><label>Particular Name:</label><input type="text" class="form-control" required></div><div class="col-sm-3"><label>Amount: </label><p class="form-control-static">00.00</p></div><div class="col-sm-2"><label>Qty:</label><input type="number" class="form-control" required></div><div class="col-sm-2 text-center delete-btn"><a href="#" class="delete-row warning" onclick="deleteRow(this)"><i class="fa fa-close"></i> </a></div></div></div>') // Increment SubjectID
+        count++;
+      };
+    </script>
+
+    <script>
+      function deleteRow(obj){
+        $(obj).closest('.row').remove();
+      }
+    </script>
+
+    <script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+    </script>
+
+    <script>
+      $(document).ready(function() {
+          $("#cashMode").hide();
+          $("#checkMode").hide();
+      });
+
+    </script>
+
+    <script>
+    $(document).ready(function() {
+       $('input[type="radio"]').click(function() {
+        if($(this).attr('id') == 'radioCashPayment') {
+              $('#cashMode').show();           
+         }
+
+         else {
+              $('#cashMode').hide();   
+         }
+
+         if($(this).attr('id') == 'radioCheckPayment') {
+              $('#checkMode').show();           
+         }
+
+         else {
+              $('#checkMode').hide();   
+         }
+       });
+    });
+    </script>
+
+    <script>
+      window.onscroll = function() {myFunction()};
+
+      var header = document.getElementById("paymentSummary");
+      var sticky = header.offsetTop;
+
+      function myFunction() {
+        if (window.pageYOffset >= sticky) {
+          header.classList.add("sticky");
+        } else {
+          header.classList.remove("sticky");
+        }
+      }
+    </script>
+
+{%endblock%}

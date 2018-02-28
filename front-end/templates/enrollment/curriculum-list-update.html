@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block settings %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
+</li>
+{% endblock %}
+
+{%load static%}
+{% block content %}
+    <!-- FORM CONTENT -->
+    <div class="container-fluid bg-content">
+      <div class="content">
+        
+        </div>
+      </div>
+    </div>
+
+<script>
+  var count=1;
+  var add = function(){
+    if(count >= 15) return;
+    $('#addSubjects').append('<div class="row" id="addSubjects"><div class="col-md-4"> <label>Subject ID:</label><p class="form-control-static">0001</p></div><div class="col-md-6"><label>Subject Name:</label><input type="text" class="form-control" required></div><div class="col-md-2 text-center delete-btn"><a href="#" class="delete-row warning" onclick="deleteRow(this)"><i class="fa fa-close"></i></div></div>') // Increment SubjectID
+    count++;
+  };
+</script>
+
+<script>
+  function deleteRow(obj){
+    $(obj).closest('.row').remove();
+  }
+</script>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+<!------------------------------------------------------------------------------>
+<script>
+$(function() {
+  $.ajax({
+        url: '{% url "curriculum-edit-form" pk=instance.pk %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $(".content").html(data.html_form);
+        }
+  });
+  
+  $(".content").on("submit", ".js-curriculum-edit-form", function() {
+    var form = $(this);
+    $.ajax({
+        url: '{% url "curriculum-edit-form" pk=instance.pk %}',
+        data: form.serialize(),
+        type: form.attr("method"),
+        dataType: 'json',
+        success: function(data) {
+            if (data.form_is_valid) {
+                window.location = "{%url 'curriculum-list' %}"
+            }
+            else {
+                console.log(data.form_is_valid);
+                $(".content").html(data.html_form);
+            }
+        }
+    });
+    return false;
+});
+});
+
+
+</script>
+{%endblock%}
