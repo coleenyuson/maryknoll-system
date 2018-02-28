@@ -80,6 +80,17 @@ $(function() {
         }
     });
 });
+
+function generatePage(pageNum) {
+ $.ajax({
+      url: '{% url "student-table" %}?page='+pageNum,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+          $("#student_listings").html(data.html_form);
+      }
+  });
+}
 </script>
 
 {%endblock%}
