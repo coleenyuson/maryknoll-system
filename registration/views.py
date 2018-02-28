@@ -194,7 +194,7 @@ def verifyActive():
       
       
 #CUSTOM MADE FUNCTIONS -------------------------------------------------------------
-def generateStudentCode(Student student_ID):
+def generateStudentCode(student):
     pass
 #REPORTS -------------------------------------------------------------
 
