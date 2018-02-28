@@ -1,25 +1,25 @@
 
 urls
 
-url(r'^scholarship-list/update/(?P<pk>\d+)$', views.updateScholarship, name = 'scholarship-update'),
-url(r'^scholarship-list/edit-form/(?P<pk>\d+)$', views.editScholarship, name = 'scholarship-edit-form'),
+url(r'^subjectOffering-list/update/(?P<pk>\d+)$', views.updateOffering, name = 'subjectOffering-update'),
+url(r'^subjectOffering-list/edit-form/(?P<pk>\d+)$', views.editOfferingForm, name = 'subjectOffering-edit-form'),
 
 views
 
-def updateScholarship(request, pk='pk'):
-    instance = get_object_or_404(Scholarship, pk=pk)
-    return render(request, 'enrollment/scholarship-list-update.html', {'instance': instance})
+def updateOffering(request, pk='pk'):
+    instance = get_object_or_404(Offering, pk=pk)
+    return render(request, 'enrollment/subjectOffering-list-update.html', {'instance': instance})
 
 
-def updateScholarshipForm(request, pk='pk'):
-    instance = get_object_or_404(Scholarship, pk=pk)
+def updateSubjectOfferingForm(request, pk='pk'):
+    instance = get_object_or_404(Offering, pk=pk)
     data = {'form_is_valid' : False }
     try:
-        last_scholarship = Scholarship.objects.latest('scholarship_ID')
+        last_subjectOffering = Offering.objects.latest('subjectOffering_ID')
     except:
-        last_scholarship = None
+        last_subjectOffering = None
     if request.method == 'POST':
-        form = ScholarshipForms(request.POST, instance = instance)
+        form = SubjectOfferingForms(request.POST, instance = instance)
         if form.is_valid():
             instance = form.save()
             instance.save()
@@ -27,9 +27,9 @@ def updateScholarshipForm(request, pk='pk'):
         else:
             data['form_is_valid'] = False
     else:
-        form = ScholarshipForms(instance = instance)
-    context = {'form': form, 'scholarship':last_scholarship, 'instance': instance}
-    data['html_form'] = render_to_string('enrollment/forms-scholarship-edit.html',
+        form = OfferingForms(instance = instance)
+    context = {'form': form, 'subjectOffering':last_subjectOffering, 'instance': instance}
+    data['html_form'] = render_to_string('enrollment/forms-subjectOffering-edit.html',
         context,
         request=request,
     )

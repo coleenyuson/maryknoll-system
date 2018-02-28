@@ -38,4 +38,6 @@ urlpatterns = [
         url(r'^subjectOffering-list/create$', views.createSubjectOfferingProfile, name = 'subjectOffering-create'),
         url(r'^subjectOffering-list/(?P<pk>\d+)/$', views.subjectOfferingDetail, name = 'subjectOffering-detail'),
         
+        url(r'^subjectOffering-list/update/(?P<pk>\d+)$', views.updateSubjectOffering, name = 'subjectOffering-update'),
+        url(r'^subjectOffering-list/edit-form/(?P<pk>\d+)$', views.editSubjectOfferingForm, name = 'subjectOffering-edit-form'),
     ]

@@ -144,7 +144,7 @@ class Offering(models.Model):
 	    return "%s - - - %s" % (self.subject, self.subject.subject_description)
 	 
 	def get_abosulute_url(self):
-	    return reverse('subjectOffering-details', args=[str(self.offering_ID)])
+	    return reverse('subjectOffering-list', args=[str(self.offering_ID)])
 	    
 ''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
 

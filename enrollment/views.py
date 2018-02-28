@@ -316,3 +316,32 @@ def subjectOfferingDetail(request, pk='pk'):
     except:
         last_record = Enrollment.objects.filter(subjOffering=subjOffering)
     return render(request, 'enrollment/subject-offering-add.html.html', {'subjOffering': subjOffering, 'record':last_record})
+
+def updateSubjectOffering(request, pk='pk'):
+    instance = get_object_or_404(Offering, pk=pk)
+    return render(request, 'enrollment/subject-offering-update.html', {'instance': instance})
+
+
+def editSubjectOfferingForm(request, pk='pk'):
+    instance = get_object_or_404(Offering, pk=pk)
+    data = {'form_is_valid' : False }
+    try:
+        last_subjectOffering = Offering.objects.latest('subjectOffering_ID')
+    except:
+        last_subjectOffering = None
+    if request.method == 'POST':
+        form = SubjectOfferingForms(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = SubjectOfferingForms(instance = instance)
+    context = {'form': form, 'subjectOffering':last_subjectOffering, 'instance': instance}
+    data['html_form'] = render_to_string('enrollment/forms-subject-offering-edit.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
