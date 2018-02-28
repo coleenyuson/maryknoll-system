@@ -49,6 +49,7 @@ def searchStudent(request):
 def tableStudentList(request):
     verifyActive()
     student_list = Student.objects.all()
+    
     #Pagination
     page = request.GET.get('page', 1)
     paginator = Paginator(student_list, 10)
