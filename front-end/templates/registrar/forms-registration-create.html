@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form method="POST" action="{% url 'enrollment-create'  student.student_ID %}" id="form1" class="enrollment-form">
+<form method="POST" action="{% url 'enrollment-create' pk=student.pk %}" id="form1" class="enrollment-form">
   {% csrf_token %}
   <div class="row">
     <div class="col">

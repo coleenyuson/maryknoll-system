@@ -22,7 +22,7 @@
                             active-status">
                             </i> Active</td>
                         {%endif%}
-                        <td class="text-center"><a href="{{ student.get_absolute_url  }}" class="btn btn-secondary btn-sm view-button">View</a></td>
+                        <td class="text-center"><a href="{{ student.get_absolute_url  }}" class="btn btn-secondary btn-sm view-button">View</a><a href="{% url 'student-update' pk=student.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
                     </tr>
                       {% empty %}
                         <tr>
