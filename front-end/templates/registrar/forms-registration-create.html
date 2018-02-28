@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form method="POST" action="{% url 'enrollment-create' pk=student.pk %}" id="form1" class="enrollment-form">
+<form method="POST" action="{% url 'enrollment-create'  student.student_ID %}" class="heading-label enrollment-form">
   {% csrf_token %}
   <div class="row">
     <div class="col">
@@ -51,6 +51,6 @@
   </div>
   <div class="btn-forms" style="display: flex; justify-content: flex-end">
     <a href="{% url 'student-details' student.student_ID %}" class="btn btn-link">Cancel</a>
-    <a href="#" onclick="document.getElementById('form1').submit();" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Student Registration</a>
+    <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle" aria-hidden="true"></i> Save Student Registration</button>
   </div>
 </form>
