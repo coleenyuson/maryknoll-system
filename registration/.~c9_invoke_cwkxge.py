@@ -162,9 +162,7 @@ def verifyActive():
             
       
       
-#CUSTOM MADE FUNCTIONS -------------------------------------------------------------
-def generateStudentCode(Student student_ID):
-    pass
+  
 #REPORTS -------------------------------------------------------------
 
 from django.db import models
