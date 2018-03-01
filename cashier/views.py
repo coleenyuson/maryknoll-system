@@ -121,7 +121,7 @@ def addAccountParticulars(request):
 # TRANSACTIONS #
 from django.db.models import Sum
 
-#ItemPrice.objects.aggregate(Sum('price'))
+#Enrollment.objects.filter(section_name='St. Bernard').aggregate(Sum('enrolled'))
 
 def listTransact(request):
     transacts = Transaction.objects.all()

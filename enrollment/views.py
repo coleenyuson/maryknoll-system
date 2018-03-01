@@ -22,7 +22,14 @@ def curriculumList(request):
     return render(request, 'enrollment/curriculum-list.html')
 
 def addCurriculumProfile(request):
-    return render(request, 'enrollment/curriculum-list-add.html')
+    new_curriculum = Curriculum(curriculum_status='Active')
+    new_curriculum.save()
+    return render(request, 'enrollment/curriculum-list.html')
+    
+def openCurriculumSubjectAdd(request, pk='pk'):
+    curriculum = Curriculum.objects.get(pk=pk)
+    return render(request, 'enrollment/curriculum-list-add.html', {'curriculum':curriculum})
+
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
 def scholarshipList(request):
@@ -107,7 +114,7 @@ def tableCurriculumSubjectList(request, pk='pk'):
     except EmptyPage:
         subject = paginator.page(paginator.num_pages)
         
-    context = {'subject_list': subject, "year_level": curriculum.year_level}
+    context = {'subject_list': subject}
     html_form = render_to_string('enrollment/table-curriculum-subject-list.html',
         context,
         request = request,

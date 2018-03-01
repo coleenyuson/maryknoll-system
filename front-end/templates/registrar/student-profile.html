@@ -1,15 +1,14 @@
-{% extends 'base.html' %}
-{% block settings %}
+{% extends 'base.html' %} {% block settings %}
 <li class="nav-item active-menu">
   <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
 </li>
-{% endblock %}
-
-{%load static%}
-{% block content %}
+{% endblock %} {%load static%} {% block content %}
 <div class="container-fluid bg-content">
-  <div class="content"> 
-    <a href="{% url 'student-list' %}"><h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4></a>
+  <div class="content">
+    <a href="{%url 'student-list' %}" class="no-print">
+      <h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4>
+    </a>
+    <div class="seal"></div>
     <div class="card">
       <div class="card-block">
         <div class="row">
@@ -18,9 +17,10 @@
               <div class="col-md-8">
                 <h1 class="card-title">{{student.first_name}}</h1>
               </div>
-              <div class="col-md-4 float-right">
-                <br/><!-- bwahaha tricks-->
-                <a href="#" class="card-link margin"><i class="fa fa-print" aria-hidden="true"></i> Print Student Profile</a>
+              <div class="col-md-4 float-right no-print">
+                <br/>
+                <!-- bwahaha tricks-->
+                <a href="javascript:window.print()" class="card-link margin btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Print Student Profile</a>
               </div>
             </div>
             <div class="row">
@@ -44,36 +44,36 @@
           </div>
         </div>
         <div class="row records">
-          <div class="col-md-8">
+          <div class="col-md-8 no-print">
             <h2>Student Registration</h2>
           </div>
           <div class="col-md-4">
-              <div class="btn-group float-right">
-                <a href="{%url 'enrollment-add' student.student_ID %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create Student Registration</a>
-              </div>
+            <div class="btn-group float-right no-print">
+              <a href="{%url 'enrollment-add' student.student_ID%}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create Student Registration</a>
+            </div>
           </div>
         </div>
         <div class="row table-records table-responsive enrollment-table">
-          
+
         </div>
       </div>
     </div>
   </div>
-  
+
 </div>
 
 <!-- ---------------------------BACKEND SCRIPTS ------------------------------->
 
 <script>
-$(function(){
-  $.ajax({
-        url: '{% url "enrollment-table" student.student_ID %}',
-        type: 'get',
-        dataType: 'json',
-        success: function(data) {
-            $(".enrollment-table").html(data.html_form);
-        }
+  $(function() {
+    $.ajax({
+      url: '{% url "enrollment-table" student.student_ID %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $(".enrollment-table").html(data.html_form);
+      }
+    });
   });
-});
 </script>
 {%endblock%}

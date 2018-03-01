@@ -1,69 +1,96 @@
-{% extends 'base.html' %}
-{% block settings %}
+{% extends 'base.html' %} {% block settings %}
 <li class="nav-item active-menu">
   <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
 </li>
-{% endblock %}
-
-{%load static%}
-{% block content %}
-    <!-- CONTENT -->
-    <div class="container-fluid bg-content">
-      <div class="content"> 
-        <a href="schoolyear-list.html"><h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4></a>
-        <div class="card">
-          <div class="card-block">
-            <div class="row records">
-              <div class="col-md-8">
-                <h2>Subject Offering</h2>
-              </div>
-              <div class="col-md-4">
-                <div class="float-right">
-                  <button onClick="location.href='{% url 'subjectOffering-add' %}'" type="button" class="add-button btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i>Create Subject Offering</button>
-                </div>
-              </div>
-            </div>
-            <div class="row table-records table-responsive" id="subjectOffering-listings">
-              <!-- Table here-->
+{% endblock %} {%load static%} {% block content %}
+<!-- CONTENT -->
+<div class="container-fluid bg-content">
+  <div class="content">
+    <div class="seal"></div>
+    <div class="menu-flex margin">
+      <div class="flex-item no-print">
+        <a href="#">
+          <h4><i class="fa fa-chevron-left" aria-hidden="true"></i> Previous School Year</h4>
+        </a>
+      </div>
+      <div class="flex-item title">
+        <h2 class="text-center">SY 2017-2018</h2>
+        <!-- Current School Year -->
+      </div>
+      <div class="flex-item no-print">
+        <a class="text-right" href="#">
+          <h4>Next School Year <i class="fa fa-chevron-right" aria-hidden="true"></i></h4>
+        </a>
+      </div>
+    </div>
+    <div class="menu-flex search-bar no-print">
+      <div class="flex-search">
+        <div class="input-group">
+          <div class="input-group-btn">
+            <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Category
+                </button>
+            <!-- Supply dropdown menu categories, refer to database -->
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">All categories</a>
+              <a class="dropdown-item" href="#">Offering ID</a>
+              <a class="dropdown-item" href="#">Subject Description</a>
+              <a class="dropdown-item" href="#">Teacher Assigned</a>
+              <a class="dropdown-item" href="#">Section Assigned</a>
             </div>
           </div>
+          <input type="text" class="changeIfStatus form-control" placeholder="Search records..." aria-label="Search records...">
+          <span class="input-group-btn">
+                <button type="button" class="btn btn-primary">Search</button>
+              </span>
         </div>
       </div>
-      
+      <div class="flex-print">
+        <a href="javascript:window.print()" class="card-link flex-item print btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Print Offerings</a>
+        <a href="{%url 'subjectOffering-add' %}" class="add-button btn btn-primary flex-item"><i class="fa fa-plus" aria-hidden="true"></i> Create New Subject Offering</a>
+      </div>
     </div>
-    <!-- CONTENT -->
+    <div class="row table-records table-responsive" id="subjectOffering-listings">
+      <!-- Table here-->
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+<!-- CONTENT -->
 
 <!-- Allows dropdown menu to select child -->
 <script>
-$(function(){
+  $(function() {
 
-  $(".dropdown-menu a").click(function(){
+    $(".dropdown-menu a").click(function() {
 
-        $("#selected:first-child").text($(this).text());
-        $("#selected:first-child").val($(this).text());
-        if($("#selected:first-child").val() == "Status"){
-            $(".changeIfStatus").replaceWith("<h1> test </h1>"); // must change into dropdown
-        }
-        else{
+      $("#selected:first-child").text($(this).text());
+      $("#selected:first-child").val($(this).text());
+      if ($("#selected:first-child").val() == "Status") {
+        $(".changeIfStatus").replaceWith("<h1> test </h1>"); // must change into dropdown
+      }
+      else {
 
-        }
+      }
 
-     });
+    });
 
   });
 </script>
 <!-- ---------------------------BACKEND SCRIPTS ------------------------------->
 <script>
-$(function() {
-  $.ajax({
-        url: '{% url "subjectOffering-table" %}',
-        type: 'get',
-        dataType: 'json',
-        success: function(data) {
-            $("#subjectOffering-listings").html(data.html_form);
-        }
+  $(function() {
+    $.ajax({
+      url: '{% url "subjectOffering-table" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#subjectOffering-listings").html(data.html_form);
+      }
     });
-});
+  });
 </script>
-    
+
 {%endblock%}

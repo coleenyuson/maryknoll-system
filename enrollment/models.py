@@ -76,14 +76,23 @@ class Curriculum(models.Model):
         default=ACTIVE
         )
     
+    STATUS_CHOICES=(
+        (ACTIVE, 'Active'),
+        (INACTIVE, 'Inactive'),
+    )
+    curriculum_status = models.CharField(max_length=1,
+        choices=STATUS_CHOICES,
+        blank=False,
+        default=INACTIVE
+        )
     class Meta:
         verbose_name = "Curriculum"
         
     def __str__(self):
-        return "%s - %s" % (self.year_level, self.school_year)
+        return "%s - %s" % (self.curriculum_year, self.curriculum_status)
         
     def get_abosulute_url(self):
-	    return reverse('curriculum-list', kwargs={"id": self.id})
+	    return reverse('curriculum-list', kwargs={"id": self.curriculum_ID})
 
 class Subjects(models.Model):
     subject_ID = models.AutoField(primary_key=True)
@@ -123,7 +132,7 @@ class Section(models.Model):
         return "%s - %s" % (self.curriculum,self.section_name)
     
     def get_abosulute_url(self):
-	    return reverse('section-detail', kwargs={"id": self.id})
+	    return reverse('section-detail', kwargs={"id": self.section_ID})
         
 class Offering(models.Model):
 	offering_ID = models.AutoField(primary_key=True)
@@ -136,7 +145,7 @@ class Offering(models.Model):
 	class Meta:
 	    verbose_name = "Offered Subject"
 	def __str__(self):
-	    return "%s - - - %s" % (self.subject, self.subject.subject_description)
+	    return "%s - - - %s" % (self.subject, self.section)
 	 
 	def get_abosulute_url(self):
 	    return reverse('subjectOffering-list', args=[str(self.offering_ID)])
