@@ -1,27 +1,27 @@
 <table class="table table-bordered bg-nav table-hover">
-                <thead class="thead-light">
-                  <tr>
-                    <!-- Refer to database for headings -->
-                    <th scope="col">Grade Level</th>
-                    <th scope="col">Subject Name</th>
-                    <th scope="col">Subject Description</th>
-                    <th scope="col">Credit Units</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    {%for subj in subject_list%}
-                    <td>{{year_level}}</td>
-                    <td>{{subj.subject_name}}</td>
-                    <td>{{subj.subject_description}}</td>
-                    <td>{{subj.units}}/3</td>
-                    <td class="text-center"><a href="#" class="btn btn-secondary btn-sm view-button">Edit</a></td>
-                  </tr>
-                  {% empty %}
-                  <tr>
-                    <td colspan="6" class="text-center">No Subjects</td>
-                  </tr>
-               {%endfor%}
-                </tbody>
-              </table>
+  <thead class="thead-light">
+    <tr>
+      <!-- Refer to database for headings -->
+      <th scope="col">Curriculum</th>
+      <th scope="col">Subject Name</th>
+      <th scope="col">Subject Description</th>
+      <th scope="col">Credit Units</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {%for subj in subject_list%}
+      <td>{{subj.curriculum}}</td>
+      <td>{{subj.subject_name}}</td>
+      <td>{{subj.subject_description}}</td>
+      <td>{{subj.units}}/3</td>
+      <td class="text-center"><a href="#" class="btn btn-secondary btn-sm view-button">Edit</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="6" class="text-center">No Subjects</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>

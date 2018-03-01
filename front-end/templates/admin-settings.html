@@ -1,37 +1,35 @@
-{% extends 'base.html' %}
-{% block settings %}
+{% extends 'base.html' %} {% block settings %}
 <li class="nav-item active-menu">
   <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
 </li>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="container-fluid bg-content wrapper">
   <div class="content">
     <div class="content-heading margin">
-      <h1>Admin Functionalities </h1> <!-- Replace with *cashier* or *registrar* or depending on the user + "functionalities" -->
+      <h1>Admin Functionalities </h1>
+      <!-- Replace with *cashier* or *registrar* or depending on the user + "functionalities" -->
       <!-- Alphabetical order -->
     </div>
     <!-- Registrar -->
     <div class="row row-menu">
       <div class="col-lg-4">
         <h3 class="link"> Student Profiles </h3>
-        <a href="{%url 'student-list'%}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Student Profiles</a>
+        <a href="{%url 'student-list' %}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Student Profiles</a>
       </div>
     </div>
     <!-- Cashier -->
     <div class="row row-menu">
       <div class="col-lg-4">
         <h3 class="link"> Fees and Accounts </h3>
-        <a href="{%url 'fees-and-accounts'%}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Fees and Accounts</a>
+        <a href="{%url 'fees-and-accounts' %}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Fees and Accounts</a>
       </div>
       <div class="col-lg-4">
         <h3 class="link"> Payment Logs </h3>
-        <a href="#" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Fees and Accounts</a>
+        <a href="#" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Payment Logs</a>
       </div>
       <div class="col-lg-4">
         <h3 class="link"> Student Accounts </h3>
-        <a href="student-accounts.html" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Student Accounts</a><br/>
+        <a href="#" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Student Accounts</a><br/>
       </div>
     </div>
     <div class="row row-menu">
@@ -44,28 +42,28 @@
     <div class="row row-menu">
       <div class="col-lg-4">
         <h3 class="link"> Curriculum and Subjects </h3>
-        <a href="{%url 'curriculum-list'%}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Curriculum</a><br/>
+        <a href="{%url 'curriculum-list' %}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Curriculum</a><br/>
       </div>
       <div class="col-lg-4">
         <h3 class="link"> Scholarships </h3>
-        <a href="{%url 'scholarship-list'%}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Available Scholarships</a>
+        <a href="{%url 'scholarship-list' %}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Available Scholarships</a>
       </div>
       <div class="col-lg-4">
         <h3 class="link"> School Year and Offerings </h3>
-        <a href="{%url 'subjectOffering-list'%}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Subject Offerings</a><br/>
+        <a href="{%url 'subjectOffering-list' %}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Subject Offerings</a><br/>
       </div>
     </div>
     <div class="row row-menu">
       <div class="col-lg-4">
         <h3 class="link"> Section </h3>
-        <a href="{% url 'section-list' %}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Sections</a><br/>
+        <a href="{%url 'section-list' %}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Sections</a><br/>
       </div>
     </div>
     <!--Administrative-->
     <div class="row row-menu">
       <div class="col-lg-4">
         <h3 class="link"> Employee Profiles</h3>
-        <a href="{%url 'employee-list'%}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Employee Profiles</a>
+        <a href="{%url 'employee-list' %}" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Employee Profiles</a>
       </div>
     </div>
     <div class="content-heading margin">
@@ -74,14 +72,13 @@
     <div class="row">
       <div class="col-lg-4">
         <h3 class="link">Users</h3>
-        <a href="users-list.html" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Users </a><br/>
+        <a href="#" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View Users </a><br/>
       </div>
       <div class="col-lg-4">
-        <h3 class="link"> Permissions </h3>
-        <a href="curriculum-subjects.html" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> Create custom permissions</a><br/>
+        <h3 class="link"> User Logs </h3>
+        <a href="#" class="grey"> <i class="fa fa-user" aria-hidden="true"></i> View User Logs</a><br/>
       </div>
     </div>
   </div>
 </div>
-
 {%endblock%}

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
+import datetime
 #import registration
 #import administrative
 
@@ -64,15 +65,22 @@ class Scholarship(models.Model):
 
 class Curriculum(models.Model):
     curriculum_ID = models.AutoField(primary_key=True)
-    year_level = models.ForeignKey(YearLevel, on_delete=models.CASCADE)
-    school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE)
+    curriculum_year = models.DateField(default=datetime.date.today)
     
-    
+    STATUS_CHOICES=(
+        (ACTIVE, 'Active'),
+        (INACTIVE, 'Inactive'),
+    )
+    curriculum_status = models.CharField(max_length=1,
+        choices=STATUS_CHOICES,
+        blank=False,
+        default=INACTIVE
+        )
     class Meta:
         verbose_name = "Curriculum"
         
     def __str__(self):
-        return "%s - %s" % (self.year_level, self.school_year)
+        return "%s - %s" % (self.curriculum_year, self.curriculum_status)
         
     def get_abosulute_url(self):
 	    return reverse('curriculum-list', kwargs={"id": self.id})

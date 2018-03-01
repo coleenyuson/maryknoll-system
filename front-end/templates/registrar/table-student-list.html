@@ -22,7 +22,7 @@
         {%else%} active-status">
         </i> Active</td>
         {%endif%}
-        <td class="text-center"><a href="{{ student.get_absolute_url  }}" class="btn btn-secondary btn-sm view-button">View</a></td>
+        <td class="text-center no-print"><a href="{{student.get_absolute_url}}" class="btn btn-success btn-sm view-button">View</a></td>
     </tr>
     {% empty %}
     <tr>
