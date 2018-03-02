@@ -47,6 +47,7 @@ def searchStudent(request):
         'is_taken': Student.objects.filter(first_name__contains=search).exists()
     }
     return JsonResponse(data)
+    
 def getStudentList(request):
     search = request.GET.get('search')
     genre = request.GET.get('genre')
