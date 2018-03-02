@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
+import datetime
 #import registration
 #import administrative
 
@@ -28,7 +29,6 @@ class TeacherDetails(models.Model):
 class School_Year(models.Model):
 	year_name = models.CharField(max_length=200)
 	date_start = models.DateField(auto_now = True)
-	date_end = models.DateField(null=True, blank=True)
 	
 	class Meta:
 	    verbose_name = "School Year"
@@ -64,36 +64,29 @@ class Scholarship(models.Model):
 
 class Curriculum(models.Model):
     curriculum_ID = models.AutoField(primary_key=True)
-    year_level = models.ForeignKey(YearLevel, on_delete=models.CASCADE)
-    school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE)
-    
-    
-    class Meta:
-        verbose_name = "Curriculum"
-        
-    def __str__(self):
-        return "%s - %s" % (self.year_level, self.school_year)
-        
-    def get_abosulute_url(self):
-	    return reverse('curriculum-detail', kwargs={"id": self.id})
-
-class Subjects(models.Model):
-    subject_ID = models.AutoField(primary_key=True)
-    subject_name = models.CharField(max_length=200)
-    subject_description = models.CharField(max_length=200)
-    #Subject status
-    STATUS_CHOICES = (
+    curriculum_year = models.DateField(default=datetime.date.today)
+    STATUS_CHOICES=(
         (ACTIVE, 'Active'),
-        (ON_LEAVE, 'On Leave'),
         (INACTIVE, 'Inactive'),
     )
-    units = models.IntegerField(null = True)
-    subject_status = models.CharField(max_length=1,
+    curriculum_status = models.CharField(max_length=1,
         choices=STATUS_CHOICES,
         blank=False,
         default=INACTIVE
         )
+    class Meta:
+        verbose_name = "Curriculum"
         
+    def __str__(self):
+        return "%s - %s" % (self.curriculum_year, self.curriculum_status)
+        
+    def get_abosulute_url(self):
+	    return reverse('curriculum-list', kwargs={"id": self.id})
+
+class Subjects(models.Model):
+    subject_ID = models.AutoField(primary_key=True)
+    subject_name = models.CharField(max_length=200)
+    units = models.IntegerField(null = True)
     curriculum = models.ForeignKey(Curriculum, on_delete = models.SET_NULL, null = True)
     
     class Meta:
@@ -144,7 +137,7 @@ class Offering(models.Model):
 	    return "%s - - - %s" % (self.subject, self.subject.subject_description)
 	 
 	def get_abosulute_url(self):
-	    return reverse('subjectOffering-details', args=[str(self.offering_ID)])
+	    return reverse('subjectOffering-list', args=[str(self.offering_ID)])
 	    
 ''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
 

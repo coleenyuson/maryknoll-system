@@ -1,59 +1,35 @@
 <table class="table table-bordered bg-nav table-hover">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">User ID</th>
-                <th scope="col">Full Name</th>
-                <th scope="col">Employee Type</th>
-                <th scope="col">Work Type</th>
-                <th scope="col">User Status</th>
-                <th scope="col">Actions </th>
-              </tr>
-            </thead>
-            <tbody>
-              {%for emp in employee_list%}
-                <tr>
-                  <td>{{emp.employee_ID}}</td>
-                  <td>{{emp.last_name}}, {{emp.first_name}}</td>
-                  <td>{{emp.get_emp_type_display}}</td>
-                  <td>{{emp.get_work_type_display}}</td>
-                  <td><i class="fa fa-circle 
-                  {%if emp.emp_status == "a"%}
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Full Name</th>
+      <th scope="col">Employee Type</th>
+      <th scope="col">Work Type</th>
+      <th scope="col">Employee Status</th>
+      <th scope="col" class="no-print">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for emp in employee_list%}
+    <tr>
+      <td>{{emp.last_name}}, {{emp.first_name}}</td>
+      <td>{{emp.get_emp_type_display}}</td>
+      <td>{{emp.get_work_type_display}}</td>
+      <td><i class="fa fa-circle 
+                  {%if emp.emp_status == " a "%}
                       active-status">
                       </i> Active</td>
-                  {%else%} 
-                      inactive-status">
-                      </i> Inactive</td>
-                  {%endif%}
-                  <td class="text-center"><a href="{% url 'employee-update' pk=emp.employee_ID %}" class="btn btn-success btn-sm view-button">Edit</a>
-                </tr>
-              {% empty %}
-                <tr>
-                  <td colspan="5" class="text-center">No Employee</td>
-                </tr>
-              {%endfor%}
-                
-            </tbody>
-          </table>
-{% if employee_list.has_other_pages %}
-        <nav aria-label="Page navigation">
-          <ul class="pagination pagination-md justify-content-center">
-            {% if employee_list.has_previous %}
-            <li>
-              <a class="page-link" href="?page={{ employee_list.previous_page_number }}" tabindex="-1">Previous</a>
-            </li>
-            {%endif%}
-            {% for i in employee_list.paginator.page_range %}
-              {% if employee_list.number == i %}
-                <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-              {% else  %}
-                <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
-              {% endif %}
-            {% endfor %}
-            {% if emp.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ employee_list.next_page_number }}">Next</a>
-            </li>
-            {% endif %}
-          </ul>
-{% endif %}
-        </nav>
+      {%else%} inactive-status">
+      </i> Inactive</td>
+      {%endif%}
+      <td class="no-print text-center">
+        <a href="#" class="btn btn-success btn-sm view-button">View</a>
+        <a href="{% url 'employee-update' pk=emp.employee_ID %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5" class="text-center">No Employee</td>
+    </tr>
+    {%endfor%}
+
+  </tbody>
+</table>

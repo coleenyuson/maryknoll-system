@@ -1,0 +1,81 @@
+{% extends 'base.html' %} {% block home %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="#" style="color: #4688F1;"><span class="sr-only">(current)</span>Home </a>
+</li>
+{% endblock %} 
+{%block title%} Cashier Dashboard {%endblock%}
+{% block content %}
+<div class="container-fluid bg-content">
+  <div class="content">
+    <div class="content-heading margin">
+      <h1> Welcome, Steve Harrington </h1>
+      <!--Name of user-->
+      <h4> What do you want to do today? </h4>
+    </div>
+    <div class="row row-menu">
+      <div class="col-md-4">
+        <h3 class="link"> User Actions </h3>
+      </div>
+    </div>
+    <div class="quick-links">
+      <div class="row margin">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col">
+              <button class="btn-links" onclick="location.href='cashier-transaction-student.html'"> <i class="icon-basket quick-links-icons"></i> <h4> Create Transaction </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='cashier-promissory-list-add.html'"> <i class="icon-note quick-links-icons"></i> <h4> Create Promissory Note Request </h4>
+                  </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row row-menu">
+      <div class="col-md-4">
+        <h3 class="link"> Records </h3>
+      </div>
+    </div>
+    <div class="quick-links">
+      <div class="row margin">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col">
+              <button class="btn-links" onclick="location.href='cashier-cash-report.html'"> <i class="icon-chart quick-links-icons"></i> <h4> Cash Report </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='cashier-student-accounts.html'"> <i class="icon-notebook quick-links-icons"></i> <h4> Financial Record </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='cashier-student-ledger.html'"> <i class="icon-folder quick-links-icons"></i> <h4> Student Ledger </h4>
+                  </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row margin">
+            <div class="col">
+              <button class="btn-links" onclick="location.href='cashier-fees-and-accounts.html'"> <i class="fa fa-money quick-links-icons" aria-hidden="true" style="font-size:60px;"></i>  <h4> Fees and Accounts </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='cashier-promissory-list.html'"> <i class="icon-doc quick-links-icons"></i> <h4> Promissory Note </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='scholarship-list.html'"> <i class="icon-notebook quick-links-icons"></i> <h4> Scholarship </h4>
+                  </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

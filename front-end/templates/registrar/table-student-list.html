@@ -22,7 +22,7 @@
         {%else%} active-status">
         </i> Active</td>
         {%endif%}
-        <td class="text-center"><a href="{{ student.get_absolute_url  }}" class="btn btn-secondary btn-sm view-button">View</a></td>
+        <td class="text-center no-print"><a href="{{student.get_absolute_url}}" class="btn btn-success btn-sm view-button">View</a></td>
     </tr>
     {% empty %}
     <tr>
@@ -62,22 +62,3 @@
   </ul>
 </nav>
 {% endif %}
-
-<script>
-  $(function() {
-
-    $(".dropdown-menu a").click(function() {
-
-      $("#selected:first-child").text($(this).text());
-      $("#selected:first-child").val($(this).text());
-      if ($("#selected:first-child").val() == "Status") {
-        $(".changeIfStatus").replaceWith("<h1> test </h1>"); // must change into dropdown
-      }
-      else {
-
-      }
-
-    });
-
-  });
-</script>

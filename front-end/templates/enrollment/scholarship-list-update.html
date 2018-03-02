@@ -7,30 +7,18 @@
 
 {%load static%}
 {% block content %}
-<!-- FORM CONTENT -->
-<div class="container-fluid bg-content">
-  <div class="content">
-    
-  </div>
-</div>
+    <!-- FORM CONTENT -->
+    <div class="container-fluid bg-content">
+      <div class="content">
+        
+          
+      </div>
+    </div>
 
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();   
-});
-</script>
-<script>
-  var count=1;
-  var add = function(){
-    if(count >= 5) return;
-    $('#addSibs').append('<div class="col-md-6"> <label>Sibling\'s Name</label><input type="text" class="form-control" placeholder="Last name, First name"></div><div class="col-md-6"><label>Year Graduated</label><input type="text" class="form-control" required></div>')
-    count++;
-  };
-</script>
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "student-create" %}',
+        url: '{% url "scholarship-edit-form" pk=instance.pk %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -38,18 +26,16 @@ $(function() {
         }
   });
   
-});
-  $(".content").on("submit", ".js-student-create-form", function() {
-    
+  $(".content").on("submit", ".js-scholarship-edit-form", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "student-create" %}',
+        url: '{% url "scholarship-edit-form"  pk=instance.pk %}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'student-list'%}"
+                window.location = "{%url 'scholarship-list' %}"
             }
             else {
                 console.log(data.form_is_valid);
@@ -58,6 +44,7 @@ $(function() {
         }
     });
     return false;
+});
 });
 
 

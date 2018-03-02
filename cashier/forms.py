@@ -4,7 +4,7 @@ from .models import *
 class ParticularForms(forms.ModelForm):
     class Meta:
         model = Particular
-        exclude = ('particular_ID',)
+        exclude = ('particular_ID','particular_details',)
 ''' ACCOUNTS FORMS '''
 
 class AccountForms(forms.ModelForm):

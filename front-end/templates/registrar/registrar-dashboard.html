@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block home %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="#" style="color: #4688F1;"><span class="sr-only">(current)</span>Home </a>
+</li>
+{% endblock %} {%block title%} Registrar Dashboard {%endblock%} {% block content %}
+<div class="container-fluid bg-content">
+  <div class="content">
+    <div class="content-heading margin">
+      <h1> Welcome, Steve Harrington </h1>
+      <!--Name of user-->
+      <h4> What do you want to do today? </h4>
+    </div>
+    <div class="row row-menu">
+      <div class="col-md-4">
+        <h3 class="link"> User Actions </h3>
+      </div>
+    </div>
+    <div class="quick-links">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row margin">
+            <div class="col">
+              <button class="btn-links" onclick="location.href='student-registration-list-add.html'"> <i class="icon-user-follow quick-links-icons"></i> <h4> Create Student Profiles </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='scholarship-list-add.html'"> <i class="icon-notebook quick-links-icons"></i> <h4> Create Scholarship </h4>
+                    </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row row-menu">
+      <div class="col-md-4">
+        <h3 class="link"> Records </h3>
+      </div>
+    </div>
+    <div class="quick-links">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col">
+              <button class="btn-links" onclick="location.href='student-registration-list.html'"> <i class=" icon-people quick-links-icons"></i> <h4> Student Profiles </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='scholarship-list.html'"> <i class="icon-notebook quick-links-icons"></i> <h4> Scholarship </h4>
+                  </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <button class="btn-links" onclick="location.href='student-registration-list.html'"> <i class="icon-list quick-links-icons"></i> <h4> Official List of Enrollees </h4>
+                  </button>
+              <!--try mo yung may separator na "Enrolled", "Pending", "Partially Paid"-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
