@@ -121,6 +121,34 @@ def tableCurriculumSubjectList(request, pk='pk'):
     data = {'html_form' : html_form}
     return JsonResponse(data)
     
+def updateCurriculum(request, pk='pk'):
+    instance = get_object_or_404(Curriculum, pk=pk)
+    return render(request, 'enrollment/curriculum-list-update.html', {'instance': instance})
+
+
+def editCurriculumForm(request, pk='pk'):
+    instance = get_object_or_404(Curriculum, pk=pk)
+    data = {'form_is_valid' : False }
+    try:
+        last_curriculum = Curriculum.objects.latest('curriculum_ID')
+    except:
+        last_curriculum = None
+    if request.method == 'POST':
+        form = CurriculumForms(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = CurriculumForms(instance = instance)
+    context = {'form': form, 'curriculum':last_curriculum, 'instance': instance}
+    data['html_form'] = render_to_string('enrollment/forms-curriculum-edit.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
 #--------------------------------------SECTION--------------------------------------------------------
 def sectionList(request):
     return render(request,'enrollment/section-list.html')
@@ -214,7 +242,36 @@ def createScholarshipProfile(request):
         request=request,
     )
     return JsonResponse(data)
+    
+def updateScholarship(request, pk='pk'):
+    instance = get_object_or_404(Scholarship, pk=pk)
+    return render(request, 'enrollment/scholarship-list-update.html', {'instance': instance})
 
+
+def editScholarshipForm(request, pk='pk'):
+    instance = get_object_or_404(Scholarship, pk=pk)
+    data = {'form_is_valid' : False }
+    try:
+        last_scholarship = Scholarship.objects.latest('scholarship_ID')
+    except:
+        last_scholarship = None
+    if request.method == 'POST':
+        form = ScholarshipForms(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = ScholarshipForms(instance = instance)
+    context = {'form': form, 'scholarship':last_scholarship, 'instance': instance}
+    data['html_form'] = render_to_string('enrollment/forms-scholarship-edit.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+    
 #--------------------------------------SUBJECT OFFERING------------------------------------------------
 def tableSubjectOfferingList(request):
     subjectOffering_list = Offering.objects.all()
@@ -265,3 +322,33 @@ def subjectOfferingDetail(request, pk='pk'):
     except:
         last_record = Enrollment.objects.filter(subjOffering=subjOffering)
     return render(request, 'enrollment/subject-offering-add.html.html', {'subjOffering': subjOffering, 'record':last_record})
+    
+
+def updateSubjectOffering(request, pk='pk'):
+    instance = get_object_or_404(Offering, pk=pk)
+    return render(request, 'enrollment/subject-offering-update.html', {'instance': instance})
+
+
+def editSubjectOfferingForm(request, pk='pk'):
+    instance = get_object_or_404(Offering, pk=pk)
+    data = {'form_is_valid' : False }
+    try:
+        last_subjectOffering = Offering.objects.latest('subjectOffering_ID')
+    except:
+        last_subjectOffering = None
+    if request.method == 'POST':
+        form = SubjectOfferingForms(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = SubjectOfferingForms(instance = instance)
+    context = {'form': form, 'subjectOffering':last_subjectOffering, 'instance': instance}
+    data['html_form'] = render_to_string('enrollment/forms-subject-offering-edit.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
