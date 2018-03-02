@@ -6,6 +6,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.db.models import Q
 # Create your views here.
 from .models import *
 from .forms import StudentForms, RegistrationForms
@@ -45,10 +47,55 @@ def searchStudent(request):
         'is_taken': Student.objects.filter(first_name__contains=search).exists()
     }
     return JsonResponse(data)
+def getStudentList(request):
+    search = request.GET.get('search')
+    genre = request.GET.get('genre')
+    isNum = True
+    try:
+        int(search)
+    except:
+        isNum = False
+    if(request.GET.get('search')!= "None"):
+        if( (genre == "None" or genre == "All Categories") and isNum):
+            query = Student.objects.filter(
+                Q(student_ID__contains=search)|
+                Q(first_name__contains=search)|
+                Q(last_name__contains=search)|
+                Q(middle_name__contains=search)|
+                Q(student_level__contains=search)
+            )
+        if(genre == "None" or genre == "All categories"):
+            query = Student.objects.filter(
+                Q(first_name__contains=search)|
+                Q(last_name__contains=search)|
+                Q(middle_name__contains=search)|
+                Q(student_level__contains=search)
+            )
+        elif(genre == "Name"):
+            print "name"
+            query = Student.objects.filter(
+                Q(first_name__contains=search)|
+                Q(last_name__contains=search)|
+                Q(middle_name__contains=search)|
+                Q(student_level__contains=search)
+            )
+        elif(genre == "Student ID" and isNum):
+            print "id"
+            query = Student.objects.filter(student_ID=search)
+        elif(genre == "Year/Level"):
+            query = Student.objects.filter(student_level=search)
+        else:
+            print "wala"
+            query = Student.objects.all() 
+            
+    else:
+        return []
+    return query
 
 def tableStudentList(request):
     verifyActive()
-    student_list = Student.objects.all()
+    student_list = getStudentList(request)
+    print student_list
     #Pagination
     page = request.GET.get('page', 1)
     paginator = Paginator(student_list, 10)
@@ -59,7 +106,7 @@ def tableStudentList(request):
         students = paginator.page(1)
     except EmptyPage:
         students = paginator.page(paginator.num_pages)
-        
+    
     context = {'student_list': students}
     html_form = render_to_string('registrar/table-student-list.html',
         context,
@@ -145,7 +192,6 @@ def createEnrollment(request, pk='pk'):
 def verifyActive():
     student_list = Student.objects.all()
     for curr_student in student_list:
-        print(curr_student)
         try:
             last_record = Enrollment.objects.get(student=curr_student.student_ID)
         except:

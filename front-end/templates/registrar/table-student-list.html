@@ -62,22 +62,3 @@
   </ul>
 </nav>
 {% endif %}
-
-<script>
-  $(function() {
-
-    $(".dropdown-menu a").click(function() {
-
-      $("#selected:first-child").text($(this).text());
-      $("#selected:first-child").val($(this).text());
-      if ($("#selected:first-child").val() == "Status") {
-        $(".changeIfStatus").replaceWith("<h1> test </h1>"); // must change into dropdown
-      }
-      else {
-
-      }
-
-    });
-
-  });
-</script>
