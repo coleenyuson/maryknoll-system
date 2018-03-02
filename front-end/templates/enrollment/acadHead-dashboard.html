@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% block home %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="#" style="color: #4688F1;"><span class="sr-only">(current)</span>Home </a>
+</li>
+{% endblock %} {%block title%} Academic Head Dashboard {%endblock%} {% block content %}
+<div class="container-fluid bg-content">
+  <div class="content">
+    <div class="content-heading margin">
+      <h1> Welcome, Steve Harrington </h1>
+      <!--Name of user-->
+      <h4> What do you want to do today? </h4>
+    </div>
+    <h3 class="link"> User Actions </h3>
+    <div class="quick-links">
+      <div class="row margin">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col">
+              <button class="btn-links" onclick="location.href='section-list-add.html'"> <i class="icon-people quick-links-icons"></i> <h4> Create a Section </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='section-adviser-ql-add.html'"> <i class="icon-user-follow quick-links-icons" > </i> <h4> Assign an Advisory </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='subject-teacher-ql-add.html'"> <i class="icon-user-follow quick-links-icons" > </i> <h4> Assign a Subject Teacher </h4>
+                  </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row row-menu">
+      <div class="col-md-4">
+        <h3 class="link"> Records </h3>
+      </div>
+    </div>
+    <div class="quick-links">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col">
+              <button class="btn-links" onclick="location.href='section-list.html'"> <i class="icon-people quick-links-icons"></i> <h4> Sections </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='curriculum-list.html'"> <i class="icon-notebook quick-links-icons"> </i> <h4> Curriculum </h4>
+                  </button>
+            </div>
+            <div class="col">
+              <button class="btn-links" onclick="location.href='schoolyear-list-2.html'"> <i class="icon-notebook quick-links-icons"></i> <h4> Offerings </h4>
+                  </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-spacing"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
