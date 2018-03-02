@@ -96,12 +96,14 @@ class Enrollment(models.Model):
     section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, null=True, default=None)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
     scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
+    school_year = models.ForeignKey('enrollment.School_Year', on_delete=models.CASCADE, default=0)
     date_enrolled = models.DateField(auto_now_add=True)
+    
     '''Type enum '''
     TYPE_CHOICES = (
         (PAID,'Paid'),
         (INCOMPLETE,'Incomplete'),
-        (NO_PAY,'Payment Not Made'),
+        (NO_PAY,'Pending'),
         (DROPPED, 'Dropped out'),
         )
     enrollment_status = models.CharField(max_length=1,choices=TYPE_CHOICES,blank=False,default=NO_PAY)
