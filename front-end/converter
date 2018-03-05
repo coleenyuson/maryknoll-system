@@ -1,25 +1,25 @@
 
 urls
 
-url(r'^subjectOffering-list/update/(?P<pk>\d+)$', views.updateOffering, name = 'subjectOffering-update'),
-url(r'^subjectOffering-list/edit-form/(?P<pk>\d+)$', views.editOfferingForm, name = 'subjectOffering-edit-form'),
+url(r'^student-list/update/(?P<pk>\d+)$', views.updateStudentProfile, name = 'student-update'),
+url(r'^student-list/edit-form/(?P<pk>\d+)$', views.editStudentProfile, name = 'student-edit-form'),
 
 views
 
-def updateOffering(request, pk='pk'):
-    instance = get_object_or_404(Offering, pk=pk)
-    return render(request, 'enrollment/subjectOffering-list-update.html', {'instance': instance})
+def updateStudentProfile(request, pk='pk'):
+    instance = get_object_or_404(Student, pk=pk)
+    return render(request, 'registrar/student-regisration-list-update.html', {'instance': instance})
 
 
-def updateSubjectOfferingForm(request, pk='pk'):
-    instance = get_object_or_404(Offering, pk=pk)
+def editStudentProfile(request, pk='pk'):
+    instance = get_object_or_404(Student, pk=pk)
     data = {'form_is_valid' : False }
     try:
-        last_subjectOffering = Offering.objects.latest('subjectOffering_ID')
+        last_student = Offering.objects.latest('student_ID')
     except:
-        last_subjectOffering = None
+        last_student = None
     if request.method == 'POST':
-        form = SubjectOfferingForms(request.POST, instance = instance)
+        form = SubjectStudentForms(request.POST, instance = instance)
         if form.is_valid():
             instance = form.save()
             instance.save()
@@ -27,9 +27,9 @@ def updateSubjectOfferingForm(request, pk='pk'):
         else:
             data['form_is_valid'] = False
     else:
-        form = OfferingForms(instance = instance)
-    context = {'form': form, 'subjectOffering':last_subjectOffering, 'instance': instance}
-    data['html_form'] = render_to_string('enrollment/forms-subjectOffering-edit.html',
+        form = StudentForms(instance = instance)
+    context = {'form': form, 'student':last_student, 'instance': instance}
+    data['html_form'] = render_to_string('registrar/forms-student-edit.html',
         context,
         request=request,
     )

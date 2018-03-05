@@ -113,6 +113,7 @@ def tableEnrollmentList(request, pk='pk'):
     data = {'html_form' : html_form}
     return JsonResponse(data)
 
+#ACTUAL CREATE ENROLLMENT FORM
 def createEnrollment(request, pk='pk'):
     data = {'form_is_valid' : False }
     current_student = get_object_or_404(Student, pk=pk)
@@ -137,6 +138,36 @@ def createEnrollment(request, pk='pk'):
         form = RegistrationForms()
     context = {'form': form, 'student':current_student, 'last_record':enrollment}
     data['html_form'] = render_to_string('registrar/forms-registration-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+
+#BASE TEMPLATE FOR UPDATE
+def updateStudentProfile(request, pk='pk'):
+    instance = get_object_or_404(Student, pk=pk)
+    return render(request, 'registrar/student-registration-list-update.html', {'instance': instance})
+
+#ACTUAL EDIT STUDENT PROFILE FORM
+def editStudentProfile(request, pk='pk'):
+    instance = get_object_or_404(Student, pk=pk)
+    data = {'form_is_valid' : False }
+    try:
+        last_student = Offering.objects.latest('student_ID')
+    except:
+        last_student = None
+    if request.method == 'POST':
+        form = StudentForms(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = StudentForms(instance = instance)
+    context = {'form': form, 'student':last_student, 'instance': instance}
+    data['html_form'] = render_to_string('registrar/forms-student-edit.html',
         context,
         request=request,
     )

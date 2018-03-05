@@ -9,6 +9,8 @@ urlpatterns = [
         url(r'^student-list/table$', views.tableStudentList, name = 'student-table'),
         url(r'^student-list/add$', views.addStudentProfile, name = 'student-add'),
         url(r'^student-list/create$', views.createStudentProfile, name = 'student-create'),
+        url(r'^student-list/update/(?P<pk>\d+)$', views.updateStudentProfile, name = 'student-update'),
+        url(r'^student-list/edit-form/(?P<pk>\d+)$', views.editStudentProfile, name = 'student-edit-form'),
         url(r'^student-list/search$', views.searchStudent, name = 'student-search'),  
         #student profile urls
         url(r'^student-list/(?P<pk>\d+)$', views.studentDetails, name = 'student-details'),

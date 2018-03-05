@@ -1,7 +1,6 @@
 <table class="table table-bordered bg-nav table-hover">
             <thead class="thead-light">
               <tr>
-                <th scope="col">User ID</th>
                 <th scope="col">Full Name</th>
                 <th scope="col">Employee Type</th>
                 <th scope="col">Work Type</th>
@@ -12,7 +11,6 @@
             <tbody>
               {%for emp in employee_list%}
                 <tr>
-                  <td>{{emp.employee_ID}}</td>
                   <td>{{emp.last_name}}, {{emp.first_name}}</td>
                   <td>{{emp.get_emp_type_display}}</td>
                   <td>{{emp.get_work_type_display}}</td>
