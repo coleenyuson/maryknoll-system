@@ -1,35 +1,42 @@
 
 urls
 
-url(r'^student-list/update/(?P<pk>\d+)$', views.updateStudentProfile, name = 'student-update'),
-url(r'^student-list/edit-form/(?P<pk>\d+)$', views.editStudentProfile, name = 'student-edit-form'),
+url(r'^curriculum-list/section-detail-add/(?P<pk>\d+)$', views.sectionDetailAdd, name = 'section-detail-add'),
+url(r'^curriculum-list/section-detail-form/(?P<pk>\d+)$', views.sectionDetailForm, name = 'section-detail-form'),
 
 views
 
-def updateStudentProfile(request, pk='pk'):
-    instance = get_object_or_404(Student, pk=pk)
-    return render(request, 'registrar/student-regisration-list-update.html', {'instance': instance})
+def sectionDetailAdd(request, pk='pk'):
+    instance = get_object_or_404(Section, pk=pk)
+    return render(request, 'enrollment/section-details-add.html', {'instance': instance})
 
 
-def editStudentProfile(request, pk='pk'):
-    instance = get_object_or_404(Student, pk=pk)
+def sectionDetailForm(request, pk='pk'):
     data = {'form_is_valid' : False }
+    section = get_object_or_404(section, pk=pk)
     try:
-        last_student = Offering.objects.latest('student_ID')
+        enrollment = Enrollment.objects.latest('enrollment_ID')
     except:
-        last_student = None
+        enrollment = None
+        
+    
     if request.method == 'POST':
-        form = SubjectStudentForms(request.POST, instance = instance)
+        form = SectionForms(request.POST)
+        form.date_enrolled = datetime.now()
+        form.student = Student.objects.get(student_ID = pk)
         if form.is_valid():
-            instance = form.save()
-            instance.save()
+            post = form.save(commit=False)
+            post.student_type='n'
+            current_student.status="a"
+            form.save()
             data['form_is_valid'] = True
         else:
+            print form.errors
             data['form_is_valid'] = False
     else:
-        form = StudentForms(instance = instance)
-    context = {'form': form, 'student':last_student, 'instance': instance}
-    data['html_form'] = render_to_string('registrar/forms-student-edit.html',
+        form = SectionForms()
+    context = {'form': form, 'student':current_student, 'last_record':enrollment}
+    data['html_form'] = render_to_string('registrar/forms-registration-create.html',
         context,
         request=request,
     )

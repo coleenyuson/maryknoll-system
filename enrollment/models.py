@@ -128,7 +128,7 @@ class Section(models.Model):
         return "%s - %s" % (self.curriculum,self.section_name)
     
     def get_abosulute_url(self):
-	    return reverse('section-detail', kwargs={"id": self.id})
+	    return reverse('section-detail', kwargs={"pk": self.pk})
         
 class Offering(models.Model):
 	offering_ID = models.AutoField(primary_key=True)

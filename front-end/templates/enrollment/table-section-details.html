@@ -11,6 +11,7 @@
                 </thead>
                 <tbody>
                   <tr>
+                    {%for student in section_enrollee_list%}
                     <td>0001</td>
                     <td>Da wae</td>
                     <td>Do you</td>
@@ -18,5 +19,10 @@
                     <td class="text-center"><a href="#" class="btn btn-success btn-sm view-button">View</a><!--Makita student profile nila-->
                     <a href="#" class="btn btn-danger btn-sm view-button">Delete</a></td>
                   </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="text-center">No Subjects</td>
+                  </tr>
+                 {%endfor%}
                 </tbody>
               </table>

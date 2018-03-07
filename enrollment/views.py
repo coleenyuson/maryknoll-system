@@ -162,7 +162,70 @@ def sectionTable(request):
         request = request,
     )
     return JsonResponse({'html_form' : html_form})
+def tableSectionDetail(request, pk='pk'):
+    section = get_object_or_404(Curriculum, pk=pk)
+    
+    section_enrollee_list = Section_Enrollee.objects.filter(section = section)
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(section_enrollee_list, 4)
+    
+    try:
+        section = paginator.page(page)
+    except PageNotAnInteger:
+        section = paginator.page(1)
+    except EmptyPage:
+        section = paginator.page(paginator.num_pages)
+        
+    context = {'section_enrollee_list': section}
+    html_form = render_to_string('enrollment/table-section-detail.html',
+        context,
+        request = request,
+    )
+    
+    data = {'html_form' : html_form}
+    return JsonResponse(data)
 
+def sectionDetailAdd(request, pk='pk'):
+    instance = get_object_or_404(Section, pk=pk)
+    return render(request, 'enrollment/section-details-add.html', {'instance': instance})
+
+def sectionDetailForm(request, pk='pk'):
+    data = {'form_is_valid' : True }
+    section = get_object_or_404(Section, pk=pk)
+    section_enrollee = Section_Enrollee.objects.filter(section = section)
+    try:
+        enrollment = Enrollment.objects.latest('enrollment_ID').filter(r)
+    except:
+        enrollment = None
+        
+    query = request.GET.get("q")
+    if query:
+        student = Student.objects.filter(pk__icontains=query)
+        
+    '''if request.method == 'POST':
+        form = SectionForms(request.POST)
+        form.date_enrolled = datetime.now()
+        form.student = Student.objects.get(student_ID = pk)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.student_type='n'
+            current_student.status="a"
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            print form.errors
+            data['form_is_valid'] = False
+    
+    else:
+        form = SectionForms()'''
+        
+    context = {'last_record':enrollment, 'instance': instance}
+    data['html_form'] = render_to_string('enrollment/forms-section-detail-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
 
     
     
@@ -193,6 +256,7 @@ def generateSectionForm(request):
         request=request,
     )
     return JsonResponse(data)
+    
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 def tableScholarshipList(request):
     scholarship_list = Scholarship.objects.all()
@@ -345,3 +409,4 @@ def editSubjectOfferingForm(request, pk='pk'):
         request=request,
     )
     return JsonResponse(data)
+

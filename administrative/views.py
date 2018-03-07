@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 from .models import *
+from django.db.models import Q
 
 @login_required
 def index(request):
@@ -33,7 +34,8 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 
 def tableEmployeeList(request):
-    employee_list = Employee.objects.all()
+    employee_list = getEmployeeList(request)
+    print employee_list
     #Pagination
     page = request.GET.get('page', 1)
     paginator = Paginator(employee_list, 10)
@@ -97,5 +99,48 @@ def updateEmployeeForm(request, pk='pk'):
         request=request,
     )
     return JsonResponse(data)
-    
+
+def getEmployeeList(request):
+    search = request.GET.get('search')
+    genre = request.GET.get('genre')
+    isNum = True
+    try:
+        int(search)
+    except:
+        isNum = False
+    if(request.GET.get('search')!= "None"):
+        if( (genre == "None" or genre == "All Categories") and isNum):
+            query = Employee.objects.filter(
+                Q(employee_ID__contains=search)|
+                Q(first_name__contains=search)|
+                Q(last_name__contains=search)|
+                Q(work_type__contains=search)|
+                Q(emp_type__contains=search)|
+                Q(emp_status__contains=search)
+            )
+        if(genre == "None" or genre == "All categories"):
+            query = Employee.objects.filter(
+                Q(employee_ID__contains=search)|
+                Q(first_name__contains=search)|
+                Q(last_name__contains=search)|
+                Q(work_type__contains=search)|
+                Q(emp_type__contains=search)|
+                Q(emp_status__contains=search)
+            )
+        elif(genre == "Full Name"):
+            print "name"
+            query = Employee.objects.filter(
+                Q(first_name__icontains=search)|
+                Q(last_name__icontains=search)
+            )
+        elif(genre == "Employee ID" and isNum):
+            print "id"
+            query = Student.objects.filter(employee_ID=search)
+        else:
+            print "wala"
+            query = Employee.objects.all() 
+            
+    else:
+        return []
+    return query
     

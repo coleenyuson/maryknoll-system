@@ -10,7 +10,7 @@
     <!-- CONTENT -->
     <div class="container-fluid bg-content">
       <div class="content"> 
-        <a href="section-list.html"><h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4></a>
+        <a href="{% url 'section-list' %}"><h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4></a>
         <div class="card">
           <div class="card-block">
             <div class="row">
@@ -40,11 +40,11 @@
               <div class="col-lg-4">
                 <a href="#" class="card-link margin"><i class="fa fa-print" aria-hidden="true"></i> Print Section Details</a>
                 <div class="btn-group float-right">
-                  <a href="section-details-add.html" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
+                  <a href="{% url 'section-detail-add' pk=section.pk %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
                 </div>
               </div>
             </div>
-            <div class="row table-records table-responsive">
+            <div class="row table-records table-responsive" id="section-detail-listings">
               <!--- INSERT TABLE HERE --->
             </div>
           </div>
@@ -54,5 +54,17 @@
     <!-- CONTENT -->
 <!-- ---------------------------BACKEND SCRIPTS ------------------------------->
 
+<script>
+$(function() {
+  $.ajax({
+        url: '{% url "section-detail-table" section.pk %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $("#section-detail-listings").html(data.html_form);
+        }
+    });
+});
+</script>
 
 {%endblock%}

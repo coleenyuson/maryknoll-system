@@ -10,27 +10,29 @@
 <!-- CONTENT -->
 <div class="container-fluid bg-content">
   <div class="content">
-    <h2> System Users </h2>
+    <h2> Employee </h2>
     <div class="row search-bar">
       <div class="col-lg-6">
         <div class="input-group">
           <div class="input-group-btn">
+            
             <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Category
             </button>
             <!-- Supply dropdown menu categories, refer to database -->
-            <div class="dropdown-menu">
+            <div class="dropdown-menu genre">
               <a class="dropdown-item" href="#">All categories</a>
-              <a class="dropdown-item" href="#">User ID</a>
+              <a class="dropdown-item" href="#">Employee ID</a>
               <a class="dropdown-item" href="#">Full Name</a>
               <a class="dropdown-item" href="#">Employee Type</a>
-              <a class="dropdown-item" href="#">Department</a>
+              <a class="dropdown-item" href="#">Work Type</a>
               <a class="dropdown-item" href="#">Status</a>
             </div>
           </div>
-          <input type="text" class="changeIfStatus form-control" placeholder="Search records..." aria-label="Search records...">
+          
+          <input type="text" class="changeIfStatus form-control search-input" placeholder="Search records..." aria-label="Search records...">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-primary">Search</button>
+            <button type="button" class="btn btn-primary search">Search</button>
           </span>
         </div>
       </div>
@@ -51,22 +53,20 @@
 
 <!-- Allows dropdown menu to select child -->
 <script>
-$(function(){
-
-$(".dropdown-menu a").click(function(){
-
+var selected = "None";
+var search_data = "None";
+  $(function() {
+    $(".dropdown-menu a").click(function() {
       $("#selected:first-child").text($(this).text());
       $("#selected:first-child").val($(this).text());
-      if($("#selected:first-child").val() == "Status"){
-          $(".changeIfStatus").replaceWith("<h1> test </h1>"); // must change into dropdown
+      selected = $("#selected:first-child").val();
+      if ($("#selected:first-child").val() == "All categories") {
+        generatePage(1)
       }
-      else{
-
+      else {
       }
-
-   });
-
-});
+    });
+  });
 </script>
 <!-- ---------------------------BACKEND SCRIPTS ------------------------------->
 <script>
@@ -80,6 +80,25 @@ $(function() {
         }
     });
 });
+
+ $('.search').click(function() {
+    search_data = $('.search-input').val();
+    if(search_data == ""){
+      search_data = "None"
+    }
+    generateSearch();
+  });
+  
+  function generateSearch() {
+    $.ajax({
+      url: '{% url "employee-table" %}?search='+search_data+"&genre="+selected,
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        $("#employee_listings").html(data.html_form);
+      }
+    });
+  }
 </script>
 
 {%endblock%}
