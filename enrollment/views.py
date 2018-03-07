@@ -10,6 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 from .models import *
 from registration.models import *
+from django.db.models import Q
+
 
 @login_required
 def index(request):
@@ -155,13 +157,26 @@ def sectionDetails(request, pk='pk'):
     return render(request, 'enrollment/section-details.html', {'section': section})
     
 def sectionTable(request):
-    section_list = Section.objects.all()
-    context = {'section_list': section_list}
+    section_list = getSectionList(request)
+    print section_list
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(section_list, 4)
+    
+    try:
+        section = paginator.page(page)
+    except PageNotAnInteger:
+        section = paginator.page(1)
+    except EmptyPage:
+        section = paginator.page(paginator.num_pages)
+        
+    context = {'section_list': section}
     html_form = render_to_string('enrollment/table-section-list.html',
         context,
         request = request,
     )
     return JsonResponse({'html_form' : html_form})
+    
 def tableSectionDetail(request, pk='pk'):
     section = get_object_or_404(Curriculum, pk=pk)
     
@@ -199,10 +214,6 @@ def sectionDetailForm(request, pk='pk'):
     except:
         enrollment = None
         
-    query = request.GET.get("q")
-    if query:
-        student = Student.objects.filter(pk__icontains=query)
-        
     '''if request.method == 'POST':
         form = SectionForms(request.POST)
         form.date_enrolled = datetime.now()
@@ -227,7 +238,47 @@ def sectionDetailForm(request, pk='pk'):
     )
     return JsonResponse(data)
 
-    
+def getSectionList(request):
+    search = request.GET.get('search')
+    genre = request.GET.get('genre')
+    isNum = True
+    try:
+        int(search)
+    except:
+        isNum = False
+    if(request.GET.get('search')!= "None"):
+        if( (genre == "None" or genre == "All Categories") and isNum):
+            query = Section.objects.filter(
+                Q(section_ID__contains=search)|
+                Q(section_name__icontains=search)|
+                Q(section_capacity__contains=search)|
+                Q(adviser__icontains=search)|
+                Q(room__icontains=search)
+            )
+        if(genre == "None" or genre == "All categories"):
+            query = Section.objects.filter(
+                Q(section_ID__contains=search)|
+                Q(section_name__icontains=search)|
+                Q(section_capacity__contains=search)|
+                Q(adviser__icontains=search)|
+                Q(room__icontains=search)
+            )
+        elif(genre == "Section ID"):
+            print "id"
+            query = Section.objects.filter(section_ID__contains=search)
+        elif(genre == "Section Name"):
+            query = Section.objects.filter(section_name__icontains=search)
+        elif(genre == "Room"):
+            query = Section.objects.filter(room__icontains=search)
+        elif(genre == "Adviser"):
+            query = Section.objects.filter(adviser__icontains=search)
+        else:
+            print "wala"
+            query = Section.objects.all() 
+            
+    else:
+        return []
+    return query
     
 #AJAX VIEWS --------------------------------------------------------------------
 

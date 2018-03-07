@@ -121,8 +121,8 @@ def getEmployeeList(request):
         if(genre == "None" or genre == "All categories"):
             query = Employee.objects.filter(
                 Q(employee_ID__contains=search)|
-                Q(first_name__contains=search)|
-                Q(last_name__contains=search)|
+                Q(first_name__icontains=search)|
+                Q(last_name__icontains=search)|
                 Q(work_type__contains=search)|
                 Q(emp_type__contains=search)|
                 Q(emp_status__contains=search)
@@ -135,7 +135,17 @@ def getEmployeeList(request):
             )
         elif(genre == "Employee ID" and isNum):
             print "id"
-            query = Student.objects.filter(employee_ID=search)
+            query = Employee.objects.filter(employee_ID=search)
+        elif(genre == "Employee Type"):
+            query = Employee.objects.filter(emp_type=search)
+        elif(genre == "Work Type"):
+            query = Employee.objects.filter(work_type=search)
+            if (search == ""):
+                query = Employee.objects.all()
+        elif(genre == "Status"):
+            query = Employee.objects.filter(emp_status=search)
+        elif(search == ""):
+            query = Employee.objects.all()
         else:
             print "wala"
             query = Employee.objects.all() 

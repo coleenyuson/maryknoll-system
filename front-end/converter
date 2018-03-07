@@ -1,43 +1,31 @@
-
-urls
-
-url(r'^curriculum-list/section-detail-add/(?P<pk>\d+)$', views.sectionDetailAdd, name = 'section-detail-add'),
-url(r'^curriculum-list/section-detail-form/(?P<pk>\d+)$', views.sectionDetailForm, name = 'section-detail-form'),
-
-views
-
-def sectionDetailAdd(request, pk='pk'):
-    instance = get_object_or_404(Section, pk=pk)
-    return render(request, 'enrollment/section-details-add.html', {'instance': instance})
-
-
-def sectionDetailForm(request, pk='pk'):
-    data = {'form_is_valid' : False }
-    section = get_object_or_404(section, pk=pk)
-    try:
-        enrollment = Enrollment.objects.latest('enrollment_ID')
-    except:
-        enrollment = None
-        
-    
-    if request.method == 'POST':
-        form = SectionForms(request.POST)
-        form.date_enrolled = datetime.now()
-        form.student = Student.objects.get(student_ID = pk)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.student_type='n'
-            current_student.status="a"
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            print form.errors
-            data['form_is_valid'] = False
-    else:
-        form = SectionForms()
-    context = {'form': form, 'student':current_student, 'last_record':enrollment}
-    data['html_form'] = render_to_string('registrar/forms-registration-create.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
+{% if employee_list.has_other_pages %}
+<nav aria-label="Page navigation" class="no-print">
+  <ul class="pagination pagination-md justify-content-center">
+    {% if employee_list.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="javascript:generatePage({{ employee_list.previous_page_number }})" tabindex="-1">Previous</a>
+    </li>
+    {%else%}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    {%endif%} 
+    {% for i in employee_list.paginator.page_range %} 
+      {% if employee_list.number == i %}
+        <li class="page-item active"><a class="page-link " href="#" >{{i}}<span class="sr-only">(current)</span></a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:generatePage({{i}})">{{i}}</a></li>
+      {% endif %} 
+    {% endfor %} 
+    {% if employee_list.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="javascript:generatePage({{ employee_list.next_page_number }})">Next</a>
+    </li>
+    {%else%}
+    <li class="page-item disabled">
+      <a class="page-link" href="#">Next</a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+{% endif %}

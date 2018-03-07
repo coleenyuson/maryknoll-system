@@ -81,6 +81,35 @@ $(function() {
     });
 });
 
+function generatePage(pageNum){
+    if(search_data == "None" || selected == "None"){
+      generatePages(pageNum)
+    }else{
+      generatePages2(pageNum)
+    }
+  }
+  function generatePages(pageNum) {
+    $.ajax({
+      url: '{% url "employee-table" %}?page=' + pageNum,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#employee_listings").html(data.html_form);
+      }
+    });
+  }
+  
+  function generatePages2(pageNum) {
+    $.ajax({
+      url: '{% url "employee-table" %}?page=' + pageNum + '&search='+search_data+"&genre="+selected,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#employee_listings").html(data.html_form);
+      }
+    });
+  }
+  
  $('.search').click(function() {
     search_data = $('.search-input').val();
     if(search_data == ""){
@@ -95,7 +124,7 @@ $(function() {
       type: 'GET',
       dataType: 'json',
       success: function(data) {
-        $("#employee_listings").html(data.html_form);
+        $("#employee-listings").html(data.html_form);
       }
     });
   }
