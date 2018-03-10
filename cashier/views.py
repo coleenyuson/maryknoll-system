@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from .forms import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
-
+from registration.models import *
 #FOR AJAX IMPORTS
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -181,3 +181,29 @@ def listDCashDetails(request):
 def addDCashDetails(request):
     pass
 # END DAILY CASH #
+from django.db.models import Sum
+
+
+def checkAccount(student):
+    
+    registration = Enrollment.objects.get(student_ID = student, SchoolYear = curr_school_year)
+    
+    if(registration):
+        total_to_pay = 0.0
+        total_paid = 0.0
+        
+        account = Account.objects.filter(enrollment_ID = registration)
+        all_transactions = Transaction.objects.filter(account_ID = account)
+        #Get all total payment made by student
+        for transaction in all_transactions:
+            payment = Transaction_Detail.objects.filter(transact_ID = transaction)
+            total_paid += payment.amount_paid
+        
+        #Get all total payments needed by student
+        total_to_pay = Account_Particular.objects.filter(year_level = registration.year_level).aggregate(Sum('to_pay'))
+        
+    else:
+        pass
+        #returns that a registration does not exist
+        
+    

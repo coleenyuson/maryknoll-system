@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
 #SIGNALS = TRIGGERS
 from django.db.models.signals import post_save
 # Create your models here.
@@ -38,14 +37,16 @@ class Particular(models.Model):
 class Account(models.Model): #should only be created through triggers
     account_ID = models.AutoField(primary_key=True)
     enrollment_ID = models.CharField(max_length=200) #Foreign key to a certain enrollee
+    date_time_created = models.DateTimeField(auto_now=True)
     def __str__(self):
         return "%s's Account" %(self.enrollment_ID)
 
-class Account_Particular(models.Model): #we can consider this as the REQUIREMENTS table
-    account_particular_ID = models.AutoField(primary_key=True)
-    account_ID = models.ForeignKey(Account, on_delete=models.CASCADE)
-    to_pay = models.FloatField()
-    particular_ID = models.ForeignKey(Particular, on_delete=models.CASCADE)
+class Grade_Level_Payables(models.Model): #we can consider this as the REQUIREMENTS table
+    level_particular_ID = models.AutoField(primary_key=True)
+    year_level = models.ForeignKey('registration.Enrollment', on_delete=models.CASCADE)
+    particular_name = models.CharField(max_length=250)
+    cost = models.FloatField()
+    #ENUM term -- MONTHS
     def __str__(self):
         return "%s of %s" %(self.particular_ID,self.account_ID)
 
@@ -79,7 +80,7 @@ class Transaction_Detail(models.Model):
     transaction_detail_ID = models.AutoField(primary_key=True)
     transact_ID = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     amount_paid = models.FloatField()
-    account_particular_ID = models.ForeignKey(Particular, on_delete=models.CASCADE)
+    particular = models.ForeignKey(Particular, on_delete=models.CASCADE)
     def __str__(self):
         return "%s's purchase of %s" % (self.transact_ID, self.account_particular_ID)
 
@@ -107,6 +108,7 @@ class Daily_Cash_Detail(models.Model):
     transact_ID = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     cash = models.FloatField()
     
+''' ITEM TYPED TRANSACTIONS '''
 
 
 '''SIGNALS'''

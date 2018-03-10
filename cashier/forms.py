@@ -15,7 +15,7 @@ class AccountForms(forms.ModelForm):
 class Account_ParticularForms(forms.ModelForm):
     class Meta:
         model = Account_Particular
-        exclude = ('account_particular_ID',)
+        exclude = ('account_particular_ID','year_level')
         
 ''' TRANSACTION FORMS '''
 

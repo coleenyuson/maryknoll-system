@@ -16,10 +16,12 @@ urlpatterns = [
         url(r'^curriculum-list/(?P<pk>\d+)/$', views.curriculumDetails, name = 'curriculum-detail'),
         url(r'^curriculum-list/subject-table/(?P<pk>\d+)$', views.tableCurriculumSubjectList, name = 'subject-table'),
         url(r'^curriculum-list/subject/add/(?P<pk>\d+)$', views.openCurriculumSubjectAdd, name = 'subject-add'),
+        url(r'^curriculum-list/subject/add/(?P<pk>\d+)/form$', views.formCurriculumSubjectAdd, name = 'subject-add-form'),
+        
         #-----------------------SECTION------------------------------------------------------------
         url(r'^section/list$', views.sectionList, name = 'section-list'),
         url(r'^section/list/table$', views.sectionTable, name = 'section-table'),
-        url(r'^section/list/add/$', views.addSection, name = 'section-create'),
+        url(r'^section/list/add$', views.addSection, name = 'section-create'),
         #url(r'^section/list/detail$', views.detailSection, name = 'section-create'),
         url(r'^section/list/add-form$', views.generateSectionForm, name = 'section-create-form'),
         url(r'^section/list/(?P<pk>\d+)/$', views.sectionDetails, name = 'section-detail'),

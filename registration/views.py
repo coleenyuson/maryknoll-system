@@ -19,7 +19,7 @@ def index(request):
     #return render(request,'/registration/index.html',)
 
 @login_required
-def registrationList(request):
+def openRegistrationList(request):
     return render(request, 'registrar/student-registration-list.html')
 
 def addStudentProfile(request):
@@ -99,7 +99,7 @@ def tableStudentList(request):
     print student_list
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(student_list, 10)
+    paginator = Paginator(student_list, 2)
     
     try:
         students = paginator.page(page)

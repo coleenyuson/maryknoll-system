@@ -26,8 +26,22 @@ def addCurriculumProfile(request):
     
 def openCurriculumSubjectAdd(request, pk='pk'):
     curriculum = Curriculum.objects.get(pk=pk)
-    return render(request, 'enrollment/curriculum-list-add.html', {'curriculum':curriculum})
-
+    if request.method == 'POST':
+        forms = SubjectForms(request.POST)
+        if forms.is_valid():
+            post = forms.save(commit=False)
+            post.curriculum = curriculum
+            forms.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        forms = SubjectForms()
+    
+    forms = SubjectForms()
+    return render(request, 'enrollment/curriculum-subjects-list-add.html', {'curriculum':curriculum, 'forms':forms})
+def formCurriculumSubjectAdd(request, pk='pk'):
+    pass
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
 def scholarshipList(request):

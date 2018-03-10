@@ -7,16 +7,22 @@
 
 {%load static%}
 {% block content %}
+{% load widget_tweaks %}
     <!-- FORM CONTENT -->
     <div class="container-fluid bg-content">
       <div class="content">
-        <form class="heading-label">
           <div class="row">
             <div class="col">
               <h3 class="link" style="margin-top: 10px;">Subject Details</h3>
             </div>
           </div>
-            <form>
+            <form method="POST" action="{% url 'subject-add' curriculum.curriculum_ID %}" class="heading-label">
+              {%csrf_token%}
+          <div class="row">
+            <div class="col">
+              <h3 class="link" style="margin-top: 10px;">Subject Details</h3>
+            </div>
+          </div>
             <div class="row">
               <div class="col-md-4">
                 <label>Year Level:</label>
@@ -38,11 +44,11 @@
                 </div>
                 <div class="col-md-6">
                   <label>Subject Name:</label>
-                    <input type="text" class="form-control" required>
+                    {{forms.subject_name|add_class:"form-control"}}
                 </div>
                 <div class="col-md-2">
                   <label>Units:</label>
-                  <input type="number" class="form-control" required>
+                  {{forms.units|add_class:"form-control"}}
                 </div>
                 <div class="col-md-2 text-center delete-btn">
                   <a href="#" class="delete-row warning" onclick="deleteRow(this)"><i class="fa fa-close"></i></a>
@@ -53,10 +59,11 @@
               <button type="button" onclick="add()" class="btn btn-link"><i class="fa fa-plus" aria-hidden="true"></i> Add additional subject</button>
             </div>
             <div class="btn-forms" style="display: flex; justify-content: flex-end">
-                  <a href="curriculum-list.html" class="btn btn-link">Cancel</a>
-                  <a href="#" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Curriculum Details</a>
+                  <a href="{%url 'curriculum-list' %}" class="btn btn-link">Cancel</a>
+                  <button type="submit" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Curriculum Details</button>
             </div>
-          </form>
+        </div>
+      </div>
         </div>
       </div>
     </form>
@@ -89,5 +96,31 @@
         $('[data-toggle="tooltip"]').tooltip();   
     });
     </script>
+<!------------------------------------------------------------------------------>
+<script>
 
+  
+  $(".content").on("submit", ".js-curriculum-create-form", function() {
+    var form = $(this);
+    $.ajax({
+        url: '{% url "curriculum-create" %}',
+        data: form.serialize(),
+        type: form.attr("method"),
+        dataType: 'json',
+        success: function(data) {
+            if (data.form_is_valid) {
+                window.location = "{%url 'curriculum-list' %}"
+            }
+            else {
+                console.log(data.form_is_valid);
+                $(".content").html(data.html_form);
+            }
+        }
+    });
+    return false;
+});
+});
+
+
+</script>
 {%endblock%}

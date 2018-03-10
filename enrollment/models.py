@@ -8,11 +8,13 @@ import datetime
 # Create your models here.
 
 ACTIVE = 'a'
-ON_LEAVE = 'o'
+ON_LEAVE = 'l'
 INACTIVE = 'i'
 
-ESC = 'e'
-OTHERS = 't'
+ACADEMIC = 'c'
+GOVT = 'g'
+ATHLETIC = 'e'
+OTHERS = 'o'
 
 class TeacherDetails(models.Model):
     teacher_ID = models.AutoField(primary_key=True)
@@ -27,7 +29,6 @@ class TeacherDetails(models.Model):
 
 
 class School_Year(models.Model):
-	year_name = models.CharField(max_length=200)
 	date_start = models.DateField(auto_now = True)
 	
 	class Meta:
@@ -45,8 +46,11 @@ class YearLevel(models.Model):
 class Scholarship(models.Model):
 	scholarship_name = models.CharField(max_length=200)
 	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
+	reductions = models.IntegerField()
 	SCHOLARSHIP_CHOICES = (
-        (ESC, 'ESC'),
+        (ACADEMIC, 'Academic'),
+        (GOVT, 'Government'),
+        (ATHLETIC, 'Athletic'),
         (OTHERS, 'Others'),
     )
 	scholarship_type = models.CharField(max_length=1,
@@ -60,8 +64,11 @@ class Scholarship(models.Model):
 	    
 	def __str__(self):
 	    return "%s for %s" % (self.scholarship_name, self.school_year)
-	''' SCHOLARSHIP must only contain scholarship details, not the price/amount it discounts. The money part will be handled in the cashier module'''
-
+#THIS ENTITY IS FOR MANY-TO-MANY 
+class Scholarship_Registration(models.Model):
+    student = models.ForeignKey('registration.Enrollment', on_delete = models.CASCADE)
+    scholarship = models.ForeignKey(Scholarship, on_delete = models.CASCADE)
+    
 class Curriculum(models.Model):
     curriculum_ID = models.AutoField(primary_key=True)
     curriculum_year = models.DateField(default=datetime.date.today)
@@ -88,7 +95,7 @@ class Subjects(models.Model):
     subject_name = models.CharField(max_length=200)
     units = models.IntegerField(null = True)
     curriculum = models.ForeignKey(Curriculum, on_delete = models.SET_NULL, null = True)
-    
+    year_level = models.ForeignKey(YearLevel, on_delete = models.CASCADE)
     class Meta:
         verbose_name = "Subject"
         
@@ -128,6 +135,7 @@ class Offering(models.Model):
 	subject = models.ForeignKey(Subjects, on_delete=models.CASCADE, default=0)
 	teacher = models.ForeignKey(TeacherDetails, on_delete=models.CASCADE, default=0)
 	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
+	#Section bases on the year_level
 	year_level = models.ForeignKey(YearLevel, on_delete=models.CASCADE, null = True)
 	section = models.ForeignKey(Section, on_delete=models.CASCADE, null = True)
 	
@@ -149,26 +157,15 @@ class Section_Enrollee(models.Model):
         (ACTIVE, 'Active'),
         (INACTIVE, 'Inactive'),
     )
-    section_status = models.CharField(max_length=1,
+    student_status = models.CharField(max_length=1,
         choices=STATUS_CHOICES,
         blank=False,
-        default=INACTIVE
+        default=ACTIVE
         )
     class Meta:
 	    verbose_name = "Enrollees in Sections"
     def __str__(self):
         return "%s enrolled in %s" % (self.enrollee, self.section)
-        
-class Section_Offerings(models.Model):
-	sectionDetails_ID = models.AutoField(primary_key=True)
-	section_ID = models.ForeignKey(Section, on_delete=models.CASCADE, default=0)
-	offering_ID = models.ForeignKey(Offering, on_delete=models.CASCADE, default=0)
-	
-	class Meta:
-	    verbose_name = "Section Detail"
-	    
-	def __str__(self):
-	    return "%s - %s" % (self.section_ID, self.offering_ID)
     
 class SHS_Subjects(models.Model):
     s_subjectName  = models.CharField(max_length=200)
