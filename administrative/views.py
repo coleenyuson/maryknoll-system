@@ -38,7 +38,7 @@ def tableEmployeeList(request):
     print employee_list
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(employee_list, 10)
+    paginator = Paginator(employee_list, 5)
     
     try:
         employee = paginator.page(page)
