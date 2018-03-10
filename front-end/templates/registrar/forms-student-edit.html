@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form method="POST" action="{% url 'student-create' %}" class="heading-label js-student-create-form">
+<form method="POST" action="{% url 'student-edit-form' pk=instance.pk%}" class="heading-label js-student-edit-form">
 {% csrf_token %}
     
         <div class="row">

@@ -17,12 +17,16 @@ urlpatterns = [
         url(r'^curriculum-list/subject-table/(?P<pk>\d+)$', views.tableCurriculumSubjectList, name = 'subject-table'),
         url(r'^curriculum-list/subject/add/(?P<pk>\d+)$', views.openCurriculumSubjectAdd, name = 'subject-add'),
         #-----------------------SECTION------------------------------------------------------------
-        url(r'^section/list$', views.sectionList, name = 'section-list'),
-        url(r'^section/list/table$', views.sectionTable, name = 'section-table'),
-        url(r'^section/list/add/$', views.addSection, name = 'section-create'),
-        #url(r'^section/list/detail$', views.detailSection, name = 'section-create'),
-        url(r'^section/list/add-form$', views.generateSectionForm, name = 'section-create-form'),
-        url(r'^section/list/(?P<pk>\d+)/$', views.sectionDetails, name = 'section-detail'),
+        url(r'^section-list$', views.sectionList, name = 'section-list'),
+        url(r'^section-list/table$', views.sectionTable, name = 'section-table'),
+        url(r'^section-list/add$', views.addSection, name = 'section-create'),
+        
+        url(r'^section-list/add-form$', views.generateSectionForm, name = 'section-create-form'),
+        url(r'^section-list/(?P<pk>\d+)/$', views.sectionDetails, name = 'section-detail'),
+        url(r'^section-list/detail-table/(?P<pk>\d+)$', views.tableSectionDetail, name = 'section-detail-table'),
+        
+        url(r'^section-list/section-detail-add/(?P<pk>\d+)$', views.sectionDetailAdd, name = 'section-detail-add'),
+        url(r'^section-list/section-detail-form/(?P<pk>\d+)$', views.sectionDetailForm, name = 'section-detail-form'),
         
         #-----------------------SCHOLARSHIP--------------------------------------------------------
         url(r'^scholarship-list/$', views.scholarshipList, name = 'scholarship-list'),

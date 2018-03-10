@@ -10,6 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 from .models import *
 from registration.models import *
+from django.db.models import Q
+
 
 @login_required
 def index(request):
@@ -161,16 +163,128 @@ def sectionDetails(request, pk='pk'):
     return render(request, 'enrollment/section-details.html', {'section': section})
     
 def sectionTable(request):
-    section_list = Section.objects.all()
-    context = {'section_list': section_list}
+    section_list = getSectionList(request)
+    print section_list
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(section_list, 3)
+    
+    try:
+        section = paginator.page(page)
+    except PageNotAnInteger:
+        section = paginator.page(1)
+    except EmptyPage:
+        section = paginator.page(paginator.num_pages)
+        
+    context = {'section_list': section}
     html_form = render_to_string('enrollment/table-section-list.html',
         context,
         request = request,
     )
     return JsonResponse({'html_form' : html_form})
-
-
     
+def tableSectionDetail(request, pk='pk'):
+    section = get_object_or_404(Curriculum, pk=pk)
+    
+    section_enrollee_list = Section_Enrollee.objects.filter(section = section)
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(section_enrollee_list, 4)
+    
+    try:
+        section = paginator.page(page)
+    except PageNotAnInteger:
+        section = paginator.page(1)
+    except EmptyPage:
+        section = paginator.page(paginator.num_pages)
+        
+    context = {'section_enrollee_list': section}
+    html_form = render_to_string('enrollment/table-section-detail.html',
+        context,
+        request = request,
+    )
+    
+    data = {'html_form' : html_form}
+    return JsonResponse(data)
+
+def sectionDetailAdd(request, pk='pk'):
+    instance = get_object_or_404(Section, pk=pk)
+    return render(request, 'enrollment/section-details-add.html', {'instance': instance})
+
+def sectionDetailForm(request, pk='pk'):
+    data = {'form_is_valid' : True }
+    section = get_object_or_404(Section, pk=pk)
+    section_enrollee = Section_Enrollee.objects.filter(section = section)
+    try:
+        enrollment = Enrollment.objects.latest('enrollment_ID').filter(r)
+    except:
+        enrollment = None
+        
+    '''if request.method == 'POST':
+        form = SectionForms(request.POST)
+        form.date_enrolled = datetime.now()
+        form.student = Student.objects.get(student_ID = pk)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.student_type='n'
+            current_student.status="a"
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            print form.errors
+            data['form_is_valid'] = False
+    
+    else:
+        form = SectionForms()'''
+        
+    context = {'last_record':enrollment, 'instance': instance}
+    data['html_form'] = render_to_string('enrollment/forms-section-detail-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+
+def getSectionList(request):
+    search = request.GET.get('search')
+    genre = request.GET.get('genre')
+    isNum = True
+    try:
+        int(search)
+    except:
+        isNum = False
+    if(request.GET.get('search')!= "None"):
+        if( (genre == "None" or genre == "All Categories") and isNum):
+            query = Section.objects.filter(
+                Q(section_ID__contains=search)|
+                Q(section_name__icontains=search)|
+                Q(section_capacity__contains=search)|
+                Q(adviser__icontains=search)|
+                Q(room__icontains=search)
+            )
+        if(genre == "None" or genre == "All categories"):
+            query = Section.objects.filter(
+                Q(section_ID__contains=search)|
+                Q(section_name__icontains=search)|
+                Q(section_capacity__contains=search)|
+                Q(adviser__icontains=search)|
+                Q(room__icontains=search)
+            )
+        elif(genre == "Section ID"):
+            print "id"
+            query = Section.objects.filter(section_ID__contains=search)
+        elif(genre == "Section Name"):
+            query = Section.objects.filter(section_name__icontains=search)
+        elif(genre == "Room"):
+            query = Section.objects.filter(room__icontains=search)
+        elif(genre == "Adviser"):
+            query = Section.objects.filter(adviser__icontains=search)
+        else:
+            print "wala"
+            query = Section.objects.all() 
+            
+    else:
+        return []
+    return query
     
 #AJAX VIEWS --------------------------------------------------------------------
 
@@ -199,12 +313,13 @@ def generateSectionForm(request):
         request=request,
     )
     return JsonResponse(data)
+    
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 def tableScholarshipList(request):
-    scholarship_list = Scholarship.objects.all()
+    scholarship_list = getScholarshipList(request)
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(scholarship_list, 10)
+    paginator = Paginator(scholarship_list, 5)
     
     try:
         scholarship = paginator.page(page)
@@ -219,6 +334,46 @@ def tableScholarshipList(request):
         request = request,
     )
     return JsonResponse({'html_form' : html_form})
+
+def getScholarshipList(request):
+    search = request.GET.get('search')
+    genre = request.GET.get('genre')
+    isNum = True
+    try:
+        int(search)
+    except:
+        isNum = False
+    if(request.GET.get('search')!= "None"):
+        if( (genre == "None" or genre == "All Categories") and isNum):
+            query = Scholarship.objects.filter(
+                Q(pk__contains=search)|
+                Q(scholarship_name__icontains=search)|
+                Q(school_year__contains=search)|
+                Q(scholarship_type__icontains=search)
+            )
+        if(genre == "None" or genre == "All categories"):
+            query = Scholarship.objects.filter(
+                Q(pk__contains=search)|
+                Q(scholarship_name__icontains=search)|
+                Q(school_year__contains=search)|
+                Q(scholarship_type__icontains=search)
+            )
+        elif(genre == "Scholarship ID"):
+            print "id"
+            query = Scholarship.objects.filter(pk__contains=search)
+        elif(genre == "Scholarship Name"):
+            query = Scholarship.objects.filter(scholarship_name__icontains=search)
+        elif(genre == "Validity"):
+            query = Scholarship.objects.filter(school_year__icontains=search)
+        elif(genre == "Scholarship Type"):
+            query = Scholarship.objects.filter(scholarship_type__icontains=search)
+        else:
+            print "wala"
+            query = Scholarship.objects.all() 
+            
+    else:
+        return []
+    return query
 
 def createScholarshipProfile(request):
     data = {'form_is_valid' : False }
@@ -323,6 +478,7 @@ def subjectOfferingDetail(request, pk='pk'):
         last_record = Enrollment.objects.filter(subjOffering=subjOffering)
     return render(request, 'enrollment/subject-offering-add.html.html', {'subjOffering': subjOffering, 'record':last_record})
     
+
 
 def updateSubjectOffering(request, pk='pk'):
     instance = get_object_or_404(Offering, pk=pk)

@@ -48,22 +48,20 @@
 
 <!-- Allows dropdown menu to select child -->
 <script>
-$(function(){
-
-$(".dropdown-menu a").click(function(){
-
+var selected = "None";
+var search_data = "None";
+  $(function() {
+    $(".dropdown-menu a").click(function() {
       $("#selected:first-child").text($(this).text());
       $("#selected:first-child").val($(this).text());
-      if($("#selected:first-child").val() == "Status"){
-          $(".changeIfStatus").replaceWith("<h1> test </h1>"); // must change into dropdown
+      selected = $("#selected:first-child").val();
+      if ($("#selected:first-child").val() == "All categories") {
+        generatePage(1)
       }
-      else{
-
+      else {
       }
-
-   });
-
-});
+    });
+  });
 </script>
 <!-- ---------------------------BACKEND SCRIPTS ------------------------------->
 <script>
@@ -77,6 +75,54 @@ $(function() {
         }
     });
 });
+
+function generatePage(pageNum){
+    if(search_data == "None" || selected == "None"){
+      generatePages(pageNum)
+    }else{
+      generatePages2(pageNum)
+    }
+  }
+  function generatePages(pageNum) {
+    $.ajax({
+      url: '{% url "employee-table" %}?page=' + pageNum,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#employee-listings").html(data.html_form);
+      }
+    });
+  }
+  
+  function generatePages2(pageNum) {
+    $.ajax({
+      url: '{% url "employee-table" %}?page=' + pageNum + '&search='+search_data+"&genre="+selected,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#employee-listings").html(data.html_form);
+      }
+    });
+  }
+  
+ $('.search').click(function() {
+    search_data = $('.search-input').val();
+    if(search_data == ""){
+      search_data = "None"
+    }
+    generateSearch();
+  });
+  
+  function generateSearch() {
+    $.ajax({
+      url: '{% url "employee-table" %}?search='+search_data+"&genre="+selected,
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        $("#employee-listings").html(data.html_form);
+      }
+    });
+  }
 </script>
 
 {%endblock%}

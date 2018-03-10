@@ -23,7 +23,7 @@ $(document).ready(function(){
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "student-create" %}',
+        url: '{% url "student-edit-form" pk=instance.pk %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -31,11 +31,11 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".js-student-create-form", function() {
+  $(".content").on("submit", ".js-student-edit-form", function() {
     
     var form = $(this);
     $.ajax({
-        url: '{% url "student-create" %}',
+        url: '{% url "student-edit-form" pk=instance.pk %}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',

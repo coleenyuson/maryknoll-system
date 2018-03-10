@@ -53,5 +53,17 @@
 <!-- CONTENT -->
 <!-- ---------------------------BACKEND SCRIPTS ------------------------------->
 
+<script>
+$(function() {
+  $.ajax({
+        url: '{% url "section-detail-table" section.pk %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $("#section-detail-listings").html(data.html_form);
+        }
+    });
+});
+</script>
 
 {%endblock%}
