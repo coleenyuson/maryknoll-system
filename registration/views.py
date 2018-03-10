@@ -47,21 +47,13 @@ def ajaxTable(request, template, context, data = None):
     else:
         data = {'html_form' : html_form}
     return JsonResponse(data)
-def getLatest(model, attribute, foreign_key = None, ref_attribute = None):
-    if(foreign_key == None or ref_attribute == None):
-        # Get latest record of a model, basing on a certain attribute
-        # Returns an instance
-        try:
-            latest = model.objects.latest(attribute)
-        except:
-            latest = None
-    else:
-        # Get latest record of a model, basing on a certain attribute
-        # Returns an instance. This is for models with Foreign Keys
-        try:
-            latest = model.objects.filter(ref_attribute=foreign_key).latest(attribute)
-        except:
-            latest = model.objects.filter(ref_attribute=foreign_key)
+def getLatest(model, attribute):
+    # Get latest record of a model, basing on a certain attribute
+    # Returns an instance
+    try:
+        latest = model.objects.latest(attribute)
+    except:
+        latest = None
     return latest
 def updateInstance(request, modelForm, instance):
     if request.method == 'POST':
@@ -180,7 +172,12 @@ def form_addStudent(request):
 
 def studentDetails(request, pk='pk'):
     current_student = get_object_or_404(Student, pk=pk)
-    last_record = getLatest(Enrollment, 'enrollment_ID', current_student, Enrollment.student)
+    # Get latest record of a model, basing on a certain attribute
+    # Returns an instance. This is for models with Foreign Keys
+    try:
+        last_record = Enrollment.objects.filter(student=current_student).latest('enrollment_ID')
+    except:
+        last_record = Enrollment.objects.filter(student=current_student)
     return render(request, 'registrar/student-profile.html', {'student': current_student, 'record':last_record})
 def table_studentDetails(request, pk='pk'):
     student = get_object_or_404(Student, pk=pk)
