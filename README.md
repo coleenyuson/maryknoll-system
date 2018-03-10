@@ -9,9 +9,9 @@ To get yourself a copy of the project up and running on your local machine for d
 
 1.) Create your workspace folder and open your command line to your workspace folder
 
-2.) Register the repository link (https://github.com/aaajii/sad-development.git) to a remote 
+2.) Register the repository link (https://github.com/aaajii/maryknoll-system.git) to a remote 
 
-``` git remote add origin https://github.com/aaajii/sad-development.git ```
+``` git remote add origin https://github.com/aaajii/maryknoll-system.git ```
 
 3.) Clone the repository to your folder to make yourself have your own local copy of it
 
@@ -25,7 +25,7 @@ Assuming you are using any linux OS (or git bash on windows), you can run this i
 ```
 sudo apt-get update
 sudo apt-get install python-pip
-sudo pip install django
+sudo pip install django==1.9
 ```
 
 To check if you have successfully installed django and its version:
@@ -63,13 +63,13 @@ Configure the web host's WSGI with:
 import os
 import sys
 
-#assuming your manage.py is located at /home/user/lol-project then
-path = '/home/user/lol-project'
+#assuming your manage.py is located at /home/maryknoll/project/maryknoll-system then
+path = '/home/maryknoll/project/maryknoll-system'
 if path not in sys.path:
     sys.path.append(path)
 
-#assuming your settings.py is located at /home/user/lol-project/lol-project then
-os.environ['DJANGO_SETTINGS_MODULE'] = 'local_library_website.settings'
+#assuming your settings.py is located at /home/maryknoll/project/maryknoll-system/main then
+os.environ['DJANGO_SETTINGS_MODULE'] = 'main.settings'
 
 
 from django.core.wsgi import get_wsgi_application

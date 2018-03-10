@@ -1,25 +1,28 @@
 {% load widget_tweaks %}
-<form method="POST" action="{% url 'enrollment-create' pk=student.pk %}" id="form1" class="enrollment-form">
+<form method="POST" action="{% url 'enrollment-create'  student.student_ID %}" class="heading-label enrollment-form">
   {% csrf_token %}
   <div class="row">
     <div class="col">
       <h3 class="link" style="margin-top: 10px;">Student Registration</h3>
-      </div>
+    </div>
   </div>
   <div class="row">
     <div class="col-md-4">
       <label>Student ID:</label>
-      <p class="form-control-static">000{{student.student_ID}}</p><!--incremental-->
+      <p class="form-control-static">000{{student.student_ID}}</p>
+      <!--incremental-->
     </div>
     <div class="col-md-4">
       <label>Student Name:</label>
-      <p class="form-control-static">{{student.last_name}}, {{student.first_name}}</p><!--incremental-->
+      <p class="form-control-static">{{student.last_name}}, {{student.first_name}}</p>
+      <!--incremental-->
     </div>
   </div>
   <div class="row">
     <div class="col-md-4">
       <label>Enrollment ID:</label>
-      <p class="form-control-static">000{{last_record.enrollment_ID|add:"1"}}</p><!--incremental-->
+      <p class="form-control-static">000{{last_record|add:"1"}}</p>
+      <!--incremental-->
     </div>
     <div class="col-md-4">
       <label>Student Type:</label>
@@ -27,30 +30,35 @@
     </div>
     <div class="col-md-4">
       <label>Date Enrolled:</label>
-      <p class="form-control-static">{% now "SHORT_DATE_FORMAT" %}</p><!-- current Date and time?-->
+      <p class="form-control-static">{% now "jS F Y H:i" %}</p>
+      <!-- current Date and time?-->
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
-      <label>Curriculum:</label>
-      {{form.curriculum|add_class:"custom-select btn-block sections"}}
+    <div class="col-md-4">
+      <label>School Year:</label>
+      {{form.school_year|add_class:"custom-select btn-block"|attr:"required"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <label>Enrollment Status:</label>
+      {{form.enrollment_status|add_class:"custom-select btn-block"|attr:"required"}}
+    </div>
+    <div class="col-md-4">
+      <label>Section: (Optional)</label>
+      {{form.section|add_class:"custom-select btn-block"}}
     </div>
   </div>
   <h5 class="sm-headings">Scholarships </h5>
   <div class="row">
     <div class="col-md-4">
-      <label>Scholarship Name:</label>
-      {{form.scholarship|add_class:"custom-select btn-block"}}
-    </div>
-    <div class="col-md-4">
-      <label>School Year:</label>
-      {{form.school_year|add_class:"custom-select btn-block"}}
-      {{form.date_enrolled|attr:"hidden"}}
-      {{form.student|attr:"hidden"}}
+      <label>Scholarship Name:</label>    
+      {{form.scholarship|add_class:"custom-select btn-block"|attr:"required"}}
     </div>
   </div>
   <div class="btn-forms" style="display: flex; justify-content: flex-end">
     <a href="{% url 'student-details' student.student_ID %}" class="btn btn-link">Cancel</a>
-    <a href="#" onclick="document.getElementById('form1').submit();" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Student Registration</a>
+    <button type="submit" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Student Registration</button>
   </div>
 </form>

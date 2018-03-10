@@ -1,57 +1,56 @@
-{% extends 'base.html' %}
-{% block settings %}
+{% extends 'base.html' %} {% block settings %}
 <li class="nav-item active-menu">
   <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
 </li>
-{% endblock %}
-
-{%load static%}
-{% block content %}
-    <!-- CONTENT -->
-    <div class="container-fluid bg-content">
-      <div class="content"> 
-        <a href="{% url 'section-list' %}"><h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4></a>
-        <div class="card">
-          <div class="card-block">
+{% endblock %} {%load static%} {% block content %}
+<!-- CONTENT -->
+<div class="container-fluid bg-content">
+  <div class="content">
+    <a href="{%url 'section-list' %}" class="no-print">
+      <h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4>
+    </a>
+    <div class="card">
+      <div class="card-block">
+        <div class="row">
+          <div class="col-md-12">
             <div class="row">
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-8">
-                    <h1 class="card-title">{{section.section_name}}</h1>
-                  </div>
-                  <div class="col-md-4 float-right">
-                    <br/><!-- bwahaha tricks-->
-                    
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <h6 class="card-subtitle mb-2 link">Room: <span class="text-muted">{{section.room}}</span></h6>
-                    <h6 class="card-subtitle link mb-2 ">Adviser:<span class="text-muted"> {{section.adviser}}</span></h6>
-                    <h6 class="card-subtitle mb-2 link">Total Number of Students: <span class=" text-muted">3/{{section.section_capacity}}</span></h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row records">
               <div class="col-md-8">
-                <h2>Student List</h2>
+                <div class="seal"></div>
+                <h1 class="card-title">St. Mark</h1>
               </div>
-              <div class="col-lg-4">
-                <a href="#" class="card-link margin"><i class="fa fa-print" aria-hidden="true"></i> Print Section Details</a>
-                <div class="btn-group float-right">
-                  <a href="{% url 'section-detail-add' pk=section.pk %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
-                </div>
+              <div class="col-md-4 float-right">
+                <br/>
+                <!-- bwahaha tricks-->
               </div>
             </div>
-            <div class="row table-records table-responsive" id="section-detail-listings">
-              <!--- INSERT TABLE HERE --->
+            <div class="row">
+              <div class="col-md-4">
+                <h6 class="card-subtitle mb-2 link">Room: <span class="text-muted"> F612</span></h6>
+                <h6 class="card-subtitle link mb-2 ">Adviser:<span class="text-muted"> Mr. Obi-Wan Kenobi</span></h6>
+                <h6 class="card-subtitle mb-2 link">Total Number of Students: <span class=" text-muted">3/45</span></h6>
+              </div>
             </div>
           </div>
         </div>
+        <div class="row records">
+          <div class="col-md-8 no-print">
+            <h2>Student List</h2>
+          </div>
+          <div class="col-lg-4 no-print">
+            <a href="javascript:window.print()" class="card-link btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Print Section Details</a>
+            <div class="btn-group float-right">
+              <a href="{%url 'section-create' %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
+            </div>
+          </div>
+        </div>
+        <div class="row table-records table-responsive">
+          <!--- INSERT TABLE HERE --->
+        </div>
       </div>
     </div>
-    <!-- CONTENT -->
+  </div>
+</div>
+<!-- CONTENT -->
 <!-- ---------------------------BACKEND SCRIPTS ------------------------------->
 
 <script>
