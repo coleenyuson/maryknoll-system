@@ -167,7 +167,7 @@ def sectionTable(request):
     print section_list
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(section_list, 4)
+    paginator = Paginator(section_list, 3)
     
     try:
         section = paginator.page(page)
@@ -316,10 +316,10 @@ def generateSectionForm(request):
     
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 def tableScholarshipList(request):
-    scholarship_list = Scholarship.objects.all()
+    scholarship_list = getScholarshipList(request)
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(scholarship_list, 10)
+    paginator = Paginator(scholarship_list, 5)
     
     try:
         scholarship = paginator.page(page)
@@ -334,6 +334,46 @@ def tableScholarshipList(request):
         request = request,
     )
     return JsonResponse({'html_form' : html_form})
+
+def getScholarshipList(request):
+    search = request.GET.get('search')
+    genre = request.GET.get('genre')
+    isNum = True
+    try:
+        int(search)
+    except:
+        isNum = False
+    if(request.GET.get('search')!= "None"):
+        if( (genre == "None" or genre == "All Categories") and isNum):
+            query = Scholarship.objects.filter(
+                Q(pk__contains=search)|
+                Q(scholarship_name__icontains=search)|
+                Q(school_year__contains=search)|
+                Q(scholarship_type__icontains=search)
+            )
+        if(genre == "None" or genre == "All categories"):
+            query = Scholarship.objects.filter(
+                Q(pk__contains=search)|
+                Q(scholarship_name__icontains=search)|
+                Q(school_year__contains=search)|
+                Q(scholarship_type__icontains=search)
+            )
+        elif(genre == "Scholarship ID"):
+            print "id"
+            query = Scholarship.objects.filter(pk__contains=search)
+        elif(genre == "Scholarship Name"):
+            query = Scholarship.objects.filter(scholarship_name__icontains=search)
+        elif(genre == "Validity"):
+            query = Scholarship.objects.filter(school_year__icontains=search)
+        elif(genre == "Scholarship Type"):
+            query = Scholarship.objects.filter(scholarship_type__icontains=search)
+        else:
+            print "wala"
+            query = Scholarship.objects.all() 
+            
+    else:
+        return []
+    return query
 
 def createScholarshipProfile(request):
     data = {'form_is_valid' : False }
