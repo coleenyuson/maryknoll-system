@@ -113,7 +113,7 @@ class Enrollment(models.Model):
         verbose_name = "Enrollment"
         
     def __str__(self):
-        return "%s enrolled under %s" % (self.student, self.curriculum)
+        return "%s enrolled under %s" % (self.student, self.school_year)
     #For detailed view
     def get_absolute_url(self):
         return reverse('enrollment-table', args=[str(self.enrollment_ID)])
