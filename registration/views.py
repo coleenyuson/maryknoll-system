@@ -204,7 +204,7 @@ def form_addEnrollment(request, pk='pk'):
         if form.is_valid():
             post = form.save(commit=False)
             post.date_enrolled = datetime.now()
-            post.student = Student.objects.get(student_ID = pk)
+            post.student = current_student
             post.student_type='n'
             current_student.status="a"
             form.save()
@@ -215,6 +215,7 @@ def form_addEnrollment(request, pk='pk'):
     else:
         form = RegistrationForms()
 
+    # !!! 3/12/2018 -- Jim -- We need to provide two more context variables: Scholarships and Sections
     context = {'form': form, 'student':current_student, 'last_record':enrollment}
     template = 'registrar/forms-registration-create.html'
 

@@ -93,9 +93,11 @@ DROPPED = 'd'
 
 class Enrollment(models.Model):
     enrollment_ID = models.AutoField(primary_key=True)
-    section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, blank=True, null=True, default=None)
+    # !!! 3/12/2018 -- Jim -- Delete the Section_Enrollee entity on Enrollment module
+    section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, null=True,blank = True, default=None)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
-    scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
+    #Scholarship_Registration entity exists
+    # !!! 3/12/2018 -- Jim -- Where do we place the 'Assign scholarships to a student'
     school_year = models.ForeignKey('enrollment.School_Year', on_delete=models.CASCADE, default=0)
     date_enrolled = models.DateField(auto_now_add=True)
     
