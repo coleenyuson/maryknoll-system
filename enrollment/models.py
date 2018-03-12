@@ -89,7 +89,7 @@ class Curriculum(models.Model):
         verbose_name = "Curriculum"
         
     def __str__(self):
-        return "%s - %s" % (self.curriculum_year, self.curriculum_status)
+        return "%s" % (self.curriculum_year)
         
     def get_abosulute_url(self):
 	    return reverse('curriculum-list', kwargs={"id": self.curriculum_ID})
