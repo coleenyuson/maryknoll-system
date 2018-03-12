@@ -184,28 +184,26 @@ def sectionTable(request):
     return JsonResponse({'html_form' : html_form})
     
 def tableSectionDetail(request, pk='pk'):
-    section = get_object_or_404(Curriculum, pk=pk)
+    section = get_object_or_404(Section, pk=pk)
     
-    section_enrollee_list = Section_Enrollee.objects.filter(section = section)
+    section_enrollee_list = Enrollment.objects.filter(section = section)
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(section_enrollee_list, 4)
+    paginator = Paginator(section_enrollee_list, 1)
     
     try:
-        section = paginator.page(page)
+        section_page = paginator.page(page)
     except PageNotAnInteger:
-        section = paginator.page(1)
+        sectio_page  = paginator.page(1)
     except EmptyPage:
-        section = paginator.page(paginator.num_pages)
+        section_page = paginator.page(paginator.num_pages)
         
-    context = {'section_enrollee_list': section}
-    html_form = render_to_string('enrollment/table-section-detail.html',
+    context = {'section_enrollee_list': section_page}
+    html_form = render_to_string('enrollment/table-section-details.html',
         context,
         request = request,
     )
-    
-    data = {'html_form' : html_form}
-    return JsonResponse(data)
+    return JsonResponse({'html_form' : html_form})
 
 def sectionDetailAdd(request, pk='pk'):
     instance = get_object_or_404(Section, pk=pk)
