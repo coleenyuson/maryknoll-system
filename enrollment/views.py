@@ -12,6 +12,13 @@ from .models import *
 from registration.models import *
 from django.db.models import Q
 
+#Local Functions -- Only for this module#
+def initializeSchoolYear():
+    '''PSEUDO CODE FOR INITIALIZATION'''
+    #Create school year name with "S.Y." This Year, and This Year++
+    #Year start date with THIS YEAR
+    pass
+#Local Functions -- End#
 
 @login_required
 def index(request):
@@ -40,7 +47,18 @@ def addScholarshipProfile(request):
 #--------------------------------------SUBJECT OFFERING------------------------------------------------
 @login_required
 def subjectOfferingList(request):
+    #Get current year
+    #Get latest school year
+    #if current year is <= latest school year
+        #Next = True
+    #else latest school year is not updated
+        #Next = None 
+    #context
+    #Add context to arguments
     return render(request, 'enrollment/subject-offering.html')
+def newSchoolYear(request):
+    initializeSchoolYear()
+    return reverse(subjectOfferingList)
 
 def addSubjectOfferingProfile(request):
     return render(request, 'enrollment/subject-offering-add.html')
