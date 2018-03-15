@@ -47,13 +47,16 @@ def addScholarshipProfile(request):
 #--------------------------------------SUBJECT OFFERING------------------------------------------------
 @login_required
 def subjectOfferingList(request):
+    #^^^ ADD PK TO THE ARGUMENTS ^^^ #
+    #which means alter the 'admin-settings' link for school_years, add a PK for the link there
+
     #Get current year
     #Get latest school year
     #if current year is <= latest school year
         #Next = True
     #else latest school year is not updated
         #Next = None 
-    #context
+    #context = {"school_year": latest_sy}
     #Add context to arguments
     return render(request, 'enrollment/subject-offering.html')
 def newSchoolYear(request):
