@@ -53,7 +53,9 @@
       </div>
       <div class="flex-print">
         <a href="javascript:window.print()" class="card-link flex-item print btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Print Offerings</a>
-        <a href="{%url 'subjectOffering-add' %}" class="add-button btn btn-primary flex-item"><i class="fa fa-plus" aria-hidden="true"></i> Create New Subject Offering</a>
+        <a href="{%url 'subjectOffering-add' %} {# Add this with current PK of the school_year #}" class="add-button btn btn-primary flex-item">
+          <i class="fa fa-plus" aria-hidden="true"></i> Create New Subject Offering
+        </a>
       </div>
     </div>
     <div class="row table-records table-responsive" id="subjectOffering-listings">
