@@ -151,24 +151,6 @@ class Offering(models.Model):
 	    return reverse('subjectOffering-list', args=[str(self.offering_ID)])
 	    
 ''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
-
-       
-class Section_Enrollee(models.Model):
-    enrollee = models.ForeignKey('registration.Enrollment', on_delete=models.CASCADE, default=0)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    STATUS_CHOICES = (
-        (ACTIVE, 'Active'),
-        (INACTIVE, 'Inactive'),
-    )
-    section_status = models.CharField(max_length=1,
-        choices=STATUS_CHOICES,
-        blank=False,
-        default=INACTIVE
-        )
-    class Meta:
-	    verbose_name = "Enrollees in Sections"
-    def __str__(self):
-        return "%s enrolled in %s" % (self.enrollee, self.section)
         
 class Section_Offerings(models.Model):
 	sectionDetails_ID = models.AutoField(primary_key=True)
