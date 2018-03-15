@@ -12,7 +12,6 @@ class StudentForms(forms.ModelForm):
         exclude = ('student_ID','status')
         
 class RegistrationForms(forms.ModelForm):
-    date_enrolled = forms.DateField(initial=datetime.date.today)
     class Meta:
         model = Enrollment
-        exclude = ('enrollment_ID','student_type','date_enrolled',)
+        exclude = ('enrollment_ID','student_type','date_enrolled','student',)
