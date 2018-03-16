@@ -27,14 +27,15 @@ class TeacherDetails(models.Model):
 
 
 class School_Year(models.Model):
-	year_name = models.CharField(max_length=200)
-	date_start = models.DateField(auto_now = True)
-	
-	class Meta:
-	    verbose_name = "School Year"
-	    
-	def __str__(self):
-	    return self.year_name
+    year_name = models.CharField(max_length=200)
+    date_start = models.DateField(auto_now = True)
+
+    class Meta:
+        verbose_name = "School Year"
+    def get_year(self):
+        return self.date_start.year
+    def __str__(self):
+        return self.year_name
 
 class YearLevel(models.Model):
     grade_level = models.CharField(max_length=200)
@@ -87,9 +88,10 @@ class Curriculum(models.Model):
         )
     class Meta:
         verbose_name = "Curriculum"
-        
+    def get_year(self):
+        return self.curriculum_year.year
     def __str__(self):
-        return "%s - %s" % (self.curriculum_year, self.curriculum_status)
+        return "%s" % (self.curriculum_year)
         
     def get_abosulute_url(self):
 	    return reverse('curriculum-list', kwargs={"id": self.curriculum_ID})
@@ -99,7 +101,7 @@ class Subjects(models.Model):
     subject_name = models.CharField(max_length=200)
     units = models.IntegerField(null = True)
     curriculum = models.ForeignKey(Curriculum, on_delete = models.SET_NULL, null = True)
-    
+    year = models.ForeignKey(YearLevel, on_delete=models.CASCADE)
     class Meta:
         verbose_name = "Subject"
         
@@ -151,24 +153,6 @@ class Offering(models.Model):
 	    return reverse('subjectOffering-list', args=[str(self.offering_ID)])
 	    
 ''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
-
-       
-class Section_Enrollee(models.Model):
-    enrollee = models.ForeignKey('registration.Enrollment', on_delete=models.CASCADE, default=0)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    STATUS_CHOICES = (
-        (ACTIVE, 'Active'),
-        (INACTIVE, 'Inactive'),
-    )
-    section_status = models.CharField(max_length=1,
-        choices=STATUS_CHOICES,
-        blank=False,
-        default=INACTIVE
-        )
-    class Meta:
-	    verbose_name = "Enrollees in Sections"
-    def __str__(self):
-        return "%s enrolled in %s" % (self.enrollee, self.section)
         
 class Section_Offerings(models.Model):
 	sectionDetails_ID = models.AutoField(primary_key=True)

@@ -10,7 +10,7 @@
     <!-- FORM CONTENT -->
     <div class="container-fluid bg-content">
       <div class="content">
-        
+        Hello
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@ $(document).ready(function(){
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "curriculum-create" %}',
+        url: '{% url "curriculum-create" curriculum.curriculum_ID %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -47,16 +47,16 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".js-curriculum-create-form", function() {
+  $(".content").on("submit", ".js-subject-create-form", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "curriculum-create" %}',
+        url: '{% url "curriculum-create" curriculum.curriculum_ID %}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'curriculum-list' %}"
+                window.location = "{%url 'curriculum-detail' curriculum.curriculum_ID %}"
             }
             else {
                 console.log(data.form_is_valid);
