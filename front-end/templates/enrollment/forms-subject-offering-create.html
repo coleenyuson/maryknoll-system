@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form action="{% url 'subjectOffering-create' %}" method="POST" class="js-subjectOffering-create-form">
+<form action="{% url 'subjectOffering-create' school_year.id %}" method="POST" class="js-subjectOffering-create-form">
 {% csrf_token %}
           <div class="row">
             <div class="col">
@@ -61,7 +61,7 @@
           </div>
           
         <div class="btn-forms" style="display: flex; justify-content: flex-end">
-          <a href="{%url 'subjectOffering-list' %}" class="btn btn-link">Cancel</a>
+          <a href="{%url 'subjectOffering-list' school_year.id %}" class="btn btn-link">Cancel</a>
           <input type="submit" class="btn btn-primary" value="Save Offering Details"></input>
         </div>
 </form>
