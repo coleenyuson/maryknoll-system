@@ -29,12 +29,13 @@ def curriculumList(request):
     return render(request, 'enrollment/curriculum-list.html')
 
 def addCurriculumProfile(request):
+    #add constraints here
     new_curriculum = Curriculum(curriculum_status='Active')
     new_curriculum.save()
     return render(request, 'enrollment/curriculum-list.html')
     
 def openCurriculumSubjectAdd(request, pk='pk'):
-    curriculum = Curriculum.objects.get(pk=pk)
+    curriculum = Curriculum.objects.get(curriculum_ID=pk)
     return render(request, 'enrollment/curriculum-list-add.html', {'curriculum':curriculum})
 
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
@@ -90,30 +91,30 @@ def tableCurriculumList(request):
     )
     return JsonResponse({'html_form' : html_form})
 
-def createCurriculumProfile(request):
+def createCurriculumProfile(request, pk):
+    curr = Curriculum.objects.get(curriculum_ID = pk)
     data = {'form_is_valid' : False }
-    try:
-        last_curriculum = Curriculum.objects.latest('curriculum_ID')
-    except:
-        last_curriculum = None
+
     if request.method == 'POST':
-        form = CurriculumForms(request.POST)
+        form = SubjectForm(request.POST)
         if form.is_valid():
+            post = form.save(commit=False)
+            post.curriculum = curr
             form.save()
             data['form_is_valid'] = True
         else:
             data['form_is_valid'] = False
     else:
-        form = CurriculumForms()
-    context = {'form': form, 'curriculum':last_curriculum}
-    data['html_form'] = render_to_string('enrollment/forms-curriculum-create.html',
+        form = SubjectForm()
+    context = {'form': form, 'curriculum':curr}
+    data['html_form'] = render_to_string('enrollment/forms-curriculum-subjects-list-create.html',
         context,
         request=request,
     )
     return JsonResponse(data)
     
 def curriculumDetails(request, pk='pk'):
-    curriculum = get_object_or_404(Curriculum, pk=pk)
+    curriculum = get_object_or_404(Curriculum, curriculum_ID=pk)
     try:
         last_record = Subjects.objects.filter(curriculum=curriculum).latest('enrollment_ID')
     except:
@@ -121,8 +122,7 @@ def curriculumDetails(request, pk='pk'):
     return render(request, 'enrollment/curriculum-subjects-list.html', {'curriculum': curriculum, 'record':last_record})
     
 def tableCurriculumSubjectList(request, pk='pk'):
-    curriculum = get_object_or_404(Curriculum, pk=pk)
-    
+    curriculum = get_object_or_404(Curriculum, curriculum_ID=pk)
     subject_list = Subjects.objects.filter(curriculum = curriculum)
     #Pagination
     page = request.GET.get('page', 1)
@@ -135,7 +135,7 @@ def tableCurriculumSubjectList(request, pk='pk'):
     except EmptyPage:
         subject = paginator.page(paginator.num_pages)
         
-    context = {'subject_list': subject}
+    context = {'subject_list': subject_list}
     html_form = render_to_string('enrollment/table-curriculum-subject-list.html',
         context,
         request = request,

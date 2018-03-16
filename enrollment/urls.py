@@ -9,7 +9,7 @@ urlpatterns = [
         url(r'^curriculum-list/$', views.curriculumList, name = 'curriculum-list'),
         url(r'^curriculum-list/table$', views.tableCurriculumList, name = 'curriculum-table'),
         url(r'^curriculum-list/add$', views.addCurriculumProfile, name = 'curriculum-add'),
-        url(r'^curriculum-list/create$', views.createCurriculumProfile, name = 'curriculum-create'),
+        url(r'^curriculum-list/create/(?P<pk>\d+)$', views.createCurriculumProfile, name = 'curriculum-create'),
         url(r'^curriculum-list/update/(?P<pk>\d+)$', views.updateCurriculum, name = 'curriculum-update'),
         url(r'^curriculum-list/edit-form/(?P<pk>\d+)$', views.editCurriculumForm, name = 'curriculum-edit-form'),
         #CURR DETAIL
