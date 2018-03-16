@@ -13,8 +13,16 @@
       <div class="col">
         <div class="flex-container no-print">
           <div class="align-right-item">
+            
+            {% if disabled == True  %}
+              <a href="{% url 'curriculum-add' %}" class="add-button btn btn-primary flex-item disabled"><i class="fa fa-plus" aria-hidden="true"></i> Initialize New Curriculum</a>
+              <!-- BACK END PROCESSES -->
+            {% else %}
             <a href="{% url 'curriculum-add' %}" class="add-button btn btn-primary flex-item"><i class="fa fa-plus" aria-hidden="true"></i> Initialize New Curriculum</a>
             <!-- BACK END PROCESSES -->
+            {% endif %}
+              
+            
           </div>
         </div>
       </div>

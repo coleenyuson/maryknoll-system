@@ -87,7 +87,8 @@ class Curriculum(models.Model):
         )
     class Meta:
         verbose_name = "Curriculum"
-        
+    def get_year(self):
+        return self.curriculum_year.year
     def __str__(self):
         return "%s" % (self.curriculum_year)
         
