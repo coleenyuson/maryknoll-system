@@ -26,7 +26,17 @@ def index(request):
 #--------------------------------------CURRICULUM------------------------------------------------------
 @login_required
 def curriculumList(request):
-    return render(request, 'enrollment/curriculum-list.html')
+    '''simple error handling: if current year is == year of latest curriculum created, disable the button'''
+    
+    try:
+        latest_curr = Curriculum.objects.latest('curriculum_year')
+    
+        if datetime.today().year == latest_curr.get_year():
+            disabled = True
+    except:
+        latest_curr = None
+        disabled = False
+    return render(request, 'enrollment/curriculum-list.html', context={'disabled':disabled})
 
 def addCurriculumProfile(request):
     #add constraints here
