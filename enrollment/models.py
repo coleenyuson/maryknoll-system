@@ -27,14 +27,15 @@ class TeacherDetails(models.Model):
 
 
 class School_Year(models.Model):
-	year_name = models.CharField(max_length=200)
-	date_start = models.DateField(auto_now = True)
-	
-	class Meta:
-	    verbose_name = "School Year"
-	    
-	def __str__(self):
-	    return self.year_name
+    year_name = models.CharField(max_length=200)
+    date_start = models.DateField(auto_now = True)
+
+    class Meta:
+        verbose_name = "School Year"
+    def get_year(self):
+        return self.date_start.year
+    def __str__(self):
+        return self.year_name
 
 class YearLevel(models.Model):
     grade_level = models.CharField(max_length=200)
