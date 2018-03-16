@@ -99,7 +99,7 @@ class Subjects(models.Model):
     subject_name = models.CharField(max_length=200)
     units = models.IntegerField(null = True)
     curriculum = models.ForeignKey(Curriculum, on_delete = models.SET_NULL, null = True)
-    
+    year = models.ForeignKey(YearLevel, on_delete=models.CASCADE)
     class Meta:
         verbose_name = "Subject"
         

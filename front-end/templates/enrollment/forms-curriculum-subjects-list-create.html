@@ -1,7 +1,6 @@
 {% load widget_tweaks %}
-<!-- FORM CONTENT -->
-<form method="POST" action="{% url 'subject-create' curriculum.pk %}" class="heading-label subject-create-form">
-{% csrf_token %}
+<form action="{% url 'curriculum-create' curriculum.curriculum_ID  %}" method="POST" class="js-subject-create-form">
+    {% csrf_token %}
           <div class="row">
             <div class="col">
               <h3 class="link" style="margin-top: 10px;">Subject Details</h3>
@@ -10,14 +9,7 @@
             <div class="row">
               <div class="col-md-4">
                 <label>Year Level:</label>
-                  <select class="custom-select btn-block" required>
-                    <option selected>Choose year level...</option>
-                    2018</option>
-                    <option value="1">Grade 1</option>
-                    <option value="2">Grade 2</option>
-                    <option value="3">Grade 3</option>
-                    <option value="4">Grade 4</option>
-                  </select>
+                {{form.year|add_class:"custom-select btn-block"}}
               </div>
             </div>
             <div id="addSubjects">
@@ -33,9 +25,6 @@
                 <div class="col-md-2">
                   <label>Units:</label>
                   {{form.units|add_class:"form-control"}}
-                  {% if form.units.errors %}
-              <p class="help-block">{{ form.units.errors }}</p>
-                {% endif %}
                 </div>
                 <div class="col-md-2 text-center delete-btn">
                   <a href="#" class="delete-row warning" onclick="deleteRow(this)"><i class="fa fa-close"></i></a>
@@ -46,9 +35,8 @@
               <button type="button" onclick="add()" class="btn btn-link"><i class="fa fa-plus" aria-hidden="true"></i> Add additional subject</button>
             </div>
             <div class="btn-forms" style="display: flex; justify-content: flex-end">
-                  <a href="{%url 'curriculum-list' %}" class="btn btn-link">Cancel</a>
-                  <input type="submit" class="btn btn-primary" value="Save Subject"></input>
-                  <!---<a href="#" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Curriculum Details</a>-->
+                  <a href="{%url 'curriculum-detail' curriculum.curriculum_ID %}" class="btn btn-link">Cancel</a>
+                  <button type="submit" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Curriculum Details</button>
             </div>
         </div>
       </div>
