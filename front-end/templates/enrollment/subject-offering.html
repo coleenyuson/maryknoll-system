@@ -9,18 +9,35 @@
     <div class="seal"></div>
     <div class="menu-flex margin">
       <div class="flex-item no-print">
-        <a href="#">
-          <h4><i class="fa fa-chevron-left" aria-hidden="true"></i> Previous School Year</h4>
-        </a>
+        
+        {% if previous_year %}
+          <a href="#">
+            <h4><i class="fa fa-chevron-left" aria-hidden="true"></i> Previous School Year</h4>
+          </a>
+        {% else %}
+          <a href="#" hidden>
+            <h4><i class="fa fa-chevron-left" aria-hidden="true"></i> Previous School Year</h4>
+          </a>
+        {% endif %}
       </div>
       <div class="flex-item title">
         <h2 class="text-center">SY 2017-2018</h2>
         <!-- Current School Year -->
       </div>
       <div class="flex-item no-print">
-        <a class="text-right" href="#">
-          <h4>Next School Year <i class="fa fa-chevron-right" aria-hidden="true"></i></h4>
-        </a>
+        {% if next_year %}
+          <a class="text-right" href="{# Link for next school year details #}">
+            <h4>Initialize School Year <i class="fa fa-chevron-right" aria-hidden="true"></i></h4>
+          </a>
+        {% else %}
+          {# if disabled == False #}
+            <a class="text-right" href="{% url 'create-schoolyear'%}">
+              <h4>Initialize School Year <i class="fa fa-plus" aria-hidden="true"></i></h4>
+            </a>
+          {# endif #}
+            
+          
+        {% endif %}
       </div>
     </div>
     <div class="menu-flex search-bar no-print">
@@ -28,8 +45,8 @@
         <div class="input-group">
           <div class="input-group-btn">
             <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Category
-                </button>
+              Category
+            </button>
             <!-- Supply dropdown menu categories, refer to database -->
             <div class="dropdown-menu">
               <a class="dropdown-item" href="#">All categories</a>
@@ -47,7 +64,9 @@
       </div>
       <div class="flex-print">
         <a href="javascript:window.print()" class="card-link flex-item print btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Print Offerings</a>
-        <a href="{%url 'subjectOffering-add' %}" class="add-button btn btn-primary flex-item"><i class="fa fa-plus" aria-hidden="true"></i> Create New Subject Offering</a>
+        <a href="{%url 'subjectOffering-add' school_year.id %}" class="add-button btn btn-primary flex-item">
+          <i class="fa fa-plus" aria-hidden="true"></i> Create New Subject Offering
+        </a>
       </div>
     </div>
     <div class="row table-records table-responsive" id="subjectOffering-listings">
@@ -63,7 +82,6 @@
 <!-- Allows dropdown menu to select child -->
 <script>
   $(function() {
-
     $(".dropdown-menu a").click(function() {
 
       $("#selected:first-child").text($(this).text());
@@ -83,7 +101,7 @@
 <script>
   $(function() {
     $.ajax({
-      url: '{% url "subjectOffering-table" %}',
+      url: '{% url "subjectOffering-table" school_year.id %}',
       type: 'get',
       dataType: 'json',
       success: function(data) {

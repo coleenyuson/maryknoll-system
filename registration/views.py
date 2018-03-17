@@ -1,54 +1,73 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
+
 from django.utils import timezone
 from datetime import datetime
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Q
-# Create your views here.
+
 from .models import *
 from .forms import StudentForms, RegistrationForms
 
-#STATIC VIEWS ------------------------------------------------------------------
-@login_required
-def index(request):
-    pass
-    #return render(request,'/registration/index.html',)
-
-@login_required
-def registrationList(request):
-    return render(request, 'registrar/student-registration-list.html')
-
-def addStudentProfile(request):
-    return render(request, 'registrar/student-registration-list-add.html')
-
-@login_required
-def studentDetails(request, pk='pk'):
-    student = get_object_or_404(Student, pk=pk)
-    try:
-        last_record = Enrollment.objects.filter(student=student).latest('subject_ID')
-    except:
-        last_record = Enrollment.objects.filter(student=student)
-    return render(request, 'registrar/student-profile.html', {'student': student, 'record':last_record})
-    
-def addEnrollment(request, pk = 'pk'):
-    student = Student.objects.get(student_ID = pk)
-    return render(request, 'registrar/student-profile-add.html', {'student': student})
-#AJAX VIEWS --------------------------------------------------------------------
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
-def searchStudent(request):
-    search = request.GET.get('search', None)
-    data = {
-        'is_taken': Student.objects.filter(first_name__contains=search).exists()
-    }
+from django.db import models
+from django.http import StreamingHttpResponse
+from django.views.generic import View
+import csv
+
+# Global Functions - can be applied anywhere
+# EXPORT TO CSV class is at the bottom-most part of this code
+def paginateThis(request, obj_list, num):
+    # Pagination. Send request, the list you want to paginate, and number of items per page.
+    # This returns a limited list with pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(obj_list, num)
+    try:
+        lists = paginator.page(page)
+    except PageNotAnInteger:
+        lists = paginator.page(1)
+    except EmptyPage:
+        lists = paginator.page(paginator.num_pages)
+    return lists
+def ajaxTable(request, template, context, data = None):
+    # For templates that needs ajax
+    html_form = render_to_string(template,
+        context,
+        request = request,
+    )
+    if data:
+        data['html_form'] = html_form
+    else:
+        data = {'html_form' : html_form}
     return JsonResponse(data)
-    
+def getLatest(model, attribute):
+    # Get latest record of a model, basing on a certain attribute
+    # Returns an instance
+    try:
+        latest = model.objects.latest(attribute)
+    except:
+        latest = None
+    return latest
+def updateInstance(request, modelForm, instance):
+    if request.method == 'POST':
+        form = modelForm(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+    else:
+        form = modelForm(instance = instance)
+    return form
+# Custom Functions - Only for this module
+
 def getStudentList(request):
+    # Get student list with filters IF there is any, if none, then return all
     search = request.GET.get('search')
     genre = request.GET.get('genre')
     isNum = True
@@ -73,7 +92,6 @@ def getStudentList(request):
                 Q(student_level__contains=search)
             )
         elif(genre == "Name"):
-            print "name"
             query = Student.objects.filter(
                 Q(first_name__contains=search)|
                 Q(last_name__contains=search)|
@@ -81,9 +99,9 @@ def getStudentList(request):
                 Q(student_level__contains=search)
             )
         elif(genre == "Student ID" and isNum):
-            print "id"
             query = Student.objects.filter(student_ID=search)
         elif(genre == "Year/Level"):
+            # This needs debugging. ex. JUNIOR_HIGH == 'j' but input is "Junior High"
             query = Student.objects.filter(student_level=search)
         else:
             print "wala"
@@ -92,136 +110,9 @@ def getStudentList(request):
     else:
         return []
     return query
-
-def tableStudentList(request):
-    verifyActive()
-    student_list = getStudentList(request)
-    print student_list
-    #Pagination
-    page = request.GET.get('page', 1)
-    paginator = Paginator(student_list, 10)
-    
-    try:
-        students = paginator.page(page)
-    except PageNotAnInteger:
-        students = paginator.page(1)
-    except EmptyPage:
-        students = paginator.page(paginator.num_pages)
-    
-    context = {'student_list': students}
-    html_form = render_to_string('registrar/table-student-list.html',
-        context,
-        request = request,
-    )
-    return JsonResponse({'html_form' : html_form})
-
-def createStudentProfile(request):
-    data = {'form_is_valid' : False }
-    try:
-        last_student = Student.objects.latest('student_ID')
-    except:
-        last_student = None
-    if request.method == 'POST':
-        form = StudentForms(request.POST)
-        if form.is_valid():
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            data['form_is_valid'] = False
-    else:
-        form = StudentForms()
-    context = {'form': form, 'student':last_student}
-    data['html_form'] = render_to_string('registrar/forms-student-create.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
-    
-def tableEnrollmentList(request, pk='pk'):
-    student = get_object_or_404(Student, pk=pk)
-    
-    enrollment_list = Enrollment.objects.filter(student = student)
-    #Pagination
-    page = request.GET.get('page', 1)
-    paginator = Paginator(enrollment_list, 4)
-    
-    try:
-        enrollment = paginator.page(page)
-    except PageNotAnInteger:
-        enrollment = paginator.page(1)
-    except EmptyPage:
-        enrollment = paginator.page(paginator.num_pages)
-        
-    context = {'enrollment_list': enrollment}
-    html_form = render_to_string('registrar/table-student-profile.html',
-        context,
-        request = request,
-    )
-    
-    data = {'html_form' : html_form}
-    return JsonResponse(data)
-
-#ACTUAL CREATE ENROLLMENT FORM
-def createEnrollment(request, pk='pk'):
-    data = {'form_is_valid' : False }
-    current_student = get_object_or_404(Student, pk=pk)
-    try:
-        enrollment = Enrollment.objects.latest('enrollment_ID')
-    except:
-        enrollment = None
-    if request.method == 'POST':
-        form = RegistrationForms(request.POST)
-        form.date_enrolled = datetime.now()
-        form.student = Student.objects.get(student_ID = pk)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.student_type='n'
-            current_student.status="a"
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            print form.errors
-            data['form_is_valid'] = False
-    else:
-        form = RegistrationForms()
-    context = {'form': form, 'student':current_student, 'last_record':enrollment}
-    data['html_form'] = render_to_string('registrar/forms-registration-create.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
-
-#BASE TEMPLATE FOR UPDATE
-def updateStudentProfile(request, pk='pk'):
-    instance = get_object_or_404(Student, pk=pk)
-    return render(request, 'registrar/student-registration-list-update.html', {'instance': instance})
-
-#ACTUAL EDIT STUDENT PROFILE FORM
-def editStudentProfile(request, pk='pk'):
-    instance = get_object_or_404(Student, pk=pk)
-    data = {'form_is_valid' : False }
-    try:
-        last_student = Offering.objects.latest('student_ID')
-    except:
-        last_student = None
-    if request.method == 'POST':
-        form = StudentForms(request.POST, instance = instance)
-        if form.is_valid():
-            instance = form.save()
-            instance.save()
-            data['form_is_valid'] = True
-        else:
-            data['form_is_valid'] = False
-    else:
-        form = StudentForms(instance = instance)
-    context = {'form': form, 'student':last_student, 'instance': instance}
-    data['html_form'] = render_to_string('registrar/forms-student-edit.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
-    
 def verifyActive():
+    # Get latest school year, then get the student's latest registration school_year
+    # If they are equal, he is in this school year, == He is active 
     student_list = Student.objects.all()
     for curr_student in student_list:
         try:
@@ -237,28 +128,135 @@ def verifyActive():
         elif (curr_schoolyear == last_record.school_year):
             curr_student.status = "a"
             curr_student.save()
-            
-      
-      
-#CUSTOM MADE FUNCTIONS -------------------------------------------------------------
+
+# Views
+
+def studentList(request):
+    # Table view - table_StudentList
+    return render(request, 'registrar/student-registration-list.html')
+def table_StudentList(request):
+    verifyActive()
+    
+    student_list = getStudentList(request)
+
+    limited_students = paginateThis(request, student_list, 10)
+
+    context = {'student_list': limited_students}
+
+    template = 'registrar/table-student-list.html'
+
+    return ajaxTable(request, template, context)
+
+def addStudent(request):
+    # Form view - form_addStudent
+    return render(request, 'registrar/student-registration-list-add.html')
+def form_addStudent(request):
+    data = {'form_is_valid' : False }
+
+    if request.method == 'POST':
+        form = StudentForms(request.POST)
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = StudentForms()
+
+    last_student = getLatest(Student, 'student_ID')
+    context = {'form': form, 'student':last_student}
+    template = 'registrar/forms-student-create.html'
+
+    return ajaxTable(request, template, context, data)
+
+
+def studentDetails(request, pk='pk'):
+    current_student = get_object_or_404(Student, pk=pk)
+    # Get latest record of a model, basing on a certain attribute
+    # Returns an instance. This is for models with Foreign Keys
+    try:
+        last_record = Enrollment.objects.filter(student=current_student).latest('enrollment_ID')
+    except:
+        last_record = Enrollment.objects.filter(student=current_student)
+    return render(request, 'registrar/student-profile.html', {'student': current_student, 'record':last_record})
+def table_studentDetails(request, pk='pk'):
+    student = get_object_or_404(Student, pk=pk)
+    enrollment_list = Enrollment.objects.filter(student = student)
+    enrollment = paginateThis(request, enrollment_list, 10)
+
+    context = {'enrollment_list': enrollment}
+    
+    template = 'registrar/table-student-profile.html'
+
+    return ajaxTable(request, template, context)
+
+def addEnrollment(request, pk='pk'):
+    student = Student.objects.get(student_ID = pk)
+    return render(request, 'registrar/student-profile-add.html', {'student': student})
+def form_addEnrollment(request, pk='pk'):
+    data = {'form_is_valid' : False }
+
+    current_student = get_object_or_404(Student, pk=pk)
+    enrollment = getLatest(Enrollment, 'enrollment_ID')
+
+    if request.method == 'POST':
+        form = RegistrationForms(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.date_enrolled = datetime.now()
+            post.student = current_student
+            post.student_type='n'
+            current_student.status="a"
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            print form.errors
+            data['form_is_valid'] = False
+    else:
+        form = RegistrationForms()
+
+    # !!! 3/12/2018 -- Jim -- We need to provide two more context variables: Scholarships and Sections
+    context = {'form': form, 'student':current_student, 'last_record':enrollment}
+    template = 'registrar/forms-registration-create.html'
+
+    return ajaxTable(request,template,context,data)
+
+def updateStudentProfile(request, pk='pk'):
+    instance = get_object_or_404(Student, pk=pk)
+    return render(request, 'registrar/student-registration-list-update.html', {'instance': instance})
+def form_updateStudentProfile(request, pk='pk'):
+    instance = get_object_or_404(Student, pk=pk)
+    data = {'form_is_valid' : False }
+    last_student = getLatest(Student,'student_ID')
+
+    form = updateInstance(request, StudentForms, instance)
+
+    if form.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'form': form, 'student':last_student, 'instance': instance}
+    template = 'registrar/forms-student-edit.html'
+    return ajaxTable(request,template,context,data)
+
 def generateStudentCode(student):
     pass
-#REPORTS -------------------------------------------------------------
 
-from django.db import models
-from django.http import StreamingHttpResponse
-from django.views.generic import View
-import csv
+
+''' EXPORTING TO CSV '''
+#Call the second class.as_view() to generate CSV
 class Echo(object):
     """An object that implements just the write method of the file-like interface.
     """
     def write(self, value):
         """Write the value by returning it, instead of storing in a buffer."""
         return value
-class ContactLogExportCsvView(View):
+class Export_Model_To_CSV(View):
     def get(self, request, *args, **kwargs):
-        student_query = Student.objects.all() # Assume 50,000 objects inside
-        model = student_query.model
+        query = Student.objects.all()
+        file_name = 'all_Students.csv'
+        model = query.model
         model_fields = model._meta.fields + model._meta.many_to_many
         headers = [field.name for field in model_fields] # Create CSV headers
         def get_row(obj):
@@ -284,9 +282,8 @@ class ContactLogExportCsvView(View):
         pseudo_buffer = Echo()
         writer = csv.writer(pseudo_buffer)
         response = StreamingHttpResponse(
-            (writer.writerow(row) for row in stream(headers, student_query)),
+            (writer.writerow(row) for row in stream(headers, query)),
             content_type="text/csv")
-        response['Content-Disposition'] = 'attachment; filename="all_Students.csv"'
+        response['Content-Disposition'] = 'attachment; filename="' +file_name+'"'
         return response
-        
         

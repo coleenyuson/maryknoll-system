@@ -18,10 +18,15 @@ class SectionForms(forms.ModelForm):
         model = Section
         exclude = ('section_ID', 'section_status',)
         
-class CurriculumForms(forms.ModelForm):
+class SubjectForm(forms.ModelForm):
+    """Curriculum-details-create."""
+
     class Meta:
-        model = Curriculum
-        exclude = ('curriculum_ID',)
+        """Meta definition for Subjectform."""
+
+        model = Subjects
+        exclude = ('curriculum',)
+
         
 class ScholarshipForms(forms.ModelForm):
     class Meta:

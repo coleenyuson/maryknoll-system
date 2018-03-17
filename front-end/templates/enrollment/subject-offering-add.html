@@ -17,7 +17,7 @@
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "subjectOffering-create" %}',
+        url: '{% url "subjectOffering-create" school_year.id %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -28,13 +28,13 @@ $(function() {
   $(".content").on("submit", ".js-subjectOffering-create-form", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "subjectOffering-create" %}',
+        url: '{% url "subjectOffering-create" school_year.id %}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'subjectOffering-list' %}"
+                window.location = "{%url 'subjectOffering-list' school_year.id %}"
             }
             else {
                 console.log(data.form_is_valid);

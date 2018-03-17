@@ -9,7 +9,7 @@ urlpatterns = [
         url(r'^curriculum-list/$', views.curriculumList, name = 'curriculum-list'),
         url(r'^curriculum-list/table$', views.tableCurriculumList, name = 'curriculum-table'),
         url(r'^curriculum-list/add$', views.addCurriculumProfile, name = 'curriculum-add'),
-        url(r'^curriculum-list/create$', views.createCurriculumProfile, name = 'curriculum-create'),
+        url(r'^curriculum-list/create/(?P<pk>\d+)$', views.createCurriculumProfile, name = 'curriculum-create'),
         url(r'^curriculum-list/update/(?P<pk>\d+)$', views.updateCurriculum, name = 'curriculum-update'),
         url(r'^curriculum-list/edit-form/(?P<pk>\d+)$', views.editCurriculumForm, name = 'curriculum-edit-form'),
         #CURR DETAIL
@@ -37,10 +37,11 @@ urlpatterns = [
         url(r'^scholarship-list/update/(?P<pk>\d+)$', views.updateScholarship, name = 'scholarship-update'),
         url(r'^scholarship-list/edit-form/(?P<pk>\d+)$', views.editScholarshipForm, name = 'scholarship-edit-form'),
         #-----------------------SUBJECT OFFERING----------------------------------------------------
-        url(r'^subjectOffering-list/$', views.subjectOfferingList, name = 'subjectOffering-list'),
-        url(r'^subjectOffering-list/table$', views.tableSubjectOfferingList, name = 'subjectOffering-table'),
-        url(r'^subjectOffering-list/add$', views.addSubjectOfferingProfile, name = 'subjectOffering-add'),
-        url(r'^subjectOffering-list/create$', views.createSubjectOfferingProfile, name = 'subjectOffering-create'),
+        url(r'^school-year/create$', views.newSchoolYear, name = 'create-schoolyear'),
+        url(r'^subjectOffering-list/(?P<pk>\d+)$', views.subjectOfferingList, name = 'subjectOffering-list'),
+        url(r'^subjectOffering-list/table/(?P<pk>\d+)$', views.tableSubjectOfferingList, name = 'subjectOffering-table'),
+        url(r'^subjectOffering-list/add/(?P<pk>\d+)$', views.addSubjectOfferingProfile, name = 'subjectOffering-add'),
+        url(r'^subjectOffering-list/create/(?P<pk>\d+)$', views.createSubjectOfferingProfile, name = 'subjectOffering-create'),
         url(r'^subjectOffering-list/(?P<pk>\d+)/$', views.subjectOfferingDetail, name = 'subjectOffering-detail'),
         
         url(r'^subjectOffering-list/update/(?P<pk>\d+)$', views.updateSubjectOffering, name = 'subjectOffering-update'),
