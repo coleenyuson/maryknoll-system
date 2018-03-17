@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{%block title%} Admin Dashboard {%endblock%}
+{% block home %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'dashboard' %}">Home
+        <span class="sr-only">(current)</span>
+    </a>
+</li>
+{% endblock %}
+{# NAVBAR END #}
+{% block content %}
+       
+{% include 'administrative/admin-dashboard.html' %}
+<!--
+{% if user.type == admin %}
+    {% include "administrative/admin-dashboard.html" %}
+{% elif user.type == cashier %}
+    {% include "cashier/cashier-dashboard.html" %}
+{% elif user.type == registrar %}
+    {% include "registrar/registrar-dashboard.html" %}
+{% elif user.type == acad_head %}
+    {% include "enrollment/acad_head-dashboard.html" %}
+{% endif %} 
+-->
+
+{% endblock %}
+
+{%block footer%}
+<footer class="footer-parent">
+    <div class="container">
+        <div class="footer-items">
+        <p class="item-1">Maryknoll Academy of Cateel</p>
+        </div>
+    </div>
+</footer>
+{%endblock %}
+
+ 

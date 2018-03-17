@@ -6,13 +6,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 @login_required
-def index(request):
-    return render(request,'admin-dashboard.html',)
+def dashboard(request, template='dashboard.html'):
+    return render(request,template,)
     
 @login_required
-def settings(request):
+def settings(request,template = 'settings.html'):
     try:
         latest_sy = School_Year.objects.latest('date_start')
     except:
         latest_sy = None
-    return render(request,'admin-settings.html', context={'school_year':latest_sy})
+    return render(request,template, context={'school_year':latest_sy})
+
+@login_required
+def reports(request, template="admin-reports.html"):
+    pass
