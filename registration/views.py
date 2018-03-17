@@ -232,10 +232,28 @@ def form_addEnrollment(request, pk='pk', template = 'registrar/forms-registratio
 
     return ajaxTable(request,template,context,data)
 
-def editEnrollment(request, pk='pk'):
-    pass
-def form_editEnrollment(request, pk='pk'):
-    pass
+def editEnrollment(request, pk='pk', template = 'registrar/student-registration-list-update.html'):
+    registration = get_object_or_404(Enrollment, pk=pk)
+    student_ID = request.GET['student'].get
+    student = Student.object.get(student_ID=student_ID)
+    context = {'registration':registration, 'student':student}
+    return render(request, template, context)
+def form_editEnrollment(request, pk='pk', template = 'registrar/forms-student-edit.html'):
+    student_ID = request.GET['student'].get
+    student = Student.object.get(student_ID=student_ID)
+    instance = get_object_or_404(Enrollment, enrollment_ID=pk)
+    data = {'form_is_valid' : False }
+    
+
+    form = updateInstance(request, RegistrationForms, instance)
+
+    if form.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'form': form, 'student':student, 'instance': instance}
+    return ajaxTable(request,template,context,data)
 def generateStudentCode(student):
     pass
 

@@ -15,5 +15,7 @@ urlpatterns = [
         url(r'^student-list/enrollment-table/(?P<pk>\d+)$', views.table_studentDetails, name = 'enrollment-table'),
         url(r'^student-list/enrollment-add/(?P<pk>\d+)$', views.addEnrollment, name = 'enrollment-add'),
         url(r'^student-list/enrollment-create/(?P<pk>\d+)$', views.form_addEnrollment, name = 'enrollment-create'),
+        url(r'^student-list/enrollment-edit/(?P<pk>\d+)$', views.editEnrollment, name = 'enrollment-edit'),
+        url(r'^student-list/enrollment-edit-form/(?P<pk>\d+)$', views.form_editEnrollment, name = 'enrollment-edit-form'),
         #url(r'^student-list/enrollment-create/sort(?P<pk>\d+)$', views.sortSections, name = 'sort-sections'),
     ]

@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+
 {% block title %}
-    Add Student Registration
+    Edit Student Registration
 {% endblock title %}
+    
 {% block settings %}
 <li class="nav-item active-menu">
   <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
@@ -20,7 +22,7 @@
 $(function(){
     
     $.ajax({
-        url: '{% url "enrollment-create" pk=student.student_ID%}',
+        url: '{% url "enrollment-update" pk=enrollment.enrollment_ID%}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -28,10 +30,10 @@ $(function(){
         }
     });
 });
- $(".content").on("submit", ".enrollment-form", function() {
+ $(".content").on("submit", ".enrollment-edit-form", function() {
       var form = $(this);
       $.ajax({
-          url: '{% url "enrollment-create" pk=student.student_ID%}',
+          url: '{% url "enrollment-update" pk=enrollment.enrollment_ID%}',
           data: form.serialize(),
           type: form.attr("method"),
           dataType: 'json',
