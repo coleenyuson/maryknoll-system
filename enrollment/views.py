@@ -211,8 +211,10 @@ def sectionTable(request):
     
 def tableSectionDetail(request, pk='pk'):
     section = get_object_or_404(Section, pk=pk)
+    section_enrollee_list = Enrollment.objects.filter(section = section).filter(section__isnull=True)
     
-    section_enrollee_list = Enrollment.objects.filter(section = section)
+    print section_enrollee_list
+    ##section_enrollee_list = Enrollment.objects.filter(section = section)
     #Pagination
     page = request.GET.get('page', 1)
     paginator = Paginator(section_enrollee_list, 5)
@@ -237,8 +239,10 @@ def sectionDetailAdd(request, pk='pk'):
 
 def sectionDetailForm(request, pk='pk'):
     section = get_object_or_404(Section, pk=pk)
-    data = {'form_is_valid' : True }
-        
+    
+    section_enrollee_list = Enrollment.objects.filter(section = section).filter(section__isnull=True)
+    
+    print section_enrollee_list
     context = {'section': section}
     data['html_form'] = render_to_string('enrollment/forms-section-detail-create.html',
         context,

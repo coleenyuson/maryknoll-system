@@ -93,7 +93,7 @@ DROPPED = 'd'
 
 class Enrollment(models.Model):
     enrollment_ID = models.AutoField(primary_key=True)
-    section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, null=True, default=None)
+    section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, blank=True, null=True, default=None)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
     scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
     school_year = models.ForeignKey('enrollment.School_Year', on_delete=models.CASCADE, default=0)
