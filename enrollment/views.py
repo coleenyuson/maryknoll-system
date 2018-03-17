@@ -26,9 +26,9 @@ def addCurriculumProfile(request):
     new_curriculum.save()
     return render(request, 'enrollment/curriculum-list.html')
     
-def openCurriculumSubjectAdd(request, pk='pk'):
+def curriculumSubjectAdd(request, pk='pk'):
     curriculum = Curriculum.objects.get(pk=pk)
-    return render(request, 'enrollment/curriculum-list-add.html', {'curriculum':curriculum})
+    return render(request, 'enrollment/curriculum-subjects-list-add.html', {'curriculum':curriculum})
 
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
@@ -122,6 +122,32 @@ def tableCurriculumSubjectList(request, pk='pk'):
     
     data = {'html_form' : html_form}
     return JsonResponse(data)
+
+def tableCurriculumSubjectCreate(request, pk='pk'):
+    curriculum = get_object_or_404(Curriculum, pk=pk)
+    
+    data = {'form_is_valid' : False }
+    try:
+        last_curriculum = Curriculum.objects.latest('curriculum_ID')
+    except:
+        last_curriculum = None
+    if request.method == 'POST':
+        form = SubjectForms(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.curriculum = curriculum
+            obj.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = SubjectForms()
+    context = {'form': form, 'curriculum':last_curriculum}
+    data['html_form'] = render_to_string('enrollment/forms-curriculum-subjects-list-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
     
 def updateCurriculum(request, pk='pk'):
     instance = get_object_or_404(Curriculum, pk=pk)
@@ -189,7 +215,7 @@ def tableSectionDetail(request, pk='pk'):
     section_enrollee_list = Enrollment.objects.filter(section = section)
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(section_enrollee_list, 1)
+    paginator = Paginator(section_enrollee_list, 5)
     
     try:
         section_page = paginator.page(page)
@@ -206,36 +232,14 @@ def tableSectionDetail(request, pk='pk'):
     return JsonResponse({'html_form' : html_form})
 
 def sectionDetailAdd(request, pk='pk'):
-    instance = get_object_or_404(Section, pk=pk)
-    return render(request, 'enrollment/section-details-add.html', {'instance': instance})
+    section = get_object_or_404(Section, pk=pk)
+    return render(request, 'enrollment/section-details-add.html', {'section': section})
 
 def sectionDetailForm(request, pk='pk'):
-    data = {'form_is_valid' : True }
     section = get_object_or_404(Section, pk=pk)
-    section_enrollee = Section_Enrollee.objects.filter(section = section)
-    try:
-        enrollment = Enrollment.objects.latest('enrollment_ID').filter(r)
-    except:
-        enrollment = None
+    data = {'form_is_valid' : True }
         
-    '''if request.method == 'POST':
-        form = SectionForms(request.POST)
-        form.date_enrolled = datetime.now()
-        form.student = Student.objects.get(student_ID = pk)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.student_type='n'
-            current_student.status="a"
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            print form.errors
-            data['form_is_valid'] = False
-    
-    else:
-        form = SectionForms()'''
-        
-    context = {'last_record':enrollment, 'instance': instance}
+    context = {'section': section}
     data['html_form'] = render_to_string('enrollment/forms-section-detail-create.html',
         context,
         request=request,

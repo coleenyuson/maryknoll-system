@@ -49,7 +49,7 @@
 <script>
   $(function() {
     $.ajax({
-      url: '{% url "subject-table" curriculum.curriculum_ID %}',
+      url: '{% url "subject-table" curriculum.pk %}',
       type: 'get',
       dataType: 'json',
       success: function(data) {

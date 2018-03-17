@@ -15,7 +15,8 @@ urlpatterns = [
         #CURR DETAIL
         url(r'^curriculum-list/(?P<pk>\d+)/$', views.curriculumDetails, name = 'curriculum-detail'),
         url(r'^curriculum-list/subject-table/(?P<pk>\d+)$', views.tableCurriculumSubjectList, name = 'subject-table'),
-        url(r'^curriculum-list/subject/add/(?P<pk>\d+)$', views.openCurriculumSubjectAdd, name = 'subject-add'),
+        url(r'^curriculum-list/subject/add/(?P<pk>\d+)$', views.curriculumSubjectAdd, name = 'subject-add'),
+        url(r'^curriculum-list/subject/create/(?P<pk>\d+)$', views.tableCurriculumSubjectCreate, name = 'subject-create'),
         #-----------------------SECTION------------------------------------------------------------
         url(r'^section-list$', views.sectionList, name = 'section-list'),
         url(r'^section-list/table$', views.sectionTable, name = 'section-table'),

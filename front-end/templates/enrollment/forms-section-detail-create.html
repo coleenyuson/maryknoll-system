@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form action="{% url 'section-detail-form' pk=instance.pk %}" method="POST" class="section-detail-form">
+<form action="{% url 'section-detail-form' pk=section.pk %}" method="POST" class="section-detail-form">
 {% csrf_token %}
           <div class="row">
             <div class="col">

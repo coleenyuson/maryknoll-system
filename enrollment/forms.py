@@ -32,3 +32,9 @@ class SubjectOfferingForms(forms.ModelForm):
     class Meta:
         model = Offering
         exclude = ('pk','school_year')
+
+class SubjectForms(forms.ModelForm):
+    class Meta:
+        model = Subjects
+        exclude = ('pk', 'curriculum')
+        

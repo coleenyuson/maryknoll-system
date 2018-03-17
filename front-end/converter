@@ -1,23 +1,31 @@
-def tableSectionDetail(request, pk='pk'):
-    section = get_object_or_404(Section, pk=pk)
-    
-    section_enrollee_list = Enrollment.objects.filter(section = section)
-    
-    print section_enrollee_list
-    #Pagination
-    page = request.GET.get('page', 1)
-    paginator = Paginator(section_enrollee_list, 4)
-    
-    try:
-        section = paginator.page(page)
-    except PageNotAnInteger:
-        section = paginator.page(1)
-    except EmptyPage:
-        section = paginator.page(paginator.num_pages)
-        
-    context = {'section_enrollee_list': section}
-    html_form = render_to_string('enrollment/table-section-details.html',
-        context,
-        request = request,
-    )
-    return JsonResponse({'html_form' : html_form})
+{% if sction_enrollee_list.has_other_pages %}
+<nav aria-label="Page navigation" class="no-print">
+  <ul class="pagination pagination-md justify-content-center">
+    {% if sction_enrollee_list.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="javascript:generatePage({{ sction_enrollee_list.previous_page_number }})" tabindex="-1">Previous</a>
+    </li>
+    {%else%}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    {%endif%} 
+    {% for i in sction_enrollee_list.paginator.page_range %} 
+      {% if sction_enrollee_list.number == i %}
+        <li class="page-item active"><a class="page-link " href="#" >{{i}}<span class="sr-only">(current)</span></a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:generatePage({{i}})">{{i}}</a></li>
+      {% endif %} 
+    {% endfor %} 
+    {% if sction_enrollee_list.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="javascript:generatePage({{ sction_enrollee_list.next_page_number }})">Next</a>
+    </li>
+    {%else%}
+    <li class="page-item disabled">
+      <a class="page-link" href="#">Next</a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+{% endif %}
