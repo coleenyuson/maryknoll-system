@@ -26,3 +26,4 @@ registration/models.pyc
 registration/urls.pyc
 registration/views.pyc
 
+db.sqlite3
