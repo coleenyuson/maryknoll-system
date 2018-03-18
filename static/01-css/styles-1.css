@@ -1,6 +1,10 @@
 html{
 	font-family: Helvetica, sans-serif;
 }
+body{
+	-webkit-font-smoothing: antialiased;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+}
 h1{
 	font-size: 29px;
 }
@@ -120,26 +124,15 @@ button, a{
 .navbar-light{
     background-color: #ffffff !important;
 }
-.container-reset{
-	width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-	margin-left: 15px !important;
-	margin-right: 15px !important;
-}
-.navbar-light .active a{
-    color: #4688F1 !important;
-	font-weight: bold;
-}
 .navbar{
     min-height: 70px !important;
     font-size: 13px !important;
 }
-navbar-light .active a{
+.active a{
     color: #4688F1 !important;
 	font-weight: bold;
 }
-.nav-item{
+.nav-item, .uppercase{
     text-transform: uppercase;
 }
 .nav-item, .user{
@@ -163,23 +156,17 @@ navbar-light .active a{
   background: #CF4647;
   color: #ffffff;
 }
-.breadcrumb{
-	background-color: #F8FAFF !important;
-}
 
 /* CONTENT */
 .bg-content{
-	background-color: #F8FAFF;
+	background-color: #ffffff;
+	/*#F8FAFF;*/
 	min-height: 80vh;
 	/*background-color: #f2f2f2;*/
-}
-.bg-dashboard{
-	background-color: #FFFFFF;
 }
 .content{
 	padding-top: 20px;
 }
-
 
 /* ADMIN DASHBOARD */
 .subtitle{
@@ -255,8 +242,6 @@ navbar-light .active a{
     opacity: 0.9;
     filter: alpha(opacity=50); /* For IE8 and earlier */
 }
-
-
 
 /* Financial Records */
 .table-records{
@@ -417,25 +402,4 @@ footer{
 /* REPORTS */
 .nowrap {
 	white-space: nowrap;
-}
-
-.line-break{
-	 line-height: 80px;
-}
-.line-break-child{
-	vertical-align: middle;
-}
-
-/*PROMISSORY NOTES*/
-.promissory-approved{
-	font-weight: bold;
-	color: #28a745;
-}
-.promissory-pending{
-	font-weight: bold;
-	color: #ffc107;
-}
-.promissory-rejected{
-	font-weight: bold;
-	color: #dc3545;
 }
