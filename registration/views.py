@@ -131,10 +131,10 @@ def verifyActive():
 
 # Views
 
-def studentList(request, template='registrar/student-registration-list.html'):
+def studentList(request, template='registrar/student-profiles/student-registration-list.html'):
     # Table view - table_StudentList
     return render(request, template)
-def table_StudentList(request, template = 'registrar/table-student-list.html'):
+def table_StudentList(request, template = 'registrar/student-profiles/table-student-list.html'):
     verifyActive()
     
     student_list = getStudentList(request)
@@ -145,10 +145,10 @@ def table_StudentList(request, template = 'registrar/table-student-list.html'):
 
     return ajaxTable(request, template, context)
 
-def addStudent(request, template = 'registrar/student-registration-list-add.html'):
+def addStudent(request, template = 'registrar/student-profiles/student-registration-list-add.html'):
     # Form view - form_addStudent
     return render(request, template)
-def form_addStudent(request, template = 'registrar/forms-student-create.html'):
+def form_addStudent(request, template = 'registrar/student-profiles/forms-student-create.html'):
     data = {'form_is_valid' : False }
 
     if request.method == 'POST':
@@ -166,10 +166,10 @@ def form_addStudent(request, template = 'registrar/forms-student-create.html'):
 
     return ajaxTable(request, template, context, data)
 
-def updateStudentProfile(request, pk='pk',template = 'registrar/student-registration-list-update.html'):
+def updateStudentProfile(request, pk='pk',template = 'registrar/student-profiles/student-registration-list-update.html'):
     instance = get_object_or_404(Student, pk=pk)
     return render(request, template, {'instance': instance})
-def form_updateStudentProfile(request, pk='pk', template = 'registrar/forms-student-edit.html'):
+def form_updateStudentProfile(request, pk='pk', template = 'registrar/student-profiles/forms-student-edit.html'):
     instance = get_object_or_404(Student, pk=pk)
     data = {'form_is_valid' : False }
     last_student = getLatest(Student,'student_ID')
@@ -184,7 +184,7 @@ def form_updateStudentProfile(request, pk='pk', template = 'registrar/forms-stud
     context = {'form': form, 'student':last_student, 'instance': instance}
     return ajaxTable(request,template,context,data)
 
-def studentDetails(request, pk='pk', template='registrar/student-profile.html'):
+def studentDetails(request, pk='pk', template='registrar/student-registration/student-profile.html'):
     current_student = get_object_or_404(Student, pk=pk)
     # Get latest record of a model, basing on a certain attribute
     # Returns an instance. This is for models with Foreign Keys
@@ -193,7 +193,7 @@ def studentDetails(request, pk='pk', template='registrar/student-profile.html'):
     except:
         last_record = Enrollment.objects.filter(student=current_student)
     return render(request, template, {'student': current_student, 'record':last_record})
-def table_studentDetails(request, pk='pk', template = 'registrar/table-student-profile.html'):
+def table_studentDetails(request, pk='pk', template = 'registrar/student-registration/table-student-profile.html'):
     student = get_object_or_404(Student, pk=pk)
     enrollment_list = Enrollment.objects.filter(student = student)
     enrollment = paginateThis(request, enrollment_list, 10)
@@ -202,10 +202,10 @@ def table_studentDetails(request, pk='pk', template = 'registrar/table-student-p
 
     return ajaxTable(request, template, context)
 
-def addEnrollment(request, pk='pk', template='registrar/student-profile-add.html'):
+def addEnrollment(request, pk='pk', template='registrar/student-registration/student-profile-add.html'):
     student = Student.objects.get(student_ID = pk)
     return render(request, template, {'student': student})
-def form_addEnrollment(request, pk='pk', template = 'registrar/forms-registration-create.html'):
+def form_addEnrollment(request, pk='pk', template = 'registrar/student-registration/forms-registration-create.html'):
     data = {'form_is_valid' : False }
 
     current_student = get_object_or_404(Student, pk=pk)
@@ -232,13 +232,13 @@ def form_addEnrollment(request, pk='pk', template = 'registrar/forms-registratio
 
     return ajaxTable(request,template,context,data)
 
-def editEnrollment(request, pk='pk', template = 'registrar/student-registration-list-update.html'):
+def editEnrollment(request, pk='pk', template = 'registrar/student-registration/student-registration-list-update.html'):
     registration = get_object_or_404(Enrollment, pk=pk)
     student_ID = request.GET['student'].get
     student = Student.object.get(student_ID=student_ID)
     context = {'registration':registration, 'student':student}
     return render(request, template, context)
-def form_editEnrollment(request, pk='pk', template = 'registrar/forms-student-edit.html'):
+def form_editEnrollment(request, pk='pk', template = 'registrar/student-registration/forms-student-edit.html'):
     student_ID = request.GET['student'].get
     student = Student.object.get(student_ID=student_ID)
     instance = get_object_or_404(Enrollment, enrollment_ID=pk)
