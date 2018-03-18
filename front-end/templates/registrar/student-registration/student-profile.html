@@ -87,186 +87,12 @@
                   </div>
                   <div class="col-md-4">
                     <div class="btn-group float-right no-print">
-                      <a href="student-profile-add.html" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create Student Registration</a>
+                      <a href="{% url 'enrollment-add' student.student_ID%}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create Student Registration</a>
                     </div>
                   </div>
                 </div>
-                <div class="row table-records table-responsive">
-                  <table class="table table-bordered bg-nav table-hover">
-                    <thead class="thead-light">
-                      <tr>
-                        <!-- Refer to database for headings -->
-                        <th scope="col">School Year</th>
-                        <th scope="col">Year Level</th>
-                        <th scope="col">Date Enrolled</th>
-                        <th scope="col">Enrollment Status</th>
-                        <th scope="col" class="no-print">Scholarship Status</th>
-                        <th scope="col" class="no-print">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>2018-2019</td>
-                        <td>Grade 6</td>
-                        <td>01-07-18</td>
-                        <td>Enrolled</td>
-                        <!-- If paid, tag as enrolled. Else, pending-->
-                        <td class="no-print"><span class="no-print"><i class="fa fa-circle active-status"></i> </span> Active</td>
-                        <td class="no-print text-center">
-                          <button type="button" class="btn btn-success btn-sm view-button" data-toggle="modal" data-target="#viewModal">View</button>
-                          <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModal" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title">Student Registration</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body text-left">
-                                  <h5 class="sm-headings">Student Details</h5>
-                                  <div class="row">
-                                    <div class="col-md-4">
-                                      <label>Student Code:</label>
-                                      <p>123456789</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Student Name:</label>
-                                      <p>Brown, Millie-Bobbie</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Student type:</label>
-                                      <p><b>OLD STUDENT</b></p>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4">
-                                      <label>Year Level:</label>
-                                      <p>Grade 6</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Section:</label>
-                                      <p>St. Lorenzo Ruiz</p>
-                                    </div>
-                                  </div>
-                                  <h5 class="sm-headings">Enrollment Details</h5>
-                                  <div class="row text-left">
-                                    <div class="col-md-4">
-                                      <label>School Year:</label>
-                                      <p>2018-2019</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Date Enrolled:</label>
-                                      <p>January 07, 2018</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Enrollment Status:</label>
-                                      <p>Enrolled</p>
-                                    </div>
-                                  </div>
-                                  <h5 class="sm-headings">Scholarship Details</h5>
-                                  <!--Not necessarily in the same table. 
-                                              Join mo lang scholarship table and student ID para makita anong scholarship nya that SY year-->
-                                  <div class="row">
-                                    <div class="col-md-4">
-                                      <label>Scholarship:</label>
-                                      <p>ESC Scholarship</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Validity:</label>
-                                      <p>1 year</p>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Close</button>
-                                  <button type="button" class="btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Print Registration</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <a href="student-profile-add.html" class="btn btn-secondary btn-sm view-button">Edit</a></td>
-                      </tr>
-                      <tr>
-                        <td>2017-2018</td>
-                        <td>Grade 5</td>
-                        <td>01-07-17</td>
-                        <td>Enrolled</td>
-                        <td class="no-print"><span class="no-print"><i class=" no-print fa fa-circle inactive-status"></i> </span> Inactive</td>
-                        <td class="text-center no-print">
-                          <button type="button" class="btn btn-success btn-sm view-button" data-toggle="modal" data-target="#viewModal">View</button>
-                          <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModal" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title">Student Registration</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body text-left">
-                                  <h5 class="sm-headings">Student Details</h5>
-                                  <div class="row">
-                                    <div class="col-md-4">
-                                      <label>Student Code:</label>
-                                      <p>123456789</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Student Name:</label>
-                                      <p>Brown, Millie-Bobbie</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Student type:</label>
-                                      <p><b>OLD STUDENT</b></p>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-4">
-                                      <label>Year Level:</label>
-                                      <p>Grade 6</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Section:</label>
-                                      <p>St. Lorenzo Ruiz</p>
-                                    </div>
-                                  </div>
-                                  <h5 class="sm-headings">Enrollment Details</h5>
-                                  <div class="row text-left">
-                                    <div class="col-md-4">
-                                      <label>School Year:</label>
-                                      <p>2018-2019</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Date Enrolled:</label>
-                                      <p>January 07, 2018</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label>Enrollment Status:</label>
-                                      <p>Enrolled</p>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-link text-secondary" data-dismiss="modal">Close</button>
-                                  <button type="button" class="btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Print Registration</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <a href="student-profile-add.html" class="btn btn-secondary btn-sm view-button">Edit</a></td>
-                      </tr>
-                      <tr>
-                        <td>2017-2018</td>
-                        <td>Grade 5</td>
-                        <td>01-07-17</td>
-                        <td>Enrolled</td>
-                        <td class="no-print"><span class="no-print"><i class=" no-print fa fa-circle inactive-status"></i> </span> Inactive</td>
-                        <td class="text-center no-print">
-                          <button type="button" class="btn btn-success btn-sm view-button" data-toggle="modal" data-target="#viewModal">View</button>
-                          <a href="student-profile-add.html" class="btn btn-secondary btn-sm view-button">Edit</a></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="row table-records table-responsive enrollment-table">
+                  REGISTRATION LIST GOES HERE
                 </div>
               </div>
               <!-- STUDENT REGISTRATION -->
@@ -334,36 +160,12 @@
                   </div>
                   <div class="col-md-4">
                     <div class="btn-group float-right no-print">
-                      <a href="student-scholarship-add.html" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Scholarship</a>
+                      <a href="{% url 'student-scholars-add' student.student_ID%}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Scholarship</a>
                     </div>
                   </div>
                 </div>
-                <div class="row table-records table-responsive">
-                  <table class="table table-bordered bg-nav table-hover">
-                    <thead class="thead-light">
-                      <tr>
-                        <!-- Refer to database for headings -->
-                        <th scope="col">Scholarship Name</th>
-                        <th scope="col">Scholarship Status</th>
-                        <th scope="col" class="no-print">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>ESC Scholarship</td>
-                        <td><span class="no-print"><i class="fa fa-circle active-status"></i> </span> Active</td>
-                        <td class="no-print text-center delete-btn">
-                          <button type="button" class="btn btn-danger" onclick="deleteRow(this)">Remove</button>
-                      </tr>
-                      <tr>
-                        <td>ESC Scholarship</td>
-                        <td><span class="no-print"><i class="fa fa-circle inactive-status"></i> </span> Inactive</td>
-                        <td class="text-center no-print delete-btn">
-                          <button type="button" class="btn btn-danger" onclick="deleteRow(this)">Remove</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="row table-records table-responsive scholarship-table">
+                  
                 </div>
               </div>
             </div>
@@ -374,16 +176,29 @@
   <!-- CONTENT -->
   
   <script type="text/javascript">
-    function deleteRow(obj){
+    function deleteRow(obj, num){
       $(obj).closest('tr').remove();
+      $.ajax({
+        url: '{% url "delete-scholar" %}?scholar='+num,
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+          generateScholarTable();
+        }
+      });
     }
   </script>
 
 
-<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+{#---------------------------BACKEND SCRIPTS -------------------------------#}
 
 <script>
   $(function() {
+    generateStudentTable();
+    generateScholarTable();
+  });
+
+  function generateStudentTable(){
     $.ajax({
       url: '{% url "enrollment-table" student.student_ID %}',
       type: 'get',
@@ -392,6 +207,17 @@
         $(".enrollment-table").html(data.html_form);
       }
     });
-  });
+  }
+
+  function generateScholarTable(){
+    $.ajax({
+      url: '{% url "student-scholars-table" student.student_ID %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $(".scholarship-table").html(data.html_form);
+      }
+    });
+  }
 </script>
 {%endblock%}

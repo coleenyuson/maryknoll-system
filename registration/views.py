@@ -258,6 +258,26 @@ def generateStudentCode(student):
     pass
 
 
+def table_studentScholar(request,pk='pk',template='registrar/student-registration/scholarships-list.html'):
+    student = Enrollment.objects.get(enrollment_ID = pk)
+    scholarship_list = StudentScholar.objects.filter(registration=student)
+    context = {'scholarship_list':scholarship_list}
+    return ajaxTable(request,template,context)
+
+
+def deleteScholar(request, pk='pk'):
+    StudentScholar.objects.get(pk=pk).delete()
+    data = {}
+    return JsonResponse(data)
+
+
+class StudentScholarFormView(generic.FormView):
+    form_class = StudentScholarForm
+    template_name = "registration/student-registration/student-scholarship-add.html"
+    def form_is_valid(self, form):
+        
+        form.save(commit=False)
+
 ''' EXPORTING TO CSV '''
 #Call the second class.as_view() to generate CSV
 class Echo(object):
