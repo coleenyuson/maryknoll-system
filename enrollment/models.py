@@ -26,42 +26,12 @@ class TeacherDetails(models.Model):
 
 
 
-class School_Year(models.Model):
-    year_name = models.CharField(max_length=200)
-    date_start = models.DateField(auto_now = True)
-
-    class Meta:
-        verbose_name = "School Year"
-    def get_year(self):
-        return self.date_start.year
-    def __str__(self):
-        return self.year_name
-
 class YearLevel(models.Model):
     grade_level = models.CharField(max_length=200)
     
     def __str__(self):
         return self.grade_level
 
-class Scholarship(models.Model):
-	scholarship_name = models.CharField(max_length=200)
-	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
-	SCHOLARSHIP_CHOICES = (
-        (ESC, 'ESC'),
-        (OTHERS, 'Others'),
-    )
-	scholarship_type = models.CharField(max_length=1,
-        choices=SCHOLARSHIP_CHOICES,
-        blank=False,
-        default=OTHERS
-        )
-	
-	class Meta:
-	    verbose_name = "Scholarship"
-	    
-	def __str__(self):
-	    return "%s for %s" % (self.scholarship_name, self.school_year)
-	''' SCHOLARSHIP must only contain scholarship details, not the price/amount it discounts. The money part will be handled in the cashier module'''
 
 class Curriculum(models.Model):
     curriculum_ID = models.AutoField(primary_key=True)
@@ -95,6 +65,38 @@ class Curriculum(models.Model):
         
     def get_abosulute_url(self):
 	    return reverse('curriculum-list', kwargs={"id": self.curriculum_ID})
+
+class School_Year(models.Model):
+    year_name = models.CharField(max_length=200)
+    date_start = models.DateField(auto_now = True)
+    curriculum = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
+    class Meta:
+        verbose_name = "School Year"
+    def get_year(self):
+        return self.date_start.year
+    def __str__(self):
+        return self.year_name
+
+class Scholarship(models.Model):
+	scholarship_name = models.CharField(max_length=200)
+	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
+	
+    SCHOLARSHIP_CHOICES = (
+        (ESC, 'ESC'),
+        (OTHERS, 'Others'),
+    )
+	scholarship_type = models.CharField(max_length=1,
+        choices=SCHOLARSHIP_CHOICES,
+        blank=False,
+        default=OTHERS
+        )
+	
+	class Meta:
+	    verbose_name = "Scholarship"
+	    
+	def __str__(self):
+	    return "%s for %s" % (self.scholarship_name, self.school_year)
+	''' SCHOLARSHIP must only contain scholarship details, not the price/amount it discounts. The money part will be handled in the cashier module'''
 
 class Subjects(models.Model):
     subject_ID = models.AutoField(primary_key=True)

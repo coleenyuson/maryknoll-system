@@ -26,31 +26,6 @@ def initializeSchoolYear():
 @login_required
 def index(request):
     pass
-#--------------------------------------CURRICULUM------------------------------------------------------
-@login_required
-def curriculumList(request):
-    '''simple error handling: if current year is == year of latest curriculum created, disable the button'''
-
-    try:
-        latest_curr = Curriculum.objects.latest('curriculum_year')
-    
-        if datetime.today().year == latest_curr.get_year():
-            disabled = True
-    except:
-        latest_curr = None
-        disabled = False
-    #redirect to new page
-    return render(request, 'enrollment/curriculum-list.html', context={'disabled':disabled})
-
-def addCurriculumProfile(request):
-    #add constraints here
-    new_curriculum = Curriculum(curriculum_status='Active')
-    new_curriculum.save()
-    return render(request, 'enrollment/curriculum-list.html')
-    
-def openCurriculumSubjectAdd(request, pk='pk'):
-    curriculum = Curriculum.objects.get(curriculum_ID=pk)
-    return render(request, 'enrollment/curriculum-list-add.html', {'curriculum':curriculum})
 
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
@@ -107,6 +82,32 @@ def addSubjectOfferingProfile(request, pk):
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 #--------------------------------------CURRICULUM------------------------------------------------------
+@login_required
+def curriculumList(request):
+    '''simple error handling: if current year is == year of latest curriculum created, disable the button'''
+
+    try:
+        latest_curr = Curriculum.objects.latest('curriculum_year')
+    
+        if datetime.today().year == latest_curr.get_year():
+            disabled = True
+    except:
+        latest_curr = None
+        disabled = False
+    #redirect to new page
+    return render(request, 'enrollment/curriculum-list.html', context={'disabled':disabled})
+
+def addCurriculumProfile(request):
+    #add constraints here
+    new_curriculum = Curriculum(curriculum_status='Active')
+    new_curriculum.save()
+    data = {'form_is_valid' : True }
+    return JsonResponse(data)
+
+def openCurriculumSubjectAdd(request, pk='pk'):
+    curriculum = Curriculum.objects.get(curriculum_ID=pk)
+    return render(request, 'enrollment/curriculum-list-add.html', {'curriculum':curriculum})
+
 def tableCurriculumList(request):
     curriculum_list = Curriculum.objects.all()
     #Pagination
@@ -341,8 +342,6 @@ def getSectionList(request):
         return []
     return query
     
-#AJAX VIEWS --------------------------------------------------------------------
-
 def generateSectionForm(request):
     data = {'form_is_valid' : False }
     try:

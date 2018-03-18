@@ -15,10 +15,10 @@
           <div class="align-right-item">
             
             {% if disabled == True  %}
-              <a href="{% url 'curriculum-add' %}" class="add-button btn btn-primary flex-item disabled"><i class="fa fa-plus" aria-hidden="true"></i> Initialize New Curriculum</a>
+              <a href="#" class="add-button btn btn-primary flex-item disabled"><i class="fa fa-plus" aria-hidden="true"></i> Initialize New Curriculum</a>
               <!-- BACK END PROCESSES -->
             {% else %}
-            <a href="{% url 'curriculum-add' %}" class="add-button btn btn-primary flex-item"><i class="fa fa-plus" aria-hidden="true"></i> Initialize New Curriculum</a>
+            <a href="javascript:initCurriculum()" class="add-button btn btn-primary flex-item"><i class="fa fa-plus" aria-hidden="true"></i> Initialize New Curriculum</a>
             <!-- BACK END PROCESSES -->
             {% endif %}
               
@@ -70,9 +70,23 @@
 
   });
 </script>
-<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+{# ---------------------------BACKEND SCRIPTS ------------------------------- #}
 <script>
   $(function() {
+    generateTable();
+  });
+  function initCurriculum(){
+    $.ajax({
+      url: '{% url "curriculum-add" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        location.reload()
+      }
+    });
+  }
+
+  function generateTable(){
     $.ajax({
       url: '{% url "curriculum-table" %}',
       type: 'get',
@@ -81,7 +95,7 @@
         $("#curriculum-listings").html(data.html_form);
       }
     });
-  });
+  }
 </script>
 
 {%endblock%}
