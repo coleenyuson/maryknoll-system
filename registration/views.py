@@ -273,7 +273,7 @@ def deleteScholar(request, pk='pk'):
 
 class StudentScholarFormView(generic.FormView):
     form_class = StudentScholarForm
-    template_name = "registration/student-registration/student-scholarship-add.html"
+    template_name = "registrar/student-registration/student-scholarship-add.html"
     def form_is_valid(self, form):
         
         form.save(commit=False)
