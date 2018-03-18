@@ -9,40 +9,71 @@ from .models import *
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
-# Create your views here.
+#Global Functions
+def paginateThis(request, obj_list, num):
+    # Pagination. Send request, the list you want to paginate, and number of items per page.
+    # This returns a limited list with pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(obj_list, num)
+    try:
+        lists = paginator.page(page)
+    except PageNotAnInteger:
+        lists = paginator.page(1)
+    except EmptyPage:
+        lists = paginator.page(paginator.num_pages)
+    return lists
+def ajaxTable(request, template, context, data = None):
+    # For templates that needs ajax
+    html_form = render_to_string(template,
+        context,
+        request = request,
+    )
+    if data:
+        data['html_form'] = html_form
+    else:
+        data = {'html_form' : html_form}
+    return JsonResponse(data)
+def getLatest(model, attribute):
+    # Get latest record of a model, basing on a certain attribute
+    # Returns an instance
+    try:
+        latest = model.objects.latest(attribute)
+    except:
+        latest = None
+    return latest
+def updateInstance(request, modelForm, instance):
+    if request.method == 'POST':
+        form = modelForm(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+    else:
+        form = modelForm(instance = instance)
+    return form
 
+
+#Views
 def index(request):
     return render(request, 'index.html')
 
 # FEES AND ACCOUNTS || PARTICULARS # 
-def openFeeAccount(request):
-    return render(request, 'cashier/cashier-fees-and-accounts.html')
-def tableFeeAccount(request):
-    particulars_list = Particular.objects.all()
+def openFeeAccount(request, template='cashier/cashier-fees-and-accounts.html'):
+    return render(request, template)
+def tableFeeAccount(request, template='cashier/table-cashier-fees-and-accounts.html'):
+    particulars_list = EnrollmentBreakdown.objects.all()
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(particulars_list, 10)
-    
-    try:
-        particulars = paginator.page(page)
-    except PageNotAnInteger:
-        particulars = paginator.page(1)
-    except EmptyPage:
-        particulars = paginator.page(paginator.num_pages)
-        
+    particulars = paginateThis(request,particulars_list, 10)  
     context = {'particulars': particulars}
-    html_form = render_to_string('cashier/table-cashier-fees-and-accounts.html',
-        context,
-        request = request,
-    )
-    return JsonResponse({'html_form' : html_form})
 
-def openFeeAccountAdd(request):
-    return render(request, 'cashier/cashier-fees-and-accounts-add.html')
-def formFeeAccountAdd(request):
+    return ajaxTable(request,template,context)
+
+def openFeeAccountAdd(request, template='cashier/cashier-fees-and-accounts-add.html'):
+    return render(request, template)
+def formFeeAccountAdd(request, template='cashier/forms-cashier-fees-and-accounts-add.html'):
     data = {'form_is_valid' : False }
     if request.method == 'POST':
-        form = ParticularForms(request.POST)
+        form = EnrollmentBreakdownForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.particular_details = "Auto-generated"
@@ -52,22 +83,18 @@ def formFeeAccountAdd(request):
         else:
             data['form_is_valid'] = False
     else:
-        form = ParticularForms()
+        form = EnrollmentBreakdownForm()
     context = {'form': form}
-    data['html_form'] = render_to_string('cashier/forms-cashier-fees-and-accounts-add.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
-def openFeeAccountEdit(request,pk='pk'):
-    particular = Particular.objects.get(particular_ID = pk)
-    return render(request, 'cashier/cashier-fees-and-accounts-edit.html',{'particular':particular})
-
-def formFeeAccountEdit(request,pk='pk'):
-    particular = Particular.objects.get(particular_ID = pk)
+    return ajaxTable(request,template,context,data)
+def openFeeAccountEdit(request,pk='pk', template='cashier/cashier-fees-and-accounts-edit.html'):
+    particular = EnrollmentBreakdown.objects.get(pk = pk)
+    context = {'particular':particular}
+    return render(request, template,context)
+def formFeeAccountEdit(request,pk='pk', template = 'cashier/forms-cashier-fees-and-accounts-edit.html'):
+    particular = EnrollmentBreakdown.objects.get(pk = pk)
     data = {'form_is_valid' : False }
     if request.method == 'POST':
-        form = ParticularForms(request.POST,instance = particular)
+        form = EnrollmentBreakdownForm(request.POST,instance = particular)
         if form.is_valid():
             particular = form.save()
             particular.save()
@@ -75,109 +102,17 @@ def formFeeAccountEdit(request,pk='pk'):
         else:
             data['form_is_valid'] = False
     else:
-        form = ParticularForms(instance = particular)
-    context = {'form': form}
-    data['html_form'] = render_to_string('cashier/forms-cashier-fees-and-accounts-add.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
+        form = EnrollmentBreakdownForm(instance = particular)
+    context = {'form': form, 'particular':particular}
+    return ajaxTable(request,template,context,data)
     
 # END PARTICULARS #
 # ACCOUNTS #
-def listAccounts(request):
-    accounts = Account.objects.all()
-    return render(request, 'accounts/accounts-list.html', {'accounts':accounts})
-
-
-def addAccounts(request):
-    if request.method == 'POST':
-        form = AccountForms(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('list-accounts'))
-    else:
-        form = AccountForms()
-    context = {'form': form}
-    
-    return render(request, 'accounts/add-accounts.html', context)
-
-def listAccountParticulars(request):
-    accounts = Account_Particular.objects.all()
-    return render(request, 'accounts/accounts-particulars-list.html', {'accounts':accounts})
-
-def addAccountParticulars(request):
-    if request.method == 'POST':
-        form = Account_ParticularForms(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('list-accounts'))
-    else:
-        form = Account_ParticularForms()
-    context = {'form': form}
-    
-    return render(request, 'accounts/add-account-particulars.html', context)
+ 
 # END ACCOUNTS #
 # TRANSACTIONS #
 from django.db.models import Sum
 
 #Enrollment.objects.filter(section_name='St. Bernard').aggregate(Sum('enrolled'))
 
-def listTransact(request):
-    transacts = Transaction.objects.all()
-    return render(request, 'transactions/transactions-list.html', {'transacts':transacts})
-
-
-def addTransact(request):
-    if request.method == 'POST':
-        form = TransactionForms(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('list-transactions'))
-    else:
-        form = TransactionForms()
-    context = {'form': form}
-    
-    return render(request, 'transactions/add-transactions.html', context)
-
-def listTransactDetails(request):
-    transacts = Transaction_Detail.objects.all()
-    return render(request, 'transactions/transaction-details-list.html', {'transacts':transacts})
-
-def addTransactDetails(request):
-    curr_account = Account.objects.get(account_ID = 1)
-    if request.method == 'POST':
-        print request.POST['OR_num']
-        form = Transaction_DetailForms(request.POST)
-        if form.is_valid():
-            #link this certain transaction detail to a transaction
-            try:
-                transact = Transaction.objects.get(OR_num=request.POST['OR_num']) 
-            except Transaction.DoesNotExist:
-                transact = Transaction(OR_num=request.POST['OR_num'], account_ID = curr_account)
-                transact.save()
-            post = form.save(commit=False)
-            post.transact_ID = transact
-            form.save()
-            return HttpResponseRedirect(reverse('list-transactions'))
-    else:
-        form = Transaction_DetailForms()
-        #Filters the foreign key fields
-        form.fields["account_particular_ID"].queryset = Account_Particular.objects.filter(account_ID=curr_account)
-    context = {'form': form}
-    
-    return render(request, 'transactions/add-transaction-details.html', context)
-# END TRANSACTIONS #
-# DAILY CASH #
-def listDCash(request):
-    pass
-
-def addDCash(request):
-    pass
-
-def listDCashDetails(request):
-    pass
-
-def addDCashDetails(request):
-    pass
 # END DAILY CASH #

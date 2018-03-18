@@ -13,7 +13,7 @@
 <script>
   $(function() {
     $.ajax({
-      url: '{% url "form-fees-and-accounts-edit" particular.particular_ID %}',
+      url: '{% url "form-fees-and-accounts-edit" particular.pk %}',
       type: 'get',
       dataType: 'json',
       success: function(data) {
@@ -24,7 +24,7 @@
   $(".content").on("submit", ".parts-forms", function() {
       var form = $(this);
       $.ajax({
-          url: '{% url "form-fees-and-accounts-edit" particular.particular_ID %}',
+          url: '{% url "form-fees-and-accounts-edit" particular.pk %}',
           data: form.serialize(),
           type: form.attr("method"),
           dataType: 'json',

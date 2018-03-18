@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form method="POST" action="{% url 'form-fees-and-accounts-add' %}" class="heading-label parts-forms">{% csrf_token %}
+<form method="POST" action="{% url "form-fees-and-accounts-edit" particular.pk %}" class="heading-label parts-forms">{% csrf_token %}
   <div class="row">
     <div class="col">
       <h3 class="link" style="margin-top: 10px;">Fees and Accounts Details</h3>
