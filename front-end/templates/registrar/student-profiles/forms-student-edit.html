@@ -61,7 +61,7 @@
           </div>
           <div class="col-md-4{% if form.birthdate.errors %} text-danger has-error{% endif %}">
             <label>Date of Birth:</label><br/>
-            {{form.birthdate|add_class:"form-control"|attr:"placeholder:12/30/2000"|attr:"type:date"}}
+            {{form.birthdate|add_class:"form-control"}}
             {% if form.birthdate.errors %}
                 <p class="help-block">{{ form.birthdate.errors }}</p>
             {% endif %}
