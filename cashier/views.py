@@ -57,9 +57,9 @@ def index(request):
     return render(request, 'index.html')
 
 # FEES AND ACCOUNTS || PARTICULARS # 
-def openFeeAccount(request, template='cashier/cashier-fees-and-accounts.html'):
+def openFeeAccount(request, template='cashier/fees-and-accounts/cashier-fees-and-accounts.html'):
     return render(request, template)
-def tableFeeAccount(request, template='cashier/table-cashier-fees-and-accounts.html'):
+def tableFeeAccount(request, template='cashier/fees-and-accounts/table-cashier-fees-and-accounts.html'):
     particulars_list = EnrollmentBreakdown.objects.all()
     #Pagination
     page = request.GET.get('page', 1)
@@ -68,9 +68,9 @@ def tableFeeAccount(request, template='cashier/table-cashier-fees-and-accounts.h
 
     return ajaxTable(request,template,context)
 
-def openFeeAccountAdd(request, template='cashier/cashier-fees-and-accounts-add.html'):
+def openFeeAccountAdd(request, template='cashier/fees-and-accounts/cashier-fees-and-accounts-add.html'):
     return render(request, template)
-def formFeeAccountAdd(request, template='cashier/forms-cashier-fees-and-accounts-add.html'):
+def formFeeAccountAdd(request, template='cashier/fees-and-accounts/forms-cashier-fees-and-accounts-add.html'):
     data = {'form_is_valid' : False }
     if request.method == 'POST':
         form = EnrollmentBreakdownForm(request.POST)
@@ -86,11 +86,11 @@ def formFeeAccountAdd(request, template='cashier/forms-cashier-fees-and-accounts
         form = EnrollmentBreakdownForm()
     context = {'form': form}
     return ajaxTable(request,template,context,data)
-def openFeeAccountEdit(request,pk='pk', template='cashier/cashier-fees-and-accounts-edit.html'):
+def openFeeAccountEdit(request,pk='pk', template='cashier/fees-and-accounts/cashier-fees-and-accounts-edit.html'):
     particular = EnrollmentBreakdown.objects.get(pk = pk)
     context = {'particular':particular}
     return render(request, template,context)
-def formFeeAccountEdit(request,pk='pk', template = 'cashier/forms-cashier-fees-and-accounts-edit.html'):
+def formFeeAccountEdit(request,pk='pk', template = 'cashier/fees-and-accounts/forms-cashier-fees-and-accounts-edit.html'):
     particular = EnrollmentBreakdown.objects.get(pk = pk)
     data = {'form_is_valid' : False }
     if request.method == 'POST':
@@ -108,7 +108,8 @@ def formFeeAccountEdit(request,pk='pk', template = 'cashier/forms-cashier-fees-a
     
 # END PARTICULARS #
 # ACCOUNTS #
- 
+
+
 # END ACCOUNTS #
 # TRANSACTIONS #
 from django.db.models import Sum
