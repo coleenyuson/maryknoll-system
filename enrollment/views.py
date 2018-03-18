@@ -11,76 +11,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from registration.models import *
 from django.db.models import Q
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 #Local Functions -- Only for this module#
-def initializeSchoolYear():
-    '''PSEUDO CODE FOR INITIALIZATION'''
-    #Create school year name with "S.Y." This Year, and This Year++
-    #Year start date with THIS YEAR
-    curr_year = datetime.today().year
-    name = "S.Y. %s - %s" % (str(curr_year), str(curr_year+1))
-    new_sy = School_Year.objects.create(year_name=name)
-    new_sy.save()
-#Local Functions -- End#
 
 @login_required
 def index(request):
     pass
 
-#--------------------------------------SCHOLARSHIP----------------------------------------------------
-@login_required
-def scholarshipList(request):
-    return render(request, 'enrollment/scholarship-list.html')
 
-def addScholarshipProfile(request):
-    return render(request, 'enrollment/scholarship-list-add.html')
-#--------------------------------------SUBJECT OFFERING------------------------------------------------
-@login_required
-def subjectOfferingList(request, pk='pk'):
-    curr_sy = get_object_or_404(School_Year, id=pk)
-    #Get current year
-    curr_year = datetime.today().year
-    #Get latest school year and check if you can create a new school year, and if its next or not
-    #Change next and previous into objects --Jim
-    pre_year = None
-    next_year = None
-    try:
-        
-        latest = School_Year.objects.latest('date_start')
-        #next and previous
-        oldest_sy = School_Year.objects.all().order_by('date_start').last()
-        if curr_year < latest.get_year():
-            disabled = False
-        else:
-            disabled = True
-        if latest == curr_sy:
-            next_year = None
-        else:
-            next_year = School_Year.objects.get(id=(pk+1))
-        if str(curr_sy) == str(oldest_sy):
-            pre_year = None
-        else:
-            pre_year = School_Year.objects.get(id=(pk-1))
-    except:
-        pass
-    context = {'pre_year': pre_year,
-                'next_year': next_year, 
-                'disabled': disabled, 
-                'school_year':curr_sy,
-            }
-    return render(request, 'enrollment/subject-offering.html', context)
-def newSchoolYear(request):
-    initializeSchoolYear()
-    school_year = School_Year.objects.latest('date_start')
-    #redirect page to list
-
-def addSubjectOfferingProfile(request, pk):
-    school_year = School_Year.objects.get(id=pk)
-    return render(request, 'enrollment/subject-offering-add.html', context= {'school_year':school_year})
-
-#AJAX VIEWS --------------------------------------------------------------------
-from django.template.loader import render_to_string
-from django.http import JsonResponse
 #--------------------------------------CURRICULUM------------------------------------------------------
 @login_required
 def curriculumList(request):
@@ -369,6 +309,12 @@ def generateSectionForm(request):
     return JsonResponse(data)
     
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
+@login_required
+def scholarshipList(request):
+    return render(request, 'enrollment/scholarship-list.html')
+
+def addScholarshipProfile(request):
+    return render(request, 'enrollment/scholarship-list-add.html')
 def tableScholarshipList(request):
     scholarship_list = getScholarshipList(request)
     #Pagination
@@ -482,6 +428,17 @@ def editScholarshipForm(request, pk='pk'):
     return JsonResponse(data)
     
 #--------------------------------------SUBJECT OFFERING------------------------------------------------
+@login_required
+def subjectOfferingList(request, pk='pk'):
+    context = {}
+    return render(request, 'enrollment/subject-offering.html', context)
+def newSchoolYear(request):
+    school_year = School_Year.objects.latest('date_start')
+    #redirect page to list
+
+def addSubjectOfferingProfile(request, pk):
+    school_year = School_Year.objects.get(id=pk)
+    return render(request, 'enrollment/subject-offering-add.html', context= {'school_year':school_year})
 def tableSubjectOfferingList(request, pk):
     sy = School_Year.objects.get(id=pk)
     subjectOffering_list = Offering.objects.filter(school_year = sy)

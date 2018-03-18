@@ -80,6 +80,7 @@ class School_Year(models.Model):
 class Scholarship(models.Model):
     scholarship_name = models.CharField(max_length=200)
     scholarship_type = models.CharField(max_length=50)
+    fee_amount = models.FloatField()
     school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)  
 
     SCHOLARSHIP_CHOICES = (
@@ -97,8 +98,6 @@ class Scholarship(models.Model):
         
     def __str__(self):
         return "%s for %s" % (self.scholarship_name, self.school_year)
-    ''' SCHOLARSHIP must only contain scholarship details, not the price/amount it discounts. The money part will be handled in the cashier module'''
-
 class Subjects(models.Model):
     subject_ID = models.AutoField(primary_key=True)
     subject_name = models.CharField(max_length=200)
