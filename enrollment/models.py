@@ -78,19 +78,20 @@ class School_Year(models.Model):
         return self.year_name
 
 class Scholarship(models.Model):
-	scholarship_name = models.CharField(max_length=200)
-	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
-	
+    scholarship_name = models.CharField(max_length=200)
+    scholarship_type = models.CharField(max_length=50)
+    school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)  
+
     SCHOLARSHIP_CHOICES = (
         (ESC, 'ESC'),
         (OTHERS, 'Others'),
     )
-	scholarship_type = models.CharField(max_length=1,
+    scholarship_type = models.CharField(max_length=1,
         choices=SCHOLARSHIP_CHOICES,
         blank=False,
         default=OTHERS
         )
-	
+
 	class Meta:
 	    verbose_name = "Scholarship"
 	    
