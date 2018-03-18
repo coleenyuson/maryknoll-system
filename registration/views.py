@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
 from .models import *
-from .forms import StudentForms, RegistrationForms
+from .forms import *
 
 from django.template.loader import render_to_string
 from django.http import JsonResponse
