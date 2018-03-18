@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #App plugins
     'widget_tweaks',
+    'dal',
+    'dal_select2',
 ]
 
 MIDDLEWARE_CLASSES = [

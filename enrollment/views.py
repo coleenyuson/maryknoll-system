@@ -4,7 +4,7 @@ from django.utils import timezone
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import *
-
+from dal import autocomplete
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
@@ -156,10 +156,7 @@ def sectionList(request):
 def addSection(request):
     return render(request, 'enrollment/section-details-add.html')
     
-def sectionDetails(request, pk='pk'):
-    section = get_object_or_404(Section, pk=pk)
-    return render(request, 'enrollment/section-details.html', {'section': section})
-    
+
 def sectionTable(request):
     section_list = getSectionList(request)
     print section_list
@@ -180,6 +177,10 @@ def sectionTable(request):
         request = request,
     )
     return JsonResponse({'html_form' : html_form})
+    
+def sectionDetails(request, pk='pk'):
+    section = get_object_or_404(Section, pk=pk)
+    return render(request, 'enrollment/section-details.html', {'section': section})
     
 def tableSectionDetail(request, pk='pk'):
     section = get_object_or_404(Section, pk=pk)
@@ -204,41 +205,31 @@ def tableSectionDetail(request, pk='pk'):
     return JsonResponse({'html_form' : html_form})
 
 def sectionDetailAdd(request, pk='pk'):
-    instance = get_object_or_404(Section, pk=pk)
-    return render(request, 'enrollment/section-details-add.html', {'instance': instance})
-
-def sectionDetailForm(request, pk='pk'):
-    data = {'form_is_valid' : True }
     section = get_object_or_404(Section, pk=pk)
-    section_enrollee = Section_Enrollee.objects.filter(section = section)
-    try:
-        enrollment = Enrollment.objects.latest('enrollment_ID').filter(r)
-    except:
-        enrollment = None
+    return render(request, 'enrollment/section-details-add.html', {'section': section})
+
+class sectionDetailFormAutoComp(autocomplete.Select2QuerySetView):
+    def query_set(self):
+        data = {'form_is_valid' : True }
+        section = get_object_or_404(Section, pk=pk)
+        section_enrollee = Enrollment.objects.filter(section = section)
+        try:
+            enrollment = Enrollment.objects.latest('enrollment_ID')
+        except:
+            enrollment = None
         
-    '''if request.method == 'POST':
-        form = SectionForms(request.POST)
-        form.date_enrolled = datetime.now()
-        form.student = Student.objects.get(student_ID = pk)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.student_type='n'
-            current_student.status="a"
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            print form.errors
-            data['form_is_valid'] = False
-    
-    else:
-        form = SectionForms()'''
+        if self.q:
+            qs = Enrollment.objects.filter(student__name__icontains=q)
+            
+        return qs
         
-    context = {'last_record':enrollment, 'instance': instance}
-    data['html_form'] = render_to_string('enrollment/forms-section-detail-create.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
+            
+        context = {'last_record':enrollment, 'section': section}
+        data['html_form'] = render_to_string('enrollment/forms-section-detail-create.html',
+            context,
+            request=request,
+        )
+        return JsonResponse(data)
 
 def getSectionList(request):
     search = request.GET.get('search')

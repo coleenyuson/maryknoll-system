@@ -1,13 +1,10 @@
 from django import forms
 from .models import *
-from registration.models import *
 from enrollment.models import *
 
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import datetime
-
-from dal import autocomplete
 
 ACTIVE = 'a'
 ON_LEAVE = 'o'
@@ -49,3 +46,12 @@ class School_YearForm(forms.ModelForm):
 
         model = School_Year
         exclude = ('date_start',)
+
+clas
+    student_ID = forms.ModelChoiceField(
+        queryset=Country.objects.all(),
+        widget=autocomplete.ModelSelect2(url='country-autocomplete')
+    )
+    class Meta:
+        model = 'registration.E'
+        fields = ('student_ID')
