@@ -22,7 +22,7 @@
 $(function(){
     
     $.ajax({
-        url: '{% url "enrollment-update" pk=enrollment.enrollment_ID%}',
+        url: '{% url "enrollment-edit-form" enrollment.enrollment_ID%}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -33,7 +33,7 @@ $(function(){
  $(".content").on("submit", ".enrollment-edit-form", function() {
       var form = $(this);
       $.ajax({
-          url: '{% url "enrollment-update" pk=enrollment.enrollment_ID%}',
+          url: '{% url "enrollment-edit-form" enrollment.enrollment_ID%}',
           data: form.serialize(),
           type: form.attr("method"),
           dataType: 'json',

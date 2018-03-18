@@ -198,7 +198,7 @@ def table_studentDetails(request, pk='pk', template = 'registrar/student-registr
     enrollment_list = Enrollment.objects.filter(student = student)
     enrollment = paginateThis(request, enrollment_list, 10)
 
-    context = {'enrollment_list': enrollment}
+    context = {'enrollment_list': enrollment, 'student':student}
 
     return ajaxTable(request, template, context)
 
@@ -232,15 +232,15 @@ def form_addEnrollment(request, pk='pk', template = 'registrar/student-registrat
 
     return ajaxTable(request,template,context,data)
 
-def editEnrollment(request, pk='pk', template = 'registrar/student-registration/student-registration-list-update.html'):
+def editEnrollment(request, pk='pk', template = 'registrar/student-registration/student-profile-update.html'):
     registration = get_object_or_404(Enrollment, pk=pk)
-    student_ID = request.GET['student'].get
-    student = Student.object.get(student_ID=student_ID)
-    context = {'registration':registration, 'student':student}
+    student_ID = int(request.GET.get('student', None))
+    student = Student.objects.get(student_ID=student_ID)
+    context = {'enrollment':registration, 'student':student}
     return render(request, template, context)
-def form_editEnrollment(request, pk='pk', template = 'registrar/student-registration/forms-student-edit.html'):
-    student_ID = request.GET['student'].get
-    student = Student.object.get(student_ID=student_ID)
+def form_editEnrollment(request, pk='pk', template = 'registrar/student-registration/forms-registration-edit.html'):
+    student_ID = request.GET.get('student', None)
+    student = Student.objects.get(student_ID=1)
     instance = get_object_or_404(Enrollment, enrollment_ID=pk)
     data = {'form_is_valid' : False }
     
