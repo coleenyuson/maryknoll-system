@@ -92,12 +92,12 @@ class Scholarship(models.Model):
         default=OTHERS
         )
 
-	class Meta:
-	    verbose_name = "Scholarship"
-	    
-	def __str__(self):
-	    return "%s for %s" % (self.scholarship_name, self.school_year)
-	''' SCHOLARSHIP must only contain scholarship details, not the price/amount it discounts. The money part will be handled in the cashier module'''
+    class Meta:
+        verbose_name = "Scholarship"
+        
+    def __str__(self):
+        return "%s for %s" % (self.scholarship_name, self.school_year)
+    ''' SCHOLARSHIP must only contain scholarship details, not the price/amount it discounts. The money part will be handled in the cashier module'''
 
 class Subjects(models.Model):
     subject_ID = models.AutoField(primary_key=True)

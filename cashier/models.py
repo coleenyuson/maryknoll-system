@@ -9,10 +9,12 @@ from django.db.models.signals import post_save
 
 ''' PARTICULARS '''
 
+
 class Particular(models.Model):
     particular_ID = models.AutoField(primary_key=True)
     particular_name = models.CharField(max_length=100)
     particular_details = models.CharField(max_length=255, null=True)
+
     def __str__(self):
         return self.particular_name
 
@@ -35,19 +37,26 @@ class Particular(models.Model):
         particular_ID = What certain particular is this requirement?
 '''
 
-class Account(models.Model): #should only be created through triggers
-    account_ID = models.AutoField(primary_key=True)
-    enrollment_ID = models.CharField(max_length=200) #Foreign key to a certain enrollee
-    def __str__(self):
-        return "%s's Account" %(self.enrollment_ID)
 
-class Account_Particular(models.Model): #we can consider this as the REQUIREMENTS table
+class Account(models.Model):  # should only be created through triggers
+    account_ID = models.AutoField(primary_key=True)
+    # Foreign key to a certain enrollee
+    enrollment_ID = models.CharField(max_length=200)
+
+    def __str__(self):
+        return "%s's Account" % (self.enrollment_ID)
+
+
+# we can consider this as the REQUIREMENTS table
+class Account_Particular(models.Model):
     account_particular_ID = models.AutoField(primary_key=True)
     account_ID = models.ForeignKey(Account, on_delete=models.CASCADE)
     to_pay = models.FloatField()
     particular_ID = models.ForeignKey(Particular, on_delete=models.CASCADE)
+
     def __str__(self):
-        return "%s of %s" %(self.particular_ID,self.account_ID)
+        return "%s of %s" % (self.particular_ID, self.account_ID)
+
 
 ''' TRANSACTIONS:
     Why is it modeled this way?
@@ -67,21 +76,27 @@ class Account_Particular(models.Model): #we can consider this as the REQUIREMENT
         account_particular_ID = this means that THE USER CAN ONLY PAY FOR PARTICULARS THAT IS IN HIS ACCOUNTS
 '''
 
+
 class Transaction(models.Model):
     transact_ID = models.AutoField(primary_key=True)
     date_time_created = models.DateTimeField(auto_now=True)
     account_ID = models.ForeignKey(Account, on_delete=models.CASCADE)
     OR_num = models.BigIntegerField()
+
     def __str__(self):
         return str(self.account_ID)
-    
+
+
 class Transaction_Detail(models.Model):
     transaction_detail_ID = models.AutoField(primary_key=True)
     transact_ID = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     amount_paid = models.FloatField()
-    account_particular_ID = models.ForeignKey(Particular, on_delete=models.CASCADE)
+    account_particular_ID = models.ForeignKey(
+        Particular, on_delete=models.CASCADE)
+
     def __str__(self):
         return "%s's purchase of %s" % (self.transact_ID, self.account_particular_ID)
+
 
 ''' CASH LOGS and REPORTS:
     Why is it modelled this way?
@@ -97,16 +112,97 @@ class Transaction_Detail(models.Model):
         cash = AUTO-GENERATED. ALWAYS UPDATED.
 '''
 
+
 class Daily_Cash(models.Model):
     daily_cash_ID = models.AutoField(primary_key=True)
     date_today = models.DateField(auto_now=True)
-    DCR_num = models.CharField(max_length=255, default=None,null=True)
-    
+    DCR_num = models.CharField(max_length=255, default=None, null=True)
+
+
 class Daily_Cash_Detail(models.Model):
     daily_cash_ID = models.ForeignKey(Daily_Cash, on_delete=models.CASCADE)
     transact_ID = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     cash = models.FloatField()
-    
 
 
 '''SIGNALS'''
+
+
+class EnrollmentBreakdown(models.Model):
+    """Model definition for EnrollmentBreakdown."""
+    payable_name = models.CharField(max_length=50)
+    fee_amount = models.FloatField()
+    year_level = models.ForeignKey(
+        'enrollment.YearLevel', on_delete=models.CASCADE)
+
+    class Meta:
+        """Meta definition for EnrollmentBreakdown."""
+
+        verbose_name = 'EnrollmentBreakdown'
+        verbose_name_plural = 'EnrollmentBreakdowns'
+
+    def __str__(self):
+        """Unicode representation of EnrollmentBreakdown."""
+        pass
+class EnrollmentTransactionsMade(models.Model):
+    """Model definition for EnrollmentTransactionsMade."""
+    student = models.ForeignKey('registration.Enrollment', on_delete=models.CASCADE)
+    month = models.CharField(max_length=50)
+    date_paid = models.DateField()
+    ORnum = models.IntegerField()
+    class Meta:
+        """Meta definition for EnrollmentTransactionsMade."""
+
+        verbose_name = 'EnrollmentTransactionsMade'
+        verbose_name_plural = 'EnrollmentTransactionsMades'
+    def __str__(self):
+        """Unicode representation of EnrollmentTransactionsMade."""
+        pass
+class EnrollmentORDetails(models.Model):
+    """Model definition for OR_Details."""
+    ORnumber = models.ForeignKey(
+        'EnrollmentTransactionsMade', on_delete=models.CASCADE)
+    Particular_being_paid = models.CharField(max_length=50)
+    money_given = models.FloatField()
+    class Meta:
+        """Meta definition for OR_Details."""
+
+        verbose_name = 'OR_Details'
+        verbose_name_plural = 'OR_Detailss'
+    def __str__(self):
+        """Unicode representation of OR_Details."""
+        pass
+
+class OthersTransactionsMade(models.Model):
+    """Model definition for OthersTransactionsMade."""
+    
+    student = models.ForeignKey('registration.Enrollment', on_delete=models.CASCADE)
+    date_paid = models.DateField()
+    ORnum = models.IntegerField()
+    
+    class Meta:
+        """Meta definition for OthersTransactionsMade."""
+
+        verbose_name = 'OthersTransactionsMade'
+        verbose_name_plural = 'OthersTransactionsMades'
+
+    def __str__(self):
+        """Unicode representation of OthersTransactionsMade."""
+        pass
+
+class OthersORDetails(models.Model):
+    """Model definition for OthersORDetails."""
+
+    ORnumber = models.ForeignKey(
+        'OthersTransactionsMade', on_delete=models.CASCADE)
+    name_of_item = models.CharField(max_length=50)
+    money_given = models.FloatField()
+    class Meta:
+        """Meta definition for OthersORDetails."""
+
+        verbose_name = 'OthersORDetails'
+        verbose_name_plural = 'OthersORDetailss'
+
+    def __str__(self):
+        """Unicode representation of OthersORDetails."""
+        pass
