@@ -1,3 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Edit Student Registration
+{% endblock title %}
+    
+{% block settings %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
+</li>
+{% endblock %}
+
+{%load static%}
+{% block content %}
+<div class="container-fluid bg-content">
+  <div class="content">
+    
+  </div>
+</div>
+
+<script>
 $(function(){
     
     $.ajax({
@@ -18,7 +39,7 @@ $(function(){
           dataType: 'json',
           success: function(data) {
               if (data.form_is_valid) {
-                  window.location = "{% url 'curriculum-details' curriculum.curriculum_ID %}"
+                  window.location = "{% url 'curriculum-detail' curriculum.curriculum_ID %}"
               }
               else {
                   $(".content").html(data.html_form);
@@ -27,3 +48,5 @@ $(function(){
       });
       return false;
   });
+</script>
+{% endblock %}

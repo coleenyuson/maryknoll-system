@@ -20,6 +20,28 @@ from django.http import JsonResponse
 def index(request):
     pass
 
+def ajaxTable(request, template, context, data = None):
+    # For templates that needs ajax
+    html_form = render_to_string(template,
+        context,
+        request = request,
+    )
+    if data:
+        data['html_form'] = html_form
+    else:
+        data = {'html_form' : html_form}
+    return JsonResponse(data)
+    
+def updateInstance(request, modelForm, instance):
+    if request.method == 'POST':
+        form = modelForm(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+    else:
+        form = modelForm(instance = instance)
+    return form
+# Custom Functions - Only for this module
 
 #--------------------------------------CURRICULUM------------------------------------------------------
 @login_required
@@ -99,7 +121,7 @@ def curriculumDetails(request, pk='pk'):
     return render(request, 'enrollment/curriculum-subjects-list.html', {'curriculum': curriculum, 'record':last_record})
     
 def tableCurriculumSubjectList(request, pk='pk'):
-    curriculum = get_object_or_404(Curriculum, curriculum_ID=pk)
+    curriculum = get_object_or_404(Curriculum, pk=pk)
     subject_list = Subjects.objects.filter(curriculum = curriculum)
     #Pagination
     page = request.GET.get('page', 1)
@@ -112,7 +134,7 @@ def tableCurriculumSubjectList(request, pk='pk'):
     except EmptyPage:
         subject = paginator.page(paginator.num_pages)
         
-    context = {'subject_list': subject_list}
+    context = {'subject_list': subject_list, "curriculum": curriculum}
     html_form = render_to_string('enrollment/table-curriculum-subject-list.html',
         context,
         request = request,
@@ -124,8 +146,6 @@ def tableCurriculumSubjectList(request, pk='pk'):
 def updateCurriculum(request, pk='pk'):
     instance = get_object_or_404(Curriculum, pk=pk)
     return render(request, 'enrollment/curriculum-list-update.html', {'instance': instance})
-
-
 def editCurriculumForm(request, pk='pk'):
     instance = get_object_or_404(Curriculum, pk=pk)
     data = {'form_is_valid' : False }
@@ -149,6 +169,31 @@ def editCurriculumForm(request, pk='pk'):
         request=request,
     )
     return JsonResponse(data)
+    
+def editSubject(request, pk='pk', template = 'enrollment/curriculum-subjects-list-update.html'):
+    subject = get_object_or_404(Subjects, pk=pk)
+    curriculum_ID = int(request.GET.get('curriculum', None))
+    curriculum = Curriculum.objects.get(curriculum_ID=curriculum_ID)
+    context = {'subject':subject, 'curriculum':curriculum}
+    return render(request, template, context)
+    
+def form_editSubject(request, pk='pk', template = 'enrollment/forms-curriculum-subjects-list-edit.html'):
+    curriculum_ID = request.GET.get('curriculum', None)
+    curriculum = Curriculum.objects.get(curriculum_ID=1)
+    instance = get_object_or_404(Subjects, subject_ID=pk)
+    data = {'form_is_valid' : False }
+    
+
+    form = updateInstance(request, SubjectForm, instance)
+
+    if form.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'form': form, 'curriculum':curriculum, 'instance': instance}
+    return ajaxTable(request,template,context,data)
+    
 #--------------------------------------SECTION--------------------------------------------------------
 def sectionList(request):
     return render(request,'enrollment/section-list.html')
