@@ -135,6 +135,10 @@ from django.db.models import Sum
 def transactionView(request,pk='pk',template='cashier/transactions/payment-transaction.html'):
     context = {}
     return render(request,template,context)
+
+def summaryView(request, template="cashier/transactions/"):
+
+    return ajaxTable(request,template,context)
 #Enrollment.objects.filter(section_name='St. Bernard').aggregate(Sum('enrolled'))
 
 # END DAILY CASH #

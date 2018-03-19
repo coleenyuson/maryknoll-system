@@ -35,8 +35,8 @@ class EnrollmentTransactionsMade(models.Model):
         blank=False,
         )
     type_CHOICES = (
-        ('ENROLLMENT', 'Enrollment Fee'),
-        ('TUITION', 'Tuition Fee'),
+        ('FULL', 'Full Payment'),
+        ('PART', 'Partial Payment'),
     )
     payment_type = models.CharField(max_length=50,
         choices=type_CHOICES,
