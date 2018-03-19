@@ -71,9 +71,17 @@ def getTotalGradeLevelPayment(grade_level_instance):
     #Get total amount of fees
     amount = fees_list.aggregate(Sum('fee_amount'))
     
-    return amount
+    return amount['fee_amount__sum']
 
-
+def getTotalpayment(registration):
+    #get list of transactions made by a registration
+    transacts_list = EnrollmentTransactionsMade.objects.filter(student=registration)
+    #get total of all transactions
+    amount = float(0)
+    for transaction in transacts_list:
+        transaction_list = EnrollmentORDetails.objects.filter(ORnumber=transaction)
+        transact_total = transaction_list.aggregate(Sum('money_given'))
+        amount += transact_total['money_given__sum']
 # Views
 def index(request):
     return render(request, 'index.html')
@@ -151,17 +159,17 @@ def transactionView(request,pk='pk',template='cashier/transactions/payment-trans
 
 def summaryView(request, pk='pk',template="test.html"):
     
-    #Get student's current registration
     registration = Enrollment.objects.get(enrollment_ID = pk)
-    #Get current registration's section
-    section = Section.objects.latest('section_name')
-    registration.section = section
-    offering = Offering.objects.filter(section=registration.section).latest('year_level')
+    offering = Offering.objects.latest('year_level')
     studentGradeLevelAccount = getTotalGradeLevelPayment(offering.year_level)
-    
-    account_balance  = studentGradeLevelAccount['fee_amount__sum'] - totalPaymentOfStudent
-    
-    #context = {'account_balance':account_balance}
+    if studentGradeLevelAccount == None:
+        studentGradeLevelAccount = float(0)
+    totalPaymentOfStudent = getTotalpayment(registration)
+    if totalPaymentOfStudent == None:
+        totalPaymentOfStudent = float(0)
+    account_balance  = studentGradeLevelAccount - totalPaymentOfStudent
+    #print account_balance
+    context = {'account_balance':account_balance, }
     return render(request, template)
 
 # END DAILY CASH #
