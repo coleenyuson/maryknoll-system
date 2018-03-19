@@ -10,7 +10,7 @@ class EnrollmentBreakdown(models.Model):
     payable_name = models.CharField(max_length=50)
     fee_amount = models.FloatField()
     year_level = models.ForeignKey(
-        'enrollment.YearLevel', on_delete=models.CASCADE)
+        'enrollment.YearLevel', on_delete=models.CASCADE, null=True,blank=True)
 
     class Meta:
         """Meta definition for EnrollmentBreakdown."""
@@ -27,8 +27,9 @@ class EnrollmentTransactionsMade(models.Model):
     student = models.ForeignKey(
         'registration.Enrollment', on_delete=models.CASCADE)
     particular_name = models.CharField(max_length=50)
-    
-    #add choices
+    #Add choices
+    payment_type = models.CharField(max_length=50)
+    #add Months
     month = models.CharField(max_length=50, null=True, blank=True)
     date_paid = models.DateField()
     ORnum = models.IntegerField()
