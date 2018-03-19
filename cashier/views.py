@@ -82,6 +82,13 @@ def getTotalpayment(registration):
         transaction_list = EnrollmentORDetails.objects.filter(ORnumber=transaction)
         transact_total = transaction_list.aggregate(Sum('money_given'))
         amount += transact_total['money_given__sum']
+    return amount
+def getTotalDeductions(registration):
+    scholar_list = StudentScholar.objects.filter(registration=registration)
+    amount = float(0)
+    for scholarship in scholar_list:
+        amount += scholarship.scholar.fee_amount
+    return amount
 # Views
 def index(request):
     return render(request, 'index.html')
@@ -154,10 +161,11 @@ def formFeeAccountEdit(request, pk='pk', template='cashier/fees-and-accounts/for
 # END ACCOUNTS #
 # TRANSACTIONS #
 def transactionView(request,pk='pk',template='cashier/transactions/payment-transaction.html'):
-    context = {}
+    registration = Enrollment.objects.get(enrollment_ID=pk)
+    context = {'registration':registration}
     return render(request,template,context)
 
-def summaryView(request, pk='pk',template="test.html"):
+def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.html"):
     
     registration = Enrollment.objects.get(enrollment_ID = pk)
     offering = Offering.objects.latest('year_level')
@@ -168,8 +176,16 @@ def summaryView(request, pk='pk',template="test.html"):
     if totalPaymentOfStudent == None:
         totalPaymentOfStudent = float(0)
     account_balance  = studentGradeLevelAccount - totalPaymentOfStudent
+    
+    deductions = getTotalDeductions(registration)
+    
     #print account_balance
-    context = {'account_balance':account_balance, }
-    return render(request, template)
+    context = {'student': registration.student,
+        'account_balance':account_balance, 
+        'amount_paid': totalPaymentOfStudent,
+        'scholarship_deductions': deductions,    
+    }
+
+    return ajaxTable(request,template,context)
 
 # END DAILY CASH #
