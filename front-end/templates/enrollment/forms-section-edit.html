@@ -1,0 +1,47 @@
+{% load widget_tweaks %}
+<!-- FORM CONTENT -->
+<form method="POST" action="{% url 'section-edit-form' instance.pk %}"class="heading-label section-edit-form">
+{% csrf_token %}
+  <div class="row">
+    <div class="col">
+      <h3 class="link" style="margin-top: 10px;">Section Details</h3>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+      <label>Section ID:</label>
+        <p class="form-control-static">0002</p><!--incremental-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label>Section Name:</label>
+        {{forms.section_name|add_class:"form-control"}}
+      </div>
+      <div class="col-md-6">
+        <label>Adviser:</label>
+        {{forms.adviser|add_class:"form-control"}}
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-md-6">
+        <label>Room Number:</label>
+        {{forms.room|add_class:"form-control"}}
+    </div>
+    <div class="col-md-6">
+        <label>Curriculum Year:</label>
+        {{forms.curriculum|add_class:"form-control"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+        <label>Section Capacity:</label>
+        {{forms.section_capacity|add_class:"form-control"}}
+    </div>
+    
+    </div>
+    <div class="btn-forms" style="display: flex; justify-content: flex-end">
+      <a href="{%url 'section-list' %}" class="btn btn-link">Cancel</a>
+      <input type="submit" class="btn btn-primary" value="Save Section Details"></input>
+    </div>
+</form>

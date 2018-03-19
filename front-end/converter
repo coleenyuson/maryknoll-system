@@ -1,29 +1,18 @@
-$(function(){
+def updateSectionProfile(request, pk='pk',template = 'registrar/section-profiles/section-registration-list-update.html'):
+    instance = get_object_or_404(Section, pk=pk)
+    return render(request, template, {'instance': instance})
     
-    $.ajax({
-        url: '{% url "subject-edit-form" subject.subject_ID%}',
-        type: 'get',
-        dataType: 'json',
-        success: function(data) {
-            $(".content").html(data.html_form);
-        }
-    });
-});
- $(".content").on("submit", ".subject-edit-form", function() {
-      var form = $(this);
-      $.ajax({
-          url: '{% url "subject-edit-form" subject.subject_ID%}',
-          data: form.serialize(),
-          type: form.attr("method"),
-          dataType: 'json',
-          success: function(data) {
-              if (data.form_is_valid) {
-                  window.location = "{% url 'curriculum-details' curriculum.curriculum_ID %}"
-              }
-              else {
-                  $(".content").html(data.html_form);
-              }
-          }
-      });
-      return false;
-  });
+def form_updateSectionProfile(request, pk='pk', template = 'enrollmemt/forms-section-create'):
+    instance = get_object_or_404(Section, pk=pk)
+    data = {'form_is_valid' : False }
+    last_section = getLatest(Section,'section_ID')
+
+    form = updateInstance(request, SectionForms, instance)
+
+    if form.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'form': form, 'section':last_section, 'instance': instance}
+    return ajaxTable(request,template,context,data)

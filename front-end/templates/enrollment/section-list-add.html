@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block settings %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="{% url 'settings' %}" style="color: #4688F1;">Settings</a>
+</li>
+{% endblock %}
+
+{%load static%}
+{% block content %}
+    <!-- FORM CONTENT -->
+    <div class="container-fluid bg-content">
+      <div class="content">
+        
+      </div>
+    </div>
+    
+<script>
+$(function() {
+  $.ajax({
+        url: '{% url "section-create-form" %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $(".content").html(data.html_form);
+        }
+  });
+  
+  $(".content").on("submit", ".section-create-form", function() {
+    var form = $(this);
+    $.ajax({
+        url: '{% url "section-create-form" %}',
+        data: form.serialize(),
+        type: form.attr("method"),
+        dataType: 'json',
+        success: function(data) {
+            if (data.form_is_valid) {
+                window.location = "{%url 'section-list' %}"
+            }
+            else {
+                console.log(data.form_is_valid);
+                $(".content").html(data.html_form);
+            }
+        }
+    });
+    return false;
+});
+});
+
+
+</script>
+{%endblock%}

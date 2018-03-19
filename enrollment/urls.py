@@ -23,11 +23,13 @@ urlpatterns = [
         url(r'^section-list$', views.sectionList, name = 'section-list'),
         url(r'^section-list/table$', views.sectionTable, name = 'section-table'),
         url(r'^section-list/add$', views.addSection, name = 'section-create'),
-        
         url(r'^section-list/add-form$', views.generateSectionForm, name = 'section-create-form'),
+        
+        url(r'^section-list/edit/(?P<pk>\d+)$', views.editSection, name = 'section-edit'),
+        url(r'^section-list/edit-form/(?P<pk>\d+)$', views.form_editSection, name = 'section-edit-form'),
+        
         url(r'^section-list/(?P<pk>\d+)/$', views.sectionDetails, name = 'section-detail'),
         url(r'^section-list/detail-table/(?P<pk>\d+)$', views.tableSectionDetail, name = 'section-detail-table'),
-        
         url(r'^section-list/section-detail-add/(?P<pk>\d+)$', views.sectionDetailAdd, name = 'section-detail-add'),
         url(r'^section-list/section-detail-form/(?P<pk>\d+)$', views.sectionDetailFormAutoComp.as_view(), name = 'section-detail-form'),
         
