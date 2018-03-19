@@ -25,7 +25,7 @@
               <a class="dropdown-item" href="#">Student ID</a>
               <a class="dropdown-item" href="#">Name</a>
               <a class="dropdown-item" href="#">Year/Level</a>
-              <a class="dropdown-item" href="#">Status</a>
+              <a class="dropdown-item" onClick="scholarList()">Scholars</a>
             </div>
           </div>
           <input type="text" class="changeIfStatus form-control search-input" placeholder="Search records..." aria-label="Search records...">
@@ -103,6 +103,17 @@ var search_data = "None";
   function generateInActiveList(){
     $.ajax({
       url: '{% url "student-table-inactive" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#student_listings").html(data.html_form);
+      }
+    });
+  }
+
+  function scholarList(){
+    $.ajax({
+      url: '{% url "student-table-scholars" %}',
       type: 'get',
       dataType: 'json',
       success: function(data) {

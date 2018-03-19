@@ -8,6 +8,7 @@ urlpatterns = [
         url(r'^student-list/table$', table_StudentList, name = 'student-table'),
         url(r'^student-list/table-active$', table_ActiveList, name = 'student-table-active'),
         url(r'^student-list/table-inactive$', table_InActiveList, name = 'student-table-inactive'),
+        url(r'^student-list/table-scholars$', table_ScholarList, name = 'student-table-scholars'),
         url(r'^student-list/add$', addStudent, name = 'student-add'),
         url(r'^student-list/create$', form_addStudent, name = 'student-create'),
         url(r'^student-list/update/(?P<pk>\d+)$', updateStudentProfile, name = 'student-update'),

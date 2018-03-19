@@ -20,7 +20,7 @@
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{# admin dashboard link #}">Home</a></li>
-              <li class="breadcrumb-item"><a href="{#student-registration-list#}">Student Profiles</a></li>
+              <li class="breadcrumb-item"><a href="{%url 'student-list' %}">Student Profiles</a></li>
               <li class="breadcrumb-item active" aria-current="page">{{student.first_name}} {{student.middle_name}} {{student.last_name}}</li>
             </ol>
           </nav>

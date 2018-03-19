@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 
 from django.utils import timezone
-from datetime import datetime
 
+from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.contrib.auth.decorators import login_required
@@ -169,6 +169,27 @@ def table_InActiveList(request, template = 'registrar/student-profiles/table-stu
     print context
     return ajaxTable(request, template, context)
 
+def table_ScholarList(request, template = 'registrar/student-profiles/table-student-list.html'):
+    verifyActive()
+    list_of_ids = []
+    #Get enrolled students
+    student_list = Student.objects.filter(status='a')
+    #Get the student's latest registration
+    for student in student_list:
+        curr_registration = Enrollment.objects.filter(student=student).latest('date_enrolled')
+        #Get scholarship list of that enrollment object
+        scholar_list = StudentScholar.objects.filter(registration=curr_registration)
+        #If this list exists, then the student is a scholar
+        if scholar_list:
+            list_of_ids.append(student.student_ID)
+    #Get list of students from the list of IDs collected
+    scholars = Student.objects.filter(student_ID__in=list_of_ids)
+    limited_students = paginateThis(request, scholars, 10)
+
+    
+    context = {'student_list': limited_students}
+    print context
+    return ajaxTable(request, template, context)
 
 def addStudent(request, template = 'registrar/student-profiles/student-registration-list-add.html'):
     # Form view - form_addStudent
@@ -240,7 +261,7 @@ def form_addEnrollment(request, pk='pk', template = 'registrar/student-registrat
         form = RegistrationForms(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.date_enrolled = datetime.now()
+            post.date_enrolled = datetime.date.today()
             post.student = current_student
             post.student_type='n'
             current_student.status="a"
