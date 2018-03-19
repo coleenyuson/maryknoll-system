@@ -26,11 +26,13 @@ class EnrollmentBreakdown(models.Model):
 class EnrollmentTransactionsMade(models.Model):
     student = models.ForeignKey(
         'registration.Enrollment', on_delete=models.CASCADE)
+    particular_name = models.CharField(max_length=50)
+    
     #add choices
     month = models.CharField(max_length=50, null=True, blank=True)
     date_paid = models.DateField()
     ORnum = models.IntegerField()
-
+    
     class Meta:
         """Meta definition for EnrollmentTransactionsMade."""
 
