@@ -4,11 +4,15 @@ from django.http import HttpResponseRedirect
 from .forms import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import *
-
+from django.db.models import Sum
 # FOR AJAX IMPORTS
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
+# IMPORTED MODELS
+from .models import *
+from registration.models import *
+from enrollment.models import *
 # Global Functions
 
 
@@ -58,6 +62,16 @@ def updateInstance(request, modelForm, instance):
     else:
         form = modelForm(instance=instance)
     return form
+
+# LOCAL FUNCTIONS
+
+def getTotalGradeLevelPayment(grade_level_instance):
+    #Get list of fees for a grade level
+    fees_list = EnrollmentBreakdown.objects.filter(year_level=grade_level_instance)
+    #Get total amount of fees
+    amount = fees_list.aggregate(Sum('fee_amount'))
+    
+    return amount
 
 
 # Views
@@ -131,14 +145,23 @@ def formFeeAccountEdit(request, pk='pk', template='cashier/fees-and-accounts/for
 
 # END ACCOUNTS #
 # TRANSACTIONS #
-from django.db.models import Sum
 def transactionView(request,pk='pk',template='cashier/transactions/payment-transaction.html'):
     context = {}
     return render(request,template,context)
 
-def summaryView(request, template="cashier/transactions/"):
-
-    return ajaxTable(request,template,context)
-#Enrollment.objects.filter(section_name='St. Bernard').aggregate(Sum('enrolled'))
+def summaryView(request, pk='pk',template="test.html"):
+    
+    #Get student's current registration
+    registration = Enrollment.objects.get(enrollment_ID = pk)
+    #Get current registration's section
+    section = Section.objects.latest('section_name')
+    registration.section = section
+    offering = Offering.objects.filter(section=registration.section).latest('year_level')
+    studentGradeLevelAccount = getTotalGradeLevelPayment(offering.year_level)
+    
+    account_balance  = studentGradeLevelAccount['fee_amount__sum'] - totalPaymentOfStudent
+    
+    #context = {'account_balance':account_balance}
+    return render(request, template)
 
 # END DAILY CASH #
