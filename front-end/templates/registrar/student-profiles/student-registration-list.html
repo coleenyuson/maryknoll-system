@@ -30,7 +30,7 @@
           </div>
           <input type="text" class="changeIfStatus form-control search-input" placeholder="Search records..." aria-label="Search records...">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-primary search">Search</button>
+            <button type="button" class="btn btn-primary search" onClick="search()">Search</button>
           </span>
         </div>
       </div>
@@ -73,6 +73,7 @@ var search_data = "None";
 
 {# ---------------------------BACKEND SCRIPTS ------------------------------ #}
 <script>
+  
   $(function() {
     $.ajax({
       url: '{% url "student-table" %}',
@@ -83,6 +84,32 @@ var search_data = "None";
       }
     });
   });
+  var toggle = True
+  function toggleList(){
+    toggle ? toggle = false : toggle= true
+    toggle ? generateActiveList(): generateInActiveList()
+  }
+
+  function generateActiveList(){
+    $.ajax({
+      url: '{% url "student-table-active" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#student_listings").html(data.html_form);
+      }
+    });
+  }
+  function generateInActiveList(){
+    $.ajax({
+      url: '{% url "student-table-inactive" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#student_listings").html(data.html_form);
+      }
+    });
+  }
   function generatePage(pageNum){
     if(search_data == "None" || selected == "None"){
       generatePages(pageNum)
@@ -111,14 +138,14 @@ var search_data = "None";
       }
     });
   }
-
-  $('.search').click(function() {
+  function search(){
     search_data = $('.search-input').val();
+    
     if(search_data == ""){
       search_data = "None"
     }
     generateSearch();
-  });
+  }
 
   function generateSearch() {
     $.ajax({

@@ -66,8 +66,9 @@ def updateInstance(request, modelForm, instance):
     return form
 # Custom Functions - Only for this module
 
-def getStudentList(request):
+def getStudentList(request, status = None):
     # Get student list with filters IF there is any, if none, then return all
+    # 3/19/2018 - TO DEVELOPED:if there is a second parameter, add status to all search 
     search = request.GET.get('search')
     genre = request.GET.get('genre')
     isNum = True
@@ -104,7 +105,7 @@ def getStudentList(request):
             # This needs debugging. ex. JUNIOR_HIGH == 'j' but input is "Junior High"
             query = Student.objects.filter(student_level=search)
         else:
-            print "wala"
+            print "All Students Returned!"
             query = Student.objects.all() 
             
     else:
@@ -144,6 +145,30 @@ def table_StudentList(request, template = 'registrar/student-profiles/table-stud
     context = {'student_list': limited_students}
 
     return ajaxTable(request, template, context)
+
+def table_ActiveList(request, template = 'registrar/student-profiles/table-student-list.html'):
+    verifyActive()
+    
+    student_list = Student.objects.filter(status='a')
+
+    limited_students = paginateThis(request, student_list, 10)
+
+    context = {'student_list': limited_students}
+    print context
+    return ajaxTable(request, template, context)
+
+def table_InActiveList(request, template = 'registrar/student-profiles/table-student-list.html'):
+    verifyActive()
+    
+    student_list = Student.objects.filter(status='i')
+    
+    limited_students = paginateThis(request, student_list, 10)
+
+    
+    context = {'student_list': limited_students}
+    print context
+    return ajaxTable(request, template, context)
+
 
 def addStudent(request, template = 'registrar/student-profiles/student-registration-list-add.html'):
     # Form view - form_addStudent
