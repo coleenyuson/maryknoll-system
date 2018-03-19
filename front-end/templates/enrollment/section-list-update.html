@@ -7,19 +7,17 @@
 
 {%load static%}
 {% block content %}
-<div class="container-fluid bg-content">
-  <div class="content">
+    <!-- FORM CONTENT -->
+    <div class="container-fluid bg-content">
+      <div class="content">
+        
+      </div>
+    </div>
     
-  </div>
-</div>
-
-
-<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
-
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "section-detail-form" section.pk %}',
+        url: '{% url "section-edit-form" instance.pk %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -27,16 +25,16 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".section-detail-form", function() {
+  $(".content").on("submit", ".section-edit-form", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "section-detail-form" section.pk%}',
+        url: '{% url "section-edit-form" instance.pk  %}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'section-detail' section.pk %}"
+                window.location = "{%url 'section-list' %}"
             }
             else {
                 console.log(data.form_is_valid);
@@ -47,5 +45,7 @@ $(function() {
     return false;
 });
 });
+
+
 </script>
 {%endblock%}

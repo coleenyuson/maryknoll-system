@@ -41,6 +41,15 @@ def updateInstance(request, modelForm, instance):
     else:
         form = modelForm(instance = instance)
     return form
+
+def getLatest(model, attribute):
+    # Get latest record of a model, basing on a certain attribute
+    # Returns an instance
+    try:
+        latest = model.objects.latest(attribute)
+    except:
+        latest = None
+    return latest
 # Custom Functions - Only for this module
 
 #--------------------------------------CURRICULUM------------------------------------------------------
@@ -199,8 +208,7 @@ def sectionList(request):
     return render(request,'enrollment/section-list.html')
     
 def addSection(request):
-    return render(request, 'enrollment/section-details-add.html')
-    
+    return render(request, 'enrollment/section-list-add.html')
 
 def sectionTable(request):
     section_list = getSectionList(request)
@@ -343,6 +351,25 @@ def generateSectionForm(request):
         request=request,
     )
     return JsonResponse(data)
+
+def editSection(request, pk='pk',template = 'enrollment/section-list-update.html'):
+    instance = get_object_or_404(Section, pk=pk)
+    return render(request, template, {'instance': instance})
+    
+def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit.html'):
+    instance = get_object_or_404(Section, pk=pk)
+    data = {'form_is_valid' : False }
+    last_section = getLatest(Section,'section_ID')
+
+    forms = updateInstance(request, SectionForms, instance)
+
+    if forms.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'forms': forms, 'section':last_section, 'instance': instance}
+    return ajaxTable(request,template,context,data)
     
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
