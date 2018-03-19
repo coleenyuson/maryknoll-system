@@ -139,7 +139,7 @@ navbar-light .active a{
     color: #4688F1 !important;
 	font-weight: bold;
 }
-.nav-item{
+.nav-item, .uppercase{
     text-transform: uppercase;
 }
 .nav-item, .user{
@@ -289,11 +289,11 @@ navbar-light .active a{
 }
 
 /* USER RECORD */
-.card{
-	padding: 30px;
-}
 .records{
 	margin-top: 30px;
+}
+.card-section{
+	padding: 30px;
 }
 .link{
 	color: #000000;
@@ -438,4 +438,22 @@ footer{
 .promissory-rejected{
 	font-weight: bold;
 	color: #dc3545;
+}
+
+/* PAYMENT TRANSACTION */
+.currency:before{
+	content: "\0020B1";
+}
+.payment, .addPayment{
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+.summary-title{
+	font-weight: bold;
+	font-size: 1em;
+}
+.summary-value{
+	font-weight: 400;
+	font-size: 2.5em;
+	line-height: 40px;
 }

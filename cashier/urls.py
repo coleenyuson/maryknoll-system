@@ -12,4 +12,7 @@ urlpatterns = [
     ]
 
 #Transactions
-urlpatterns += []
+urlpatterns += [
+    url(r'^transaction/(?P<pk>\d+)$', views.transactionView , name='transaction'),
+
+]
