@@ -1,11 +1,15 @@
-{% extends 'base.html' %} {% block settings %}
-<li class="nav-item active-menu">
-  <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
+{% extends 'base.html' %}
+{%block title%} Student List {%endblock%}
+{% block settings %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'settings' %}">Settings
+        <span class="sr-only">(current)</span>
+    </a>
 </li>
 {% endblock %} {%load static%} {% block content %}
 <!-- CONTENT -->
 <div class="container-fluid bg-content">
-  <div class="content">
+  <div class="content container">
     <div class="seal"></div>
     <h2> Student Profiles </h2>
     <div class="row search-bar no-print">
@@ -13,10 +17,10 @@
         <div class="input-group">
           <div class="input-group-btn">
             <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Category
+              Category
             </button>
             <!-- Supply dropdown menu categories, refer to database -->
-            <div class="dropdown-menu genre">
+            <div class="dropdown-menu">
               <a class="dropdown-item" href="#">All categories</a>
               <a class="dropdown-item" href="#">Student ID</a>
               <a class="dropdown-item" href="#">Name</a>
@@ -38,7 +42,7 @@
       </div>
     </div>
     <div class="row table-records table-responsive" id="student_listings">
-
+      
     </div>
   </div>
 </div>
@@ -67,7 +71,7 @@ var search_data = "None";
 </script>
 
 
-<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+{# ---------------------------BACKEND SCRIPTS ------------------------------ #}
 <script>
   $(function() {
     $.ajax({

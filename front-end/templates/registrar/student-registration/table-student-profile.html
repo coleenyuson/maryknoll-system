@@ -2,28 +2,23 @@
   <thead class="thead-light">
     <tr>
       <!-- Refer to database for headings -->
-      <th scope="col">Enrollment ID</th>
-      <th scope="col">Curriculum</th>
       <th scope="col">School Year</th>
       <th scope="col">Year Level</th>
       <th scope="col">Date Enrolled</th>
       <th scope="col">Enrollment Status</th>
-      <th scope="col">Scholarship</th>
-      <th scope="col">Actions</th>
+      <th scope="col" class="no-print">Scholarship Status</th>
+      <th scope="col" class="no-print">Actions</th>
     </tr>
   </thead>
   <tbody>
-
-    {% for record in enrollment_list %}
+      {% for record in enrollment_list %}
     <tr>
-      <td>{{record.enrollment_ID}}</td>
-      <td>{{record.section.curriculum}}</td>
       <td>{{record.school_year}}</td>
-      <td>{{record.section.year_level}}</td>
+      <td>{{record.section}}</td>
       <td>{{record.date_enrolled}}</td>
-      <td>{{record.get_student_type_display}}</td>
+      <td>{{record.get_enrollment_status_display}}</td>
       <!-- If paid, tag as enrolled. Else, pending-->
-      <td>{{record.scholarship}}</td>
+      <td class="no-print"><span class="no-print"><i class="fa fa-circle active-status"></i> </span> Active</td>
       <td class="no-print text-center">
         <button type="button" class="btn btn-success btn-sm view-button" data-toggle="modal" data-target="#viewModal">View</button>
         <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModal" aria-hidden="true">
@@ -32,61 +27,61 @@
               <div class="modal-header">
                 <h5 class="modal-title">Student Registration</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
               <div class="modal-body text-left">
                 <h5 class="sm-headings">Student Details</h5>
                 <div class="row">
                   <div class="col-md-4">
                     <label>Student Code:</label>
-                    <p>123456789</p>
+                    <p>{{student.student_ID}}</p>
                   </div>
                   <div class="col-md-4">
                     <label>Student Name:</label>
-                    <p>Brown, Millie-Bobbie</p>
+                    <p>{{student.last_name}}, {{student.first_name}}-{{student.middel_name}}</p>
                   </div>
                   <div class="col-md-4">
                     <label>Student type:</label>
-                    <p><b>OLD STUDENT</b></p>
+                    <p><b>{# IF old records #}</b></p>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-4">
                     <label>Year Level:</label>
-                    <p>Grade 6</p>
+                    <p>{# SECTION Context #}</p>
                   </div>
                   <div class="col-md-4">
                     <label>Section:</label>
-                    <p>St. Lorenzo Ruiz</p>
+                    <p>{# SECTION Context #}</p>
                   </div>
                 </div>
                 <h5 class="sm-headings">Enrollment Details</h5>
                 <div class="row text-left">
                   <div class="col-md-4">
                     <label>School Year:</label>
-                    <p>2018-2019</p>
+                    <p>{{record.school_year}}</p>
                   </div>
                   <div class="col-md-4">
                     <label>Date Enrolled:</label>
-                    <p>January 07, 2018</p>
+                    <p>{{record.date_enrolled}}</p>
                   </div>
                   <div class="col-md-4">
                     <label>Enrollment Status:</label>
-                    <p>Enrolled</p>
+                    <p>{{record.get_enrollment_status_display}}</p>
                   </div>
                 </div>
                 <h5 class="sm-headings">Scholarship Details</h5>
                 <!--Not necessarily in the same table. 
-                                      Join mo lang scholarship table and student ID para makita anong scholarship nya that SY year-->
+                            Join mo lang scholarship table and student ID para makita anong scholarship nya that SY year-->
                 <div class="row">
                   <div class="col-md-4">
                     <label>Scholarship:</label>
-                    <p>ESC Scholarship</p>
+                    <p>{# Curr Scholarship Context #}</p>
                   </div>
                   <div class="col-md-4">
                     <label>Validity:</label>
-                    <p>1 year</p>
+                    <p>{# Scholarship Context #}</p>
                   </div>
                 </div>
               </div>
@@ -99,10 +94,10 @@
         </div>
         <a href="{%url 'enrollment-edit' record.enrollment_ID %}?student={{student.student_ID}}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
     </tr>
-
+    
     {% empty %}
     <tr>
-      <td colspan="8" class="text-center">No Enrollment Records Found</td>
+      <td colspan="6" class="text-center">No Enrollment Records Found</td>
     </tr>
     {% endfor %}
 
@@ -110,21 +105,22 @@
 </table>
 {# PAGINATION #} {% if enrollment_list.has_other_pages %}
 <nav aria-label="Page navigation">
-  <ul class="pagination pagination-md justify-content-center">
-    {% if enrollment_list.has_previous %}
-    <li>
-      <a class="page-link" href="?page={{ enrollment_list.previous_page_number }}" tabindex="-1">Previous</a>
-    </li>
-    {%endif%} {% for i in enrollment_list.paginator.page_range %} {% if enrollment_list.number == i %}
-    <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span>
-    </li>
-    {% else %}
-    <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
-    {% endif %} {% endfor %} {% if student.has_next %}
-    <li class="page-item">
-      <a class="page-link" href="?page={{ enrollment_list.next_page_number }}">Next</a>
-    </li>
+    <ul class="pagination pagination-md justify-content-center">
+      {% if enrollment_list.has_previous %}
+      <li>
+        <a class="page-link" href="?page={{ enrollment_list.previous_page_number }}" tabindex="-1">Previous</a>
+      </li>
+      {%endif%} {% for i in enrollment_list.paginator.page_range %} {% if enrollment_list.number == i %}
+      <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span>
+      </li>
+      {% else %}
+      <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %} {% endfor %} {% if student.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ enrollment_list.next_page_number }}">Next</a>
+      </li>
+      {% endif %}
+    </ul>
     {% endif %}
-  </ul>
-  {% endif %}
-</nav>
+  </nav>
+  

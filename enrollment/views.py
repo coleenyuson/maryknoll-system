@@ -491,6 +491,7 @@ def subjectOfferingDetail(request, pk='pk'):
     except:
         last_record = Enrollment.objects.filter(subjOffering=subjOffering)
     return render(request, 'enrollment/subject-offering-add.html.html', {'subjOffering': subjOffering, 'record':last_record})
+    
 
 
 def updateSubjectOffering(request, pk='pk'):

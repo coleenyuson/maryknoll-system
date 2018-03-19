@@ -1,21 +1,24 @@
 from django.conf.urls import url, include
-
-from . import views
+from .models import *
+from .views import *
 
 urlpatterns = [
-        url(r'^student-list/$', views.studentList, name = 'student-list'),
-        url(r'^student-list/download$', views.Export_Model_To_CSV.as_view(), name = 'student-list-download'), #new feature, delete this line if you have seen this already -aji
-        url(r'^student-list/table$', views.table_StudentList, name = 'student-table'),
-        url(r'^student-list/add$', views.addStudent, name = 'student-add'),
-        url(r'^student-list/create$', views.form_addStudent, name = 'student-create'),
-        url(r'^student-list/update/(?P<pk>\d+)$', views.updateStudentProfile, name = 'student-update'),
-        url(r'^student-list/edit-form/(?P<pk>\d+)$', views.form_updateStudentProfile, name = 'student-edit-form'),
+        url(r'^student-list/$', studentList, name = 'student-list'),
+        url(r'^student-list/download$', Export_Model_To_CSV.as_view(), name = 'student-list-download'), #new feature, delete this line if you have seen this already -aji
+        url(r'^student-list/table$', table_StudentList, name = 'student-table'),
+        url(r'^student-list/add$', addStudent, name = 'student-add'),
+        url(r'^student-list/create$', form_addStudent, name = 'student-create'),
+        url(r'^student-list/update/(?P<pk>\d+)$', updateStudentProfile, name = 'student-update'),
+        url(r'^student-list/edit-form/(?P<pk>\d+)$', form_updateStudentProfile, name = 'student-edit-form'),
         #student profile urls
-        url(r'^student-list/(?P<pk>\d+)$', views.studentDetails, name = 'student-details'),
-        url(r'^student-list/enrollment-table/(?P<pk>\d+)$', views.table_studentDetails, name = 'enrollment-table'),
-        url(r'^student-list/enrollment-add/(?P<pk>\d+)$', views.addEnrollment, name = 'enrollment-add'),
-        url(r'^student-list/enrollment-create/(?P<pk>\d+)$', views.form_addEnrollment, name = 'enrollment-create'),
-        url(r'^student-list/enrollment-edit/(?P<pk>\d+)$', views.editEnrollment, name = 'enrollment-edit'),
-        url(r'^student-list/enrollment-edit-form/(?P<pk>\d+)$', views.form_editEnrollment, name = 'enrollment-edit-form'),
-        #url(r'^student-list/enrollment-create/sort(?P<pk>\d+)$', views.sortSections, name = 'sort-sections'),
+        url(r'^student-list/(?P<pk>\d+)$', studentDetails, name = 'student-details'),
+        url(r'^student-list/enrollment-table/(?P<pk>\d+)$', table_studentDetails, name = 'enrollment-table'),
+        url(r'^student-list/enrollment-add/(?P<pk>\d+)$', addEnrollment, name = 'enrollment-add'),
+        url(r'^student-list/enrollment-create/(?P<pk>\d+)$', form_addEnrollment, name = 'enrollment-create'),
+        url(r'^student-list/enrollment-edit/(?P<pk>\d+)$', editEnrollment, name = 'enrollment-edit'),
+        url(r'^student-list/enrollment-edit-form/(?P<pk>\d+)$', form_editEnrollment, name = 'enrollment-edit-form'),
+        #url(r'^student-list/enrollment-create/sort(?P<pk>\d+)$', sortSections, name = 'sort-sections'),
+        url(r'^scholarship-table/(?P<pk>\d+)$', table_studentScholar, name='student-scholars-table'),
+        url(r'^scholarship-delete/$', deleteScholar, name='delete-scholar'),
+        url(r'^scholarship-add/(?P<pk>\d+)$', StudentScholarFormView, name='student-scholars-add'),
     ]

@@ -36,17 +36,6 @@ class YearLevel(models.Model):
 class Curriculum(models.Model):
     curriculum_ID = models.AutoField(primary_key=True)
     curriculum_year = models.DateField(default=datetime.date.today)
-    
-    STATUS_CHOICES = (
-        (ACTIVE, 'Active'),
-        (INACTIVE, 'Inactive'),
-    )
-    curriculum_status = models.CharField(max_length=1,
-        choices=STATUS_CHOICES,
-        blank=False,
-        default=ACTIVE
-        )
-    
     STATUS_CHOICES=(
         (ACTIVE, 'Active'),
         (INACTIVE, 'Inactive'),

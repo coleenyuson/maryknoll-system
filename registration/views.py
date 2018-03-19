@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
 from .models import *
-from .forms import StudentForms, RegistrationForms
+from .forms import *
 
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -21,7 +21,7 @@ from django.db import models
 from django.http import StreamingHttpResponse
 from django.views.generic import View
 import csv
-
+from django.http import HttpResponseRedirect
 # Global Functions - can be applied anywhere
 # EXPORT TO CSV class is at the bottom-most part of this code
 def paginateThis(request, obj_list, num):
@@ -258,6 +258,44 @@ def generateStudentCode(student):
     pass
 
 
+def table_studentScholar(request,pk='pk',template='registrar/student-registration/scholarships-list.html'):
+    student = Student.objects.get(student_ID=pk)
+    registration = Enrollment.objects.filter(student=student).latest('date_enrolled')
+    scholarship_list = StudentScholar.objects.filter(registration=registration)
+    
+    context = {'scholarship_list':scholarship_list, 'student':student}
+    print context
+    return ajaxTable(request,template,context)
+
+
+def deleteScholar(request):
+    schol_id =int(request.GET.get('scholar'))
+    scholar = StudentScholar.objects.get(id = schol_id)
+    scholar.delete()
+    data = {}
+    return JsonResponse(data)
+
+
+def StudentScholarFormView(request, pk='pk',template = "registrar/student-registration/student-scholarship-add.html" ):
+    curr_student = Student.objects.get(student_ID=pk)
+    regist = Enrollment.objects.filter(student=curr_student).latest('date_enrolled')
+    
+    if request.method == 'POST':
+        form = StudentScholarForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.registration = regist
+            form.save()
+            return HttpResponseRedirect(reverse('student-details',kwargs={'pk':curr_student.student_ID}))
+        else:
+            print form.errors
+    else:
+        form = StudentScholarForm()
+    
+    context = {'form':form, 'student':curr_student}
+
+    return render(request, template, context)
+        
 ''' EXPORTING TO CSV '''
 #Call the second class.as_view() to generate CSV
 class Echo(object):

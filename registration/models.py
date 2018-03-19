@@ -138,5 +138,18 @@ class Drop(models.Model):
         
     def get_absolute_url(self):
         return reverse('!!!!!', args=[str(self.drop_ID)])
+class StudentScholar(models.Model):
+    """Model definition for StudentScholar."""
 
-	
+    scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE)
+    registration = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
+
+    class Meta:
+        """Meta definition for StudentScholar."""
+
+        verbose_name = 'StudentScholar'
+        verbose_name_plural = 'StudentScholars'
+
+    def __str__(self):
+        """Unicode representation of StudentScholar."""
+        return str(self.scholarship)
