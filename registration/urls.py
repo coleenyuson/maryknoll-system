@@ -20,5 +20,5 @@ urlpatterns = [
         #url(r'^student-list/enrollment-create/sort(?P<pk>\d+)$', sortSections, name = 'sort-sections'),
         url(r'^scholarship-table/(?P<pk>\d+)$', table_studentScholar, name='student-scholars-table'),
         url(r'^scholarship-delete/$', deleteScholar, name='delete-scholar'),
-        url(r'^scholarship-add/(?P<pk>\d+)$', StudentScholarFormView.as_view(), name='student-scholars-add'),
+        url(r'^scholarship-add/(?P<pk>\d+)$', StudentScholarFormView, name='student-scholars-add'),
     ]

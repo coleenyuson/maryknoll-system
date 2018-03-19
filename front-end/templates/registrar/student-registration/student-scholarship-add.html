@@ -1,23 +1,34 @@
+
+{% extends 'base.html' %}
+{%block title%} Admin Settings {%endblock%}
+{% block settings %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'settings' %}">Settings
+        <span class="sr-only">(current)</span>
+    </a>
+</li>
+{% endblock %}
+{% load widget_tweaks %}
+{%load static%}
+
+{% block content %}
 <div class="container-fluid bg-content">
     <div class="content container">
-        <form class="heading-label">
+        <form action="{%url 'student-scholars-add' student.student_ID%}" method="POST" class="heading-label">
+            {%csrf_token%}
             <div class="row">
                 <div class="col-md-4">
                     <label>Scholarship Name:</label>
-                    <select class="custom-select btn-block" required>
-                        <option selected>Choose a scholarship name..</option>
-                        <option value="1">ESC</option>
-                        <option value="2">Voucher</option>
-                        <option value="3">Others</option>
-                        <!-- Values should be from the database ScholarshipsID(?) -->
-                    </select>
+                    {{form.scholarship|add_class:"custom-select btn-block"}}
                 </div>
             </div>
             <div class="btn-forms" style="display: flex; justify-content: flex-end">
-                <a href="student-profile.html" class="btn btn-link">Cancel</a>
-                <a href="#" class="btn btn-primary ">
-                    <i class="fa fa-check-circle" aria-hidden="true"></i> Save Scholarship to Student</a>
+                <a href="{%url 'student-details' student.student_ID  %}" class="btn btn-link">Cancel</a>
+                <button type="submit" class="btn btn-primary ">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> Save Scholarship to Student</button>
             </div>
         </form>
     </div>
 </div>
+
+{%endblock%}

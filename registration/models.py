@@ -152,4 +152,4 @@ class StudentScholar(models.Model):
 
     def __str__(self):
         """Unicode representation of StudentScholar."""
-        pass
+        return str(self.scholarship)

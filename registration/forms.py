@@ -23,4 +23,4 @@ class StudentScholarForm(forms.ModelForm):
         """Meta definition for StudentScholarform."""
 
         model = StudentScholar
-        fields = ('registration',)
+        fields = ('scholarship',)
