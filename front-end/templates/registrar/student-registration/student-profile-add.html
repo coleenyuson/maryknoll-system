@@ -3,11 +3,12 @@
     Add Student Registration
 {% endblock title %}
 {% block settings %}
-<li class="nav-item active-menu">
-  <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'settings' %}">Settings
+        <span class="sr-only">(current)</span>
+    </a>
 </li>
 {% endblock %}
-
 {%load static%}
 {% block content %}
 <div class="container-fluid bg-content">

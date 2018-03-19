@@ -1,0 +1,30 @@
+{% load widget_tweaks %}
+<form method="POST" action="{% url "form-fees-and-accounts-edit" particular.pk %}" class="heading-label parts-forms">{% csrf_token %}
+  <div class="row">
+    <div class="col">
+      <h3 class="link" style="margin-top: 10px;">Fees and Accounts Details</h3>
+    </div>
+  </div>
+  <form>
+    <div class="row">
+      <div class="col-md-4">
+        <label>Year Level:</label>
+        {{form.year_level|add_class:"custom-select btn-block"}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label>Particular Name:</label> 
+        {{form.payable_name|add_class:"form-control"}}
+      </div>
+      <div class="col-md-6">
+        <label>Fee Amount:</label>
+        {{form.fee_amount|add_class:"form-control"|attr:"id='feeAmount'"}}
+      </div>
+    </div>
+  </div>
+<div class="btn-forms" style="display: flex; justify-content: flex-end">
+  <a href="{%url 'fees-and-accounts'%}" class="btn btn-link">Cancel</a>
+  <button type="submit" class="btn btn-primary"><i class="fa fa-check-circle" aria-hidden="true"></i> Save Particular Details</button>
+</div>
+</form>

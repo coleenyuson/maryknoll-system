@@ -20,90 +20,6 @@ button, a{
 	border:0;
 	cursor: pointer;
 }
-
-/* index.html */
-.index-container{
-	display: flex;
-  	flex-flow: row wrap;
-  	-webkit-justify-content: center;
-          justify-content: center;
-    padding-bottom: 20px;
-    padding-top: 50px;
-}
-.form-container {
-  background-color: #FFFFFF;
-  padding-top: 20px !important;
-  display: flex;
-  flex-flow: row wrap;
-  -webkit-justify-content: center;
-          justify-content: center;
-}
-.title{
-	color: #121774;
-	margin-left: 25px;
-	text-transform: uppercase;
-	order: 0;
-	font-weight: bold;
-}
-.form-input{
-	background: #f3f3f3;
-	/*box-shadow: 0 2px 25px 0 #C2E1EE;*/
-	border-radius: 26px;
-	width: 413px;
-	height: 375px;
-	position:relative;
-}
-.btn-login{
-	background: #4285F4;
-	text-transform: uppercase;
-	border-radius: 0 0 26px 26px;
-	width:413px;
-	height:80px;
-	position:absolute;
-	bottom:0;
-	text-align: center;
-	-webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    text-decoration: none !important;
-}
-.btn-login:hover{
-	box-shadow:0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)
-}
-.btn-login > h3{
-	text-shadow: 0 2px 6px rgba(0,0,0,0.15);
-	font-size: 20px;
-	color: #FFFFFF;
-	letter-spacing: 1.05px;
-	margin: 28px 160px;
-}
-.form-login{
-	padding:28px;
-}
-.input-login{
-	background: #ffffff;
-	border: 1px solid rgba(122,134,154,0.39);
-	border-radius: 8px;
-	width: 359px;
-	height: 50px;
-	padding: 30px;
-	margin-top: 10px;
-	margin-bottom: 30px;
-}
-.placeholder{
-	color: #121774;
-	letter-spacing: 0;
-	margin-top: 10px;
-}
-#forgot-user{
-	font-size: 14px;
-	color: #4285F4;
-	letter-spacing: 0.5px;
-	text-align: center;
-	margin-top: 30px;
-	font-weight: 100;
-}
-
-
 /* NAVBAR */
 .user{
     display: inline-block;
@@ -120,26 +36,16 @@ button, a{
 .navbar-light{
     background-color: #ffffff !important;
 }
-.container-reset{
-	width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-	margin-left: 15px !important;
-	margin-right: 15px !important;
-}
-.navbar-light .active a{
-    color: #4688F1 !important;
-	font-weight: bold;
-}
 .navbar{
     min-height: 70px !important;
     font-size: 13px !important;
 }
-navbar-light .active a{
+.active a{
     color: #4688F1 !important;
-	font-weight: bold;
+    font-weight: bold;
+    letter-spacing: 0.5vh;
 }
-.nav-item, .uppercase{
+.nav-item{
     text-transform: uppercase;
 }
 .nav-item, .user{
@@ -163,36 +69,18 @@ navbar-light .active a{
   background: #CF4647;
   color: #ffffff;
 }
-.breadcrumb{
-	background-color: #F8FAFF !important;
-}
 
 /* CONTENT */
 .bg-content{
 	background-color: #F8FAFF;
-	min-height: 80vh;
+	min-height: 500px;
 	/*background-color: #f2f2f2;*/
 }
-.bg-dashboard{
-	background-color: #FFFFFF;
-}
 .content{
-	padding-top: 20px;
+	padding: 40px;
 }
-
 
 /* ADMIN DASHBOARD */
-.subtitle{
-	margin-top: 10px;
-	letter-spacing: 5px;
-}
-.subtitle-border{
-	background-color: #4285F4;
- 	width: 10%;
- 	height: 5px;
- 	border-top: 3px solid #4285F4;
-    margin: 20px auto 20px auto;
-}
 .btn-links{
 	width: 230px;
 	height: 170px;
@@ -232,19 +120,9 @@ navbar-light .active a{
 	font-size: 60px;
 	color: #4688F1;
 }
-.quick-links{
-	display: flex;
-	justify-content: center;
-}
-.quick-links-item{
-	align-self: auto;
-}
 .quick-links h4{
 	color: #FFFFFF;
 	margin-top: 20px;
-	font-size: 13px;
-	font-weight: 600;
-	letter-spacing: 0;
 }
 .quick-links h3{
 	margin-top: 40px;
@@ -255,8 +133,6 @@ navbar-light .active a{
     opacity: 0.9;
     filter: alpha(opacity=50); /* For IE8 and earlier */
 }
-
-
 
 /* Financial Records */
 .table-records{
@@ -289,11 +165,11 @@ navbar-light .active a{
 }
 
 /* USER RECORD */
+.card{
+	padding: 30px;
+}
 .records{
 	margin-top: 30px;
-}
-.card-section{
-	padding: 30px;
 }
 .link{
 	color: #000000;
@@ -412,48 +288,4 @@ footer{
   
 .footer-items{
 	margin: auto;
-}
-
-/* REPORTS */
-.nowrap {
-	white-space: nowrap;
-}
-
-.line-break{
-	 line-height: 80px;
-}
-.line-break-child{
-	vertical-align: middle;
-}
-
-/*PROMISSORY NOTES*/
-.promissory-approved{
-	font-weight: bold;
-	color: #28a745;
-}
-.promissory-pending{
-	font-weight: bold;
-	color: #ffc107;
-}
-.promissory-rejected{
-	font-weight: bold;
-	color: #dc3545;
-}
-
-/* PAYMENT TRANSACTION */
-.currency:before{
-	content: "\0020B1";
-}
-.payment, .addPayment{
-	margin-top: 30px;
-	margin-bottom: 10px;
-}
-.summary-title{
-	font-weight: bold;
-	font-size: 1em;
-}
-.summary-value{
-	font-weight: 400;
-	font-size: 2.5em;
-	line-height: 40px;
 }

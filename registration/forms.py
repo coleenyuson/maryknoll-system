@@ -15,3 +15,12 @@ class RegistrationForms(forms.ModelForm):
     class Meta:
         model = Enrollment
         exclude = ('enrollment_ID','student_type','date_enrolled','student',)
+
+class StudentScholarForm(forms.ModelForm):
+    """Form definition for StudentScholar."""
+
+    class Meta:
+        """Meta definition for StudentScholarform."""
+
+        model = StudentScholar
+        fields = ('scholarship',)

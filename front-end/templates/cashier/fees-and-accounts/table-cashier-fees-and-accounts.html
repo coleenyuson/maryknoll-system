@@ -11,11 +11,11 @@
   <tbody>
     {%for parts in particulars%}
     <tr>
-      <td> {{parts.particular_name}} </td>
-      <td> 5,000 </td>
-      <td> Grade 12 </td>
+      <td> {{parts.payable_name}} </td>
+      <td> {{parts.fee_amount}} </td>
+      <td> {{parts.year_level }}</td> </td>
       <td class="text-center">
-        <a href="{%url 'fees-and-accounts-edit' pk=parts.particular_ID %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
+        <a href="{%url 'fees-and-accounts-edit' pk=parts.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
     </tr>
     {% empty %}
     <tr>

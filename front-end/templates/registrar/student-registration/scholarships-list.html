@@ -1,0 +1,33 @@
+<table class="table table-bordered bg-nav table-hover">
+    <thead class="thead-light">
+        <tr>
+            <!-- Refer to database for headings -->
+            <th scope="col">Scholarship Name</th>
+            <th scope="col">Scholarship Status</th>
+            <th scope="col" class="no-print">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for scholarship in scholarship_list %}
+        <tr>
+            <td>{{scholarship.scholarship}}</td>
+            <td>
+                <span class="no-print">
+
+                    {% if active %}
+                    <i class="fa fa-circle active-status"></i>
+                    </span> Active</td>
+                    {% else %}
+                    <i class="fa fa-circle inactive-status"></i>
+                    </span> Inactive</td>
+                    {% endif %}
+            <td class="no-print text-center delete-btn">
+                <button type="button" class="btn btn-danger" onclick="deleteRow(this, {{scholarship.id}})">Remove</button>
+        </tr>
+        {%empty%}
+        <tr>
+            <td colspan="3" class="text-center">No Scholarships Availed</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

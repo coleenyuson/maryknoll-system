@@ -26,4 +26,11 @@ registration/models.pyc
 registration/urls.pyc
 registration/views.pyc
 
+main/__init__.pyc
+main/admin.pyc
+main/forms.pyc
+main/models.pyc
+main/urls.pyc
+main/views.pyc
+
 db.sqlite3

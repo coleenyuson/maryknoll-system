@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 
 from django.utils import timezone
-from datetime import datetime
 
+from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.contrib.auth.decorators import login_required
@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 
 from .models import *
-from .forms import StudentForms, RegistrationForms
+from .forms import *
 
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -21,7 +21,7 @@ from django.db import models
 from django.http import StreamingHttpResponse
 from django.views.generic import View
 import csv
-
+from django.http import HttpResponseRedirect
 # Global Functions - can be applied anywhere
 # EXPORT TO CSV class is at the bottom-most part of this code
 def paginateThis(request, obj_list, num):
@@ -66,8 +66,9 @@ def updateInstance(request, modelForm, instance):
     return form
 # Custom Functions - Only for this module
 
-def getStudentList(request):
+def getStudentList(request, status = None):
     # Get student list with filters IF there is any, if none, then return all
+    # 3/19/2018 - TO DEVELOPED:if there is a second parameter, add status to all search 
     search = request.GET.get('search')
     genre = request.GET.get('genre')
     isNum = True
@@ -104,7 +105,7 @@ def getStudentList(request):
             # This needs debugging. ex. JUNIOR_HIGH == 'j' but input is "Junior High"
             query = Student.objects.filter(student_level=search)
         else:
-            print "wala"
+            print "All Students Returned!"
             query = Student.objects.all() 
             
     else:
@@ -143,6 +144,51 @@ def table_StudentList(request, template = 'registrar/student-profiles/table-stud
 
     context = {'student_list': limited_students}
 
+    return ajaxTable(request, template, context)
+
+def table_ActiveList(request, template = 'registrar/student-profiles/table-student-list.html'):
+    verifyActive()
+    
+    student_list = Student.objects.filter(status='a')
+
+    limited_students = paginateThis(request, student_list, 10)
+
+    context = {'student_list': limited_students}
+    print context
+    return ajaxTable(request, template, context)
+
+def table_InActiveList(request, template = 'registrar/student-profiles/table-student-list.html'):
+    verifyActive()
+    
+    student_list = Student.objects.filter(status='i')
+    
+    limited_students = paginateThis(request, student_list, 10)
+
+    
+    context = {'student_list': limited_students}
+    print context
+    return ajaxTable(request, template, context)
+
+def table_ScholarList(request, template = 'registrar/student-profiles/table-student-list.html'):
+    verifyActive()
+    list_of_ids = []
+    #Get enrolled students
+    student_list = Student.objects.filter(status='a')
+    #Get the student's latest registration
+    for student in student_list:
+        curr_registration = Enrollment.objects.filter(student=student).latest('date_enrolled')
+        #Get scholarship list of that enrollment object
+        scholar_list = StudentScholar.objects.filter(registration=curr_registration)
+        #If this list exists, then the student is a scholar
+        if scholar_list:
+            list_of_ids.append(student.student_ID)
+    #Get list of students from the list of IDs collected
+    scholars = Student.objects.filter(student_ID__in=list_of_ids)
+    limited_students = paginateThis(request, scholars, 10)
+
+    
+    context = {'student_list': limited_students}
+    print context
     return ajaxTable(request, template, context)
 
 def addStudent(request, template = 'registrar/student-profiles/student-registration-list-add.html'):
@@ -215,7 +261,7 @@ def form_addEnrollment(request, pk='pk', template = 'registrar/student-registrat
         form = RegistrationForms(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.date_enrolled = datetime.now()
+            post.date_enrolled = datetime.date.today()
             post.student = current_student
             post.student_type='n'
             current_student.status="a"
@@ -258,6 +304,44 @@ def generateStudentCode(student):
     pass
 
 
+def table_studentScholar(request,pk='pk',template='registrar/student-registration/scholarships-list.html'):
+    student = Student.objects.get(student_ID=pk)
+    registration = Enrollment.objects.filter(student=student).latest('date_enrolled')
+    scholarship_list = StudentScholar.objects.filter(registration=registration)
+    
+    context = {'scholarship_list':scholarship_list, 'student':student}
+    print context
+    return ajaxTable(request,template,context)
+
+
+def deleteScholar(request):
+    schol_id =int(request.GET.get('scholar'))
+    scholar = StudentScholar.objects.get(id = schol_id)
+    scholar.delete()
+    data = {}
+    return JsonResponse(data)
+
+
+def StudentScholarFormView(request, pk='pk',template = "registrar/student-registration/student-scholarship-add.html" ):
+    curr_student = Student.objects.get(student_ID=pk)
+    regist = Enrollment.objects.filter(student=curr_student).latest('date_enrolled')
+    
+    if request.method == 'POST':
+        form = StudentScholarForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.registration = regist
+            form.save()
+            return HttpResponseRedirect(reverse('student-details',kwargs={'pk':curr_student.student_ID}))
+        else:
+            print form.errors
+    else:
+        form = StudentScholarForm()
+    
+    context = {'form':form, 'student':curr_student}
+
+    return render(request, template, context)
+        
 ''' EXPORTING TO CSV '''
 #Call the second class.as_view() to generate CSV
 class Echo(object):

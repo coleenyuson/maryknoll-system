@@ -1,11 +1,15 @@
-{% extends 'base.html' %} {% block settings %}
-<li class="nav-item active-menu">
-  <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
+{% extends 'base.html' %}
+{%block title%} Student List {%endblock%}
+{% block settings %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'settings' %}">Settings
+        <span class="sr-only">(current)</span>
+    </a>
 </li>
 {% endblock %} {%load static%} {% block content %}
 <!-- CONTENT -->
 <div class="container-fluid bg-content">
-  <div class="content">
+  <div class="content container">
     <div class="seal"></div>
     <h2> Student Profiles </h2>
     <div class="row search-bar no-print">
@@ -13,20 +17,20 @@
         <div class="input-group">
           <div class="input-group-btn">
             <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Category
+              Category
             </button>
             <!-- Supply dropdown menu categories, refer to database -->
-            <div class="dropdown-menu genre">
+            <div class="dropdown-menu">
               <a class="dropdown-item" href="#">All categories</a>
               <a class="dropdown-item" href="#">Student ID</a>
               <a class="dropdown-item" href="#">Name</a>
               <a class="dropdown-item" href="#">Year/Level</a>
-              <a class="dropdown-item" href="#">Status</a>
+              <a class="dropdown-item" onClick="scholarList()">Scholars</a>
             </div>
           </div>
           <input type="text" class="changeIfStatus form-control search-input" placeholder="Search records..." aria-label="Search records...">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-primary search">Search</button>
+            <button type="button" class="btn btn-primary search" onClick="search()">Search</button>
           </span>
         </div>
       </div>
@@ -38,7 +42,7 @@
       </div>
     </div>
     <div class="row table-records table-responsive" id="student_listings">
-
+      
     </div>
   </div>
 </div>
@@ -67,8 +71,9 @@ var search_data = "None";
 </script>
 
 
-<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+{# ---------------------------BACKEND SCRIPTS ------------------------------ #}
 <script>
+  
   $(function() {
     $.ajax({
       url: '{% url "student-table" %}',
@@ -79,6 +84,43 @@ var search_data = "None";
       }
     });
   });
+  var toggle = True
+  function toggleList(){
+    toggle ? toggle = false : toggle= true
+    toggle ? generateActiveList(): generateInActiveList()
+  }
+
+  function generateActiveList(){
+    $.ajax({
+      url: '{% url "student-table-active" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#student_listings").html(data.html_form);
+      }
+    });
+  }
+  function generateInActiveList(){
+    $.ajax({
+      url: '{% url "student-table-inactive" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#student_listings").html(data.html_form);
+      }
+    });
+  }
+
+  function scholarList(){
+    $.ajax({
+      url: '{% url "student-table-scholars" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#student_listings").html(data.html_form);
+      }
+    });
+  }
   function generatePage(pageNum){
     if(search_data == "None" || selected == "None"){
       generatePages(pageNum)
@@ -107,14 +149,14 @@ var search_data = "None";
       }
     });
   }
-
-  $('.search').click(function() {
+  function search(){
     search_data = $('.search-input').val();
+    
     if(search_data == ""){
       search_data = "None"
     }
     generateSearch();
-  });
+  }
 
   function generateSearch() {
     $.ajax({
