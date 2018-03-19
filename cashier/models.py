@@ -10,8 +10,8 @@ class EnrollmentBreakdown(models.Model):
     payable_name = models.CharField(max_length=50)
     fee_amount = models.FloatField()
     year_level = models.ForeignKey(
-        'enrollment.YearLevel', on_delete=models.CASCADE)
-
+        'enrollment.YearLevel', on_delete=models.CASCADE, null=True,blank=True)
+    
     class Meta:
         """Meta definition for EnrollmentBreakdown."""
 
@@ -26,11 +26,44 @@ class EnrollmentBreakdown(models.Model):
 class EnrollmentTransactionsMade(models.Model):
     student = models.ForeignKey(
         'registration.Enrollment', on_delete=models.CASCADE)
-    #add choices
-    month = models.CharField(max_length=50, null=True, blank=True)
+    name_CHOICES = (
+        ('ENROLLMENT', 'Enrollment Fee'),
+        ('TUITION', 'Tuition Fee'),
+    )
+    particular_name = models.CharField(max_length=50,
+        choices=name_CHOICES,
+        blank=False,
+        )
+    type_CHOICES = (
+        ('FULL', 'Full Payment'),
+        ('PART', 'Partial Payment'),
+    )
+    payment_type = models.CharField(max_length=50,
+        choices=type_CHOICES,
+        null=True,
+        blank=True,
+        )
+    
+    month_CHOICES = (
+        ('JAN', 'January'),
+        ('FEB', 'Febuary'),
+        ('MAR', 'March'),
+        ('APR', 'April'),
+        ('MAY', 'May'),
+        ('JUN', 'June'),
+        ('JUL', 'July'),
+        ('AUG', 'August'),
+        ('SEP', 'September'),
+        ('OCT', 'October'),
+        ('NOV', 'November'),
+        ('DEC', 'December'),
+    )
+    month = models.CharField(max_length=50,
+        choices=month_CHOICES,
+        null=True, blank=True)
     date_paid = models.DateField()
     ORnum = models.IntegerField()
-
+    
     class Meta:
         """Meta definition for EnrollmentTransactionsMade."""
 
